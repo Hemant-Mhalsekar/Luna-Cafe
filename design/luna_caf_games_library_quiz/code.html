@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Café — Games Library &amp; Quiz</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'cream': '#F6EFDF',
+        'on-cream': '#294632',
+        'sage': '#A9BBA0',
+        'on-sage': '#193623',
+        'sage-soft': '#E4F6D9',
+        'forest-green': '#4A6B4F',
+        'on-forest-green': '#FFFDF8',
+        'dark-forest': '#294632',
+        'on-dark-forest': '#F6EFDF',
+        'burnt-orange': '#C85A24',
+        'on-burnt-orange': '#1F0900',
+        'surface': '#FFFDF8',
+        'on-surface': '#294632',
+        'surface-muted': '#E9E2D2',
+        'on-surface-muted': '#4A473B',
+        'outline': '#CCC6B7',
+        'outline-strong': '#7B776A',
+        'dusty-blue': '#E5F2FF',
+        'on-dusty-blue': '#153346',
+        'dusty-blue-accent': '#456277',
+        'terracotta': '#FFEDE8',
+        'on-terracotta': '#53210E',
+        'terracotta-accent': '#8C4E37',
+        'mustard': '#FFEED8',
+        'on-mustard': '#422C00',
+        'mustard-accent': '#7D5800',
+        'lavender': '#F8EDFF',
+        'on-lavender': '#362B48',
+        'lavender-accent': '#665979',
+        'success': '#2E4E34',
+        'on-success': '#FFFDF8',
+        'success-container': '#D5FAD7',
+        'on-success-container': '#01210C',
+        'warning': '#7D5800',
+        'on-warning': '#FFFDF8',
+        'warning-container': '#FFDEA9',
+        'on-warning-container': '#271900',
+        'error': '#BA1A1A',
+        'on-error': '#FFFDF8',
+        'error-container': '#FFDAD6',
+        'on-error-container': '#410002',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '12px',
+        'md': '16px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section-sm': '48px',
+        'section-lg': '80px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Fredoka"', 'sans-serif'],
+        'headline': ['"Fredoka"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"Fragment Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['56px', { lineHeight: '62px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '600' }],
+        'headline-md': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '500' }],
+        'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '500' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0.5px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '180ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'card-lift': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Fragment+Mono&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-on-cream font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Shared Navigation Header -->
+    <header id="site-header" class="sticky top-0 z-40 w-full bg-cream border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-4 flex items-center justify-between gap-4">
+        <a href="../home/Home.html" class="inline-flex items-center gap-3 group rounded-full px-1">
+          <svg class="w-9 h-9 text-dark-forest" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" class="fill-sage-soft stroke-dark-forest" stroke-width="2"></circle>
+            <path d="M23.5 11.5C18.5 12.2 15 16.5 15 21.5C15 26.8 19.2 31 24.5 31C26.2 31 27.8 30.5 29.2 29.7C27.4 31.1 25.1 32 22.5 32C16.7 32 12 27.3 12 21.5C12 15.7 16.7 11 22.5 11C22.8 11 23.2 11 23.5 11.5Z" class="fill-dark-forest"></path>
+            <path d="M27.5 13L28.3 15.2L30.5 16L28.3 16.8L27.5 19L26.7 16.8L24.5 16L26.7 15.2L27.5 13Z" class="fill-burnt-orange"></path>
+          </svg>
+          <span class="font-headline text-headline-sm text-dark-forest tracking-tight">Luna Café</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-2">
+          <a href="../home/Home.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Home</a>
+          <a href="../games/Games.html" aria-current="page" class="px-4 py-2 rounded-full bg-sage-soft text-dark-forest font-body text-label-lg">Games</a>
+          <a href="../menu/Menu.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Menu</a>
+          <a href="../home/Home.html#game-reveal" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Events</a>
+          <a href="../home/Home.html#cafe-intro" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">About</a>
+          <a href="../home/Home.html#visit-us" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="../book-a-table/BookATable.html" class="hidden sm:inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90">
+            <span data-design-text-token="label-lg">Book a Table</span>
+          </a>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface border border-outline text-dark-forest">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <!-- Page Hero -->
+      <section class="bg-cream pt-10 pb-8 border-b border-outline/60">
+        <div class="max-w-7xl mx-auto px-gutter-lg flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div class="max-w-2xl">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sage-soft text-dark-forest text-label-sm mb-3">
+              <span class="material-symbols-outlined text-body-sm" aria-hidden="true">extension</span>
+              180+ Curated Tabletop Titles
+            </span>
+            <h1 class="font-headline text-display-lg-mobile md:text-headline-lg text-dark-forest text-balance">
+              Pick a game. Make a memory.
+            </h1>
+            <p class="font-body text-body-lg text-on-surface-muted mt-2 text-pretty">
+              From quick laughs to epic adventures, there&#39;s a game for every kind of table.
+            </p>
+          </div>
+          <a href="#quiz" class="inline-flex w-fit items-center gap-2 px-6 py-3 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">auto_fix_high</span>
+            <span>Take the Game Quiz</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Games Library Workspace -->
+      <section class="py-10 max-w-7xl mx-auto px-gutter-lg">
+        <!-- Search & Sort Bar -->
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
+          <div class="relative flex-1 max-w-md">
+            <span aria-hidden="true" class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-strong pointer-events-none">search</span>
+            <input id="game-search" type="search" placeholder="Search your next favorite game..." class="w-full pl-11 pr-4 py-3 rounded-full bg-surface text-on-surface border border-outline placeholder:text-outline-strong focus:border-forest-green focus:ring-2 focus:ring-forest-green/20 focus:outline-none">
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="mobile-filter-toggle" type="button" class="lg:hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface border border-outline text-dark-forest text-label-lg">
+              <span class="material-symbols-outlined text-title-md" aria-hidden="true">tune</span>
+              Filters
+            </button>
+
+            <label class="inline-flex items-center gap-2 text-body-sm text-on-surface-muted">
+              <span>Sort by:</span>
+              <select id="game-sort" class="rounded-full bg-surface border border-outline px-4 py-2 text-body-sm text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                <option value="popular">Popularity</option>
+                <option value="time">Shortest playtime</option>
+                <option value="name">Name (A–Z)</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Filter Sidebar (Desktop) / Collapsible Panel (Mobile) -->
+          <aside id="filter-panel" class="hidden lg:block lg:col-span-3 bg-surface rounded-lg border border-outline p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-headline text-title-lg text-dark-forest">Filters</h2>
+              <button id="reset-filters" type="button" class="text-label-sm text-forest-green hover:underline">Reset all</button>
+            </div>
+
+            <div class="flex flex-col gap-5">
+              <!-- Players -->
+              <div>
+                <p class="font-body text-label-lg text-dark-forest mb-2">Players</p>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" data-filter-players="all" class="filter-btn-players px-3 py-1.5 rounded-full bg-forest-green text-on-forest-green text-label-sm">Any</button>
+                  <button type="button" data-filter-players="2" class="filter-btn-players px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">2 Players</button>
+                  <button type="button" data-filter-players="3-4" class="filter-btn-players px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">3–4</button>
+                  <button type="button" data-filter-players="5+" class="filter-btn-players px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">5+ Party</button>
+                </div>
+              </div>
+
+              <!-- Playtime -->
+              <div>
+                <p class="font-body text-label-lg text-dark-forest mb-2">Playing Time</p>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" data-filter-time="all" class="filter-btn-time px-3 py-1.5 rounded-full bg-forest-green text-on-forest-green text-label-sm">Any</button>
+                  <button type="button" data-filter-time="short" class="filter-btn-time px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">&lt; 30 min</button>
+                  <button type="button" data-filter-time="medium" class="filter-btn-time px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">30–60 min</button>
+                  <button type="button" data-filter-time="long" class="filter-btn-time px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">60+ min</button>
+                </div>
+              </div>
+
+              <!-- Difficulty -->
+              <div>
+                <p class="font-body text-label-lg text-dark-forest mb-2">Difficulty</p>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" data-filter-diff="all" class="filter-btn-diff px-3 py-1.5 rounded-full bg-forest-green text-on-forest-green text-label-sm">Any</button>
+                  <button type="button" data-filter-diff="Easy" class="filter-btn-diff px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">Easy</button>
+                  <button type="button" data-filter-diff="Medium" class="filter-btn-diff px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">Medium</button>
+                </div>
+              </div>
+
+              <!-- Game Type -->
+              <div>
+                <p class="font-body text-label-lg text-dark-forest mb-2">Game Type</p>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" data-filter-type="all" class="filter-btn-type px-3 py-1.5 rounded-full bg-forest-green text-on-forest-green text-label-sm">All</button>
+                  <button type="button" data-filter-type="Strategy" class="filter-btn-type px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">Strategy</button>
+                  <button type="button" data-filter-type="Party" class="filter-btn-type px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">Party</button>
+                  <button type="button" data-filter-type="Co-op" class="filter-btn-type px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm">Co-op</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Game Grid -->
+          <div class="lg:col-span-9">
+            <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch">
+              <!-- Populated by JS -->
+            </div>
+            <div id="games-empty" class="hidden bg-surface rounded-lg border border-outline p-10 text-center">
+              <span class="material-symbols-outlined text-headline-lg text-forest-green mb-2" aria-hidden="true">search_off</span>
+              <h3 class="font-headline text-headline-sm text-dark-forest">No games match those filters</h3>
+              <p class="font-body text-body-md text-on-surface-muted mt-1">Try clearing a filter or take the quick quiz below to get a match.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Multi-Step Game Recommendation Quiz -->
+      <section id="quiz" class="bg-sage text-on-sage py-section-lg mt-8">
+        <div class="max-w-3xl mx-auto px-gutter-lg">
+          <div class="bg-surface text-on-surface rounded-xl border border-outline p-8 md:p-10 shadow-md">
+            <div class="flex items-center justify-between gap-4 mb-6">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lavender text-on-lavender text-label-sm mb-2">
+                  <span class="material-symbols-outlined text-body-sm" aria-hidden="true">psychology</span>
+                  Tabletop Matchmaker
+                </span>
+                <h2 class="font-headline text-headline-md text-dark-forest">Not sure what to play? Let&#39;s find your game!</h2>
+              </div>
+              <span id="quiz-step-badge" class="font-mono text-mono-md text-forest-green shrink-0">Step 1 / 3</span>
+            </div>
+
+            <!-- Quiz Step 1 -->
+            <div id="quiz-step-1" class="quiz-step">
+              <h3 class="font-headline text-title-lg text-dark-forest mb-4">1. How many people are playing?</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button type="button" data-quiz-players="2" class="quiz-opt-players p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">Just 2 of us</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Cozy date or coffee duel</p>
+                </button>
+                <button type="button" data-quiz-players="3-4" class="quiz-opt-players p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">3–4 friends</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Classic tabletop table</p>
+                </button>
+                <button type="button" data-quiz-players="5+" class="quiz-opt-players p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">5+ crew</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Big laughs &amp; group energy</p>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Step 2 -->
+            <div id="quiz-step-2" class="quiz-step hidden">
+              <h3 class="font-headline text-title-lg text-dark-forest mb-4">2. How much time do you have?</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button type="button" data-quiz-time="short" class="quiz-opt-time p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">Quick (15–25m)</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">One round over espresso</p>
+                </button>
+                <button type="button" data-quiz-time="medium" class="quiz-opt-time p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">Medium (30–60m)</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Sweet spot for a session</p>
+                </button>
+                <button type="button" data-quiz-time="long" class="quiz-opt-time p-4 rounded-lg border border-outline bg-cream hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">Unrushed (60m+)</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Settle in for the evening</p>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Step 3 -->
+            <div id="quiz-step-3" class="quiz-step hidden">
+              <h3 class="font-headline text-title-lg text-dark-forest mb-4">3. What&#39;s your mood?</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button type="button" data-quiz-mood="Competitive" class="quiz-opt-mood p-4 rounded-lg border border-outline bg-terracotta/50 hover:border-terracotta-accent text-left transition-colors">
+                  <p class="font-headline text-title-md text-on-terracotta">Competitive</p>
+                  <p class="font-body text-body-sm text-on-terracotta mt-1">Friendly rivalry &amp; clever plays</p>
+                </button>
+                <button type="button" data-quiz-mood="Relaxed" class="quiz-opt-mood p-4 rounded-lg border border-outline bg-sage-soft/70 hover:border-forest-green text-left transition-colors">
+                  <p class="font-headline text-title-md text-dark-forest">Relaxed</p>
+                  <p class="font-body text-body-sm text-on-surface-muted mt-1">Easy rules, cozy conversation</p>
+                </button>
+                <button type="button" data-quiz-mood="Strategic" class="quiz-opt-mood p-4 rounded-lg border border-outline bg-dusty-blue/70 hover:border-dusty-blue-accent text-left transition-colors">
+                  <p class="font-headline text-title-md text-on-dusty-blue">Strategic</p>
+                  <p class="font-body text-body-sm text-on-dusty-blue mt-1">Build engines &amp; plan ahead</p>
+                </button>
+                <button type="button" data-quiz-mood="Chaotic and fun" class="quiz-opt-mood p-4 rounded-lg border border-outline bg-lavender/70 hover:border-lavender-accent text-left transition-colors">
+                  <p class="font-headline text-title-md text-on-lavender">Chaotic and fun</p>
+                  <p class="font-body text-body-sm text-on-lavender mt-1">Loud laughs &amp; surprise twists</p>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div id="quiz-results" class="hidden">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <h3 class="font-headline text-title-lg text-dark-forest">Your Luna Table Matches</h3>
+                <button id="quiz-restart" type="button" class="text-label-lg text-forest-green hover:underline">Start over</button>
+              </div>
+              <div id="quiz-match-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared Footer -->
+    <footer class="bg-dark-forest text-on-dark-forest py-12">
+      <div class="max-w-7xl mx-auto px-gutter-lg">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-on-dark-forest/15">
+          <div class="flex flex-col gap-3">
+            <span class="font-headline text-headline-sm text-cream">Luna Café</span>
+            <p class="font-body text-body-sm text-sage">Coffee first. Then game on?</p>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Explore</h3>
+            <ul class="flex flex-col gap-2 text-body-sm text-sage">
+              <li><a href="../home/Home.html" class="hover:text-cream">Home</a></li>
+              <li><a href="../games/Games.html" class="hover:text-cream">Games Library</a></li>
+              <li><a href="../menu/Menu.html" class="hover:text-cream">Café Menu</a></li>
+              <li><a href="../book-a-table/BookATable.html" class="hover:text-cream">Book a Table</a></li>
+              <li><a href="../admin/AdminDashboard.html" class="hover:text-cream">Staff Admin</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Hours</h3>
+            <p class="font-body text-body-sm text-sage">Mon–Thu: 7:30 AM – 10:00 PM</p>
+            <p class="font-body text-body-sm text-sage mt-1">Fri–Sun: 8:00 AM – 11:30 PM</p>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Connect</h3>
+            <p class="font-body text-body-sm text-sage">412 Alderwood Lane, Portland</p>
+            <p class="font-body text-body-sm text-sage mt-1">hello@lunacafe.example</p>
+          </div>
+        </div>
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-body-sm text-sage">
+          <p>Portfolio project, fictional café. Game names belong to their owners.</p>
+          <p>© 2026 Luna Café</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Game Details Modal -->
+  <dialog id="game-detail-modal" data-component-id="modal-standard" data-component-type="modal" data-component-variant="standard" aria-labelledby="modal-game-title" class="bg-surface text-on-surface rounded-xl border border-outline p-6 md:p-8 max-w-lg w-full shadow-xl backdrop:bg-dark-forest/50">
+    <header class="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <span id="modal-game-category" class="inline-block px-3 py-1 rounded-full bg-sage-soft text-dark-forest text-label-sm mb-2">Strategy</span>
+        <h2 id="modal-game-title" class="font-headline text-headline-md text-dark-forest">Game Title</h2>
+      </div>
+      <button id="modal-close-btn" type="button" aria-label="Close dialog" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cream text-dark-forest border border-outline hover:bg-surface-muted">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">close</span>
+      </button>
+    </header>
+
+    <div class="flex flex-wrap gap-3 mb-4 text-body-sm text-dark-forest">
+      <span id="modal-game-players" class="px-3 py-1 rounded-full bg-cream border border-outline">2–4 players</span>
+      <span id="modal-game-time" class="px-3 py-1 rounded-full bg-cream border border-outline">45 min</span>
+      <span id="modal-game-diff" class="px-3 py-1 rounded-full bg-cream border border-outline">Easy</span>
+    </div>
+
+    <p id="modal-game-desc" class="font-body text-body-md text-on-surface-muted mb-4"></p>
+
+    <div class="bg-cream rounded-md border border-outline p-4 mb-6">
+      <h3 class="font-headline text-title-md text-dark-forest mb-1">Rules Summary</h3>
+      <p id="modal-game-rules" class="font-body text-body-sm text-on-surface-muted"></p>
+    </div>
+
+    <footer class="flex flex-wrap items-center justify-end gap-3">
+      <button id="modal-cancel-btn" type="button" class="px-5 py-2.5 rounded-full border border-outline text-dark-forest text-label-lg hover:bg-surface-muted">Close</button>
+      <a id="modal-book-link" href="../book-a-table/BookATable.html" class="px-6 py-2.5 rounded-full bg-burnt-orange text-on-burnt-orange text-label-lg hover:opacity-90">Book a Table with This Game</a>
+    </footer>
+  </dialog>
+
+  <!-- Mobile Navigation Drawer -->
+  <dialog id="mobile-drawer" data-component-id="modal-drawer" data-component-type="modal" data-component-variant="drawer" aria-labelledby="mobile-drawer-title" class="bg-cream text-on-cream p-6 w-80 max-w-full min-h-[1024px] ml-auto mr-0 my-0 border-l border-outline shadow-xl backdrop:bg-dark-forest/50" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <header class="flex items-center justify-between mb-8">
+      <h2 id="mobile-drawer-title" class="font-headline text-headline-sm text-dark-forest">Luna Café</h2>
+      <button id="close-drawer-btn" type="button" aria-label="Close navigation menu" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface text-dark-forest border border-outline">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">close</span>
+      </button>
+    </header>
+    <nav class="flex flex-col gap-3">
+      <a href="../home/Home.html" class="px-4 py-3 rounded-full text-dark-forest font-body text-title-md">Home</a>
+      <a href="../games/Games.html" class="px-4 py-3 rounded-full bg-sage-soft text-dark-forest font-body text-title-md">Games</a>
+      <a href="../menu/Menu.html" class="px-4 py-3 rounded-full text-dark-forest font-body text-title-md">Menu</a>
+      <a href="../book-a-table/BookATable.html" class="mt-4 px-5 py-3 rounded-full bg-burnt-orange text-on-burnt-orange text-center font-body text-label-lg">Book a Table</a>
+    </nav>
+  </dialog>
+
+  <script>
+    const GAMES = [
+      { id: 'moonlight-mischief', name: 'Moonlight Mischief', category: 'Party', mood: 'Chaotic and fun', players: '3–6', playerGroup: '3-4', time: 25, timeGroup: 'short', diff: 'Easy', color: 'bg-lavender text-on-lavender', icon: 'dark_mode', desc: 'A Luna Café original! Brew midnight potions, trade secret ingredients, and bluff past sleepy owls before the clock strikes twelve.', rules: 'Each round, players secretly draft 2 ingredient cards and play 1 face-down into the cauldron. Call out a bluff to steal a Moon Token!' },
+      { id: 'catan', name: 'Catan', category: 'Strategy', mood: 'Strategic', players: '3–4', playerGroup: '3-4', time: 75, timeGroup: 'long', diff: 'Medium', color: 'bg-dusty-blue text-on-dusty-blue', icon: 'hexagon', desc: 'Trade wood, brick, wheat, sheep, and ore to build roads and settlements across a modular island.', rules: 'Roll two dice to harvest resources from adjacent hexes, negotiate trades with neighbors, and reach 10 Victory Points.' },
+      { id: 'uno', name: 'UNO', category: 'Party', mood: 'Chaotic and fun', players: '2–10', playerGroup: '5+', time: 20, timeGroup: 'short', diff: 'Easy', color: 'bg-terracotta text-on-terracotta', icon: 'style', desc: 'Fast-paced color and number matching with Reverse, Skip, and Draw Four twists.', rules: 'Match the top discard card by color or number. Yell UNO when you have one card left!' },
+      { id: 'azul', name: 'Azul', category: 'Strategy', mood: 'Relaxed', players: '2–4', playerGroup: '2', time: 35, timeGroup: 'medium', diff: 'Easy', color: 'bg-lavender text-on-lavender', icon: 'grid_view', desc: 'Draft colorful Portuguese ceramic tiles to decorate your palace wall in soothing, tactical patterns.', rules: 'Pick all tiles of one color from a factory display, place them in a pattern row, and score points for adjacent completed tiles.' },
+      { id: 'wingspan', name: 'Wingspan', category: 'Strategy', mood: 'Strategic', players: '1–5', playerGroup: '3-4', time: 60, timeGroup: 'medium', diff: 'Medium', color: 'bg-mustard text-on-mustard', icon: 'flutter_dash', desc: 'Attract birds to your wildlife preserve by chaining gentle engine-building abilities.', rules: 'On your turn, play a bird card, gain food, lay eggs, or draw cards—activating bird powers across your habitats.' },
+      { id: 'codenames', name: 'Codenames', category: 'Party', mood: 'Competitive', players: '4–8', playerGroup: '5+', time: 20, timeGroup: 'short', diff: 'Easy', color: 'bg-terracotta text-on-terracotta', icon: 'lightbulb', desc: 'Give clever one-word clues so your teammates spot your secret agents on the 5x5 word grid.', rules: 'Spymasters alternate giving a one-word clue plus a number. Guess correctly without hitting the assassin card.' },
+      { id: 'pandemic', name: 'Pandemic', category: 'Co-op', mood: 'Strategic', players: '2–4', playerGroup: '3-4', time: 45, timeGroup: 'medium', diff: 'Medium', color: 'bg-dusty-blue text-on-dusty-blue', icon: 'handshake', desc: 'Work together as a specialized response team to cure four global outbreaks before time runs out.', rules: 'Take 4 actions per turn—travel, treat, share knowledge, or discover a cure—before drawing infection cards.' },
+      { id: 'jenga', name: 'Jenga', category: 'Party', mood: 'Chaotic and fun', players: '2–8', playerGroup: '5+', time: 15, timeGroup: 'short', diff: 'Easy', color: 'bg-mustard text-on-mustard', icon: 'view_agenda', desc: 'Pull wooden blocks one by one and stack them on top without toppling the tower.', rules: 'Use one hand only to slide a block from any lower level and place it neatly on top.' },
+      { id: 'ticket-to-ride', name: 'Ticket to Ride', category: 'Strategy', mood: 'Relaxed', players: '2–5', playerGroup: '2', time: 45, timeGroup: 'medium', diff: 'Easy', color: 'bg-dusty-blue text-on-dusty-blue', icon: 'train', desc: 'Collect train cards and claim scenic railway routes connecting cities across the map.', rules: 'Draw train cards, claim a route by discarding matching colors, or draw new destination tickets.' }
+    ];
+
+    let state = { search: '', players: 'all', time: 'all', diff: 'all', type: 'all', sort: 'popular' };
+    let quizAnswers = { players: null, time: null, mood: null };
+
+    const grid = document.getElementById('games-grid');
+    const emptyEl = document.getElementById('games-empty');
+    const modal = document.getElementById('game-detail-modal');
+
+    function renderGames() {
+      let list = GAMES.filter(g => {
+        if (state.search && !g.name.toLowerCase().includes(state.search.toLowerCase())) return false;
+        if (state.players !== 'all' && g.playerGroup !== state.players && !(state.players === '2' && g.players.startsWith('1') || state.players === '2' && g.players.startsWith('2'))) return false;
+        if (state.time !== 'all' && g.timeGroup !== state.time) return false;
+        if (state.diff !== 'all' && g.diff !== state.diff) return false;
+        if (state.type !== 'all' && g.category !== state.type) return false;
+        return true;
+      });
+
+      if (state.sort === 'time') list.sort((a, b) => a.time - b.time);
+      if (state.sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+
+      grid.innerHTML = '';
+      if (list.length === 0) {
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      emptyEl.classList.add('hidden');
+
+      list.forEach(g => {
+        const card = document.createElement('article');
+        card.className = `${g.color} rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift`;
+        card.innerHTML = `
+          <div>
+            <div class="h-24 rounded-md bg-surface/75 flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined text-display-lg-mobile" aria-hidden="true">${g.icon}</span>
+            </div>
+            <span class="inline-block px-3 py-0.5 rounded-full bg-surface text-dark-forest text-label-sm mb-2">${g.category}</span>
+            <h3 class="font-headline text-headline-sm">${g.name}</h3>
+            <p class="font-body text-body-sm mt-1 opacity-90">${g.players} players · ${g.time} min · ${g.diff}</p>
+          </div>
+          <button type="button" data-open-game="${g.id}" class="w-full py-2.5 px-4 rounded-full bg-surface text-dark-forest border border-outline font-body text-label-lg hover:bg-cream transition-colors">
+            View Details
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+
+      grid.querySelectorAll('[data-open-game]').forEach(btn => {
+        btn.addEventListener('click', () => openGameModal(btn.getAttribute('data-open-game')));
+      });
+    }
+
+    function openGameModal(id) {
+      const g = GAMES.find(item => item.id === id);
+      if (!g) return;
+      document.getElementById('modal-game-category').textContent = g.category;
+      document.getElementById('modal-game-title').textContent = g.name;
+      document.getElementById('modal-game-players').textContent = `${g.players} players`;
+      document.getElementById('modal-game-time').textContent = `${g.time} min`;
+      document.getElementById('modal-game-diff').textContent = g.diff;
+      document.getElementById('modal-game-desc').textContent = g.desc;
+      document.getElementById('modal-game-rules').textContent = g.rules;
+      document.getElementById('modal-book-link').href = `../book-a-table/BookATable.html?game=${encodeURIComponent(g.name)}`;
+      modal.showModal();
+    }
+
+    document.getElementById('modal-close-btn').addEventListener('click', () => modal.close());
+    document.getElementById('modal-cancel-btn').addEventListener('click', () => modal.close());
+
+    document.getElementById('game-search').addEventListener('input', e => { state.search = e.target.value; renderGames(); });
+    document.getElementById('game-sort').addEventListener('change', e => { state.sort = e.target.value; renderGames(); });
+
+    function bindFilterGroup(selector, key, attr) {
+      document.querySelectorAll(selector).forEach(btn => {
+        btn.addEventListener('click', () => {
+          state[key] = btn.getAttribute(attr);
+          document.querySelectorAll(selector).forEach(b => {
+            b.className = `${selector.slice(1)} px-3 py-1.5 rounded-full bg-cream border border-outline text-dark-forest text-label-sm`;
+          });
+          btn.className = `${selector.slice(1)} px-3 py-1.5 rounded-full bg-forest-green text-on-forest-green text-label-sm`;
+          renderGames();
+        });
+      });
+    }
+    bindFilterGroup('.filter-btn-players', 'players', 'data-filter-players');
+    bindFilterGroup('.filter-btn-time', 'time', 'data-filter-time');
+    bindFilterGroup('.filter-btn-diff', 'diff', 'data-filter-diff');
+    bindFilterGroup('.filter-btn-type', 'type', 'data-filter-type');
+
+    document.getElementById('reset-filters').addEventListener('click', () => {
+      state = { search: '', players: 'all', time: 'all', diff: 'all', type: 'all', sort: 'popular' };
+      document.getElementById('game-search').value = '';
+      renderGames();
+    });
+
+    document.getElementById('mobile-filter-toggle').addEventListener('click', () => {
+      document.getElementById('filter-panel').classList.toggle('hidden');
+    });
+
+    // Quiz logic
+    document.querySelectorAll('.quiz-opt-players').forEach(btn => {
+      btn.addEventListener('click', () => {
+        quizAnswers.players = btn.getAttribute('data-quiz-players');
+        document.getElementById('quiz-step-1').classList.add('hidden');
+        document.getElementById('quiz-step-2').classList.remove('hidden');
+        document.getElementById('quiz-step-badge').textContent = 'Step 2 / 3';
+      });
+    });
+
+    document.querySelectorAll('.quiz-opt-time').forEach(btn => {
+      btn.addEventListener('click', () => {
+        quizAnswers.time = btn.getAttribute('data-quiz-time');
+        document.getElementById('quiz-step-2').classList.add('hidden');
+        document.getElementById('quiz-step-3').classList.remove('hidden');
+        document.getElementById('quiz-step-badge').textContent = 'Step 3 / 3';
+      });
+    });
+
+    document.querySelectorAll('.quiz-opt-mood').forEach(btn => {
+      btn.addEventListener('click', () => {
+        quizAnswers.mood = btn.getAttribute('data-quiz-mood');
+        document.getElementById('quiz-step-3').classList.add('hidden');
+        document.getElementById('quiz-results').classList.remove('hidden');
+        document.getElementById('quiz-step-badge').textContent = 'Matched!';
+        const matches = GAMES.filter(g => g.mood === quizAnswers.mood).slice(0, 2);
+        const container = document.getElementById('quiz-match-list');
+        container.innerHTML = matches.map(m => `
+          <div class="${m.color} rounded-lg border border-outline p-5 flex flex-col justify-between gap-3">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-surface text-dark-forest text-label-sm mb-1">${m.mood}</span>
+              <h4 class="font-headline text-headline-sm">${m.name}</h4>
+              <p class="font-body text-body-sm mt-1">${m.players} players · ${m.time} min</p>
+            </div>
+            <button type="button" onclick="openGameModal('${m.id}')" class="px-4 py-2 rounded-full bg-surface text-dark-forest text-label-lg border border-outline hover:bg-cream">Inspect Rules</button>
+          </div>
+        `).join('');
+      });
+    });
+
+    document.getElementById('quiz-restart').addEventListener('click', () => {
+      document.getElementById('quiz-results').classList.add('hidden');
+      document.getElementById('quiz-step-1').classList.remove('hidden');
+      document.getElementById('quiz-step-badge').textContent = 'Step 1 / 3';
+    });
+
+    const drawer = document.getElementById('mobile-drawer');
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => drawer.showModal());
+    document.getElementById('close-drawer-btn').addEventListener('click', () => drawer.close());
+
+    renderGames();
+  </script>
+
+
+</body></html>

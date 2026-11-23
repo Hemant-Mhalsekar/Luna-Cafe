@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Café — Book a Table</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'cream': '#F6EFDF',
+        'on-cream': '#294632',
+        'sage': '#A9BBA0',
+        'on-sage': '#193623',
+        'sage-soft': '#E4F6D9',
+        'forest-green': '#4A6B4F',
+        'on-forest-green': '#FFFDF8',
+        'dark-forest': '#294632',
+        'on-dark-forest': '#F6EFDF',
+        'burnt-orange': '#C85A24',
+        'on-burnt-orange': '#1F0900',
+        'surface': '#FFFDF8',
+        'on-surface': '#294632',
+        'surface-muted': '#E9E2D2',
+        'on-surface-muted': '#4A473B',
+        'outline': '#CCC6B7',
+        'outline-strong': '#7B776A',
+        'dusty-blue': '#E5F2FF',
+        'on-dusty-blue': '#153346',
+        'dusty-blue-accent': '#456277',
+        'terracotta': '#FFEDE8',
+        'on-terracotta': '#53210E',
+        'terracotta-accent': '#8C4E37',
+        'mustard': '#FFEED8',
+        'on-mustard': '#422C00',
+        'mustard-accent': '#7D5800',
+        'lavender': '#F8EDFF',
+        'on-lavender': '#362B48',
+        'lavender-accent': '#665979',
+        'success': '#2E4E34',
+        'on-success': '#FFFDF8',
+        'success-container': '#D5FAD7',
+        'on-success-container': '#01210C',
+        'warning': '#7D5800',
+        'on-warning': '#FFFDF8',
+        'warning-container': '#FFDEA9',
+        'on-warning-container': '#271900',
+        'error': '#BA1A1A',
+        'on-error': '#FFFDF8',
+        'error-container': '#FFDAD6',
+        'on-error-container': '#410002',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '12px',
+        'md': '16px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section-sm': '48px',
+        'section-lg': '80px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Fredoka"', 'sans-serif'],
+        'headline': ['"Fredoka"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"Fragment Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['56px', { lineHeight: '62px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '600' }],
+        'headline-md': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '500' }],
+        'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '500' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0.5px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '180ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'card-lift': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Fragment+Mono&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    @keyframes diceTumble {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(12deg) translateY(-3px); }
+    }
+    .animate-dice { animation: diceTumble 2.6s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-dice { animation: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-on-cream font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Shared Navigation Header -->
+    <header class="sticky top-0 z-40 w-full bg-cream border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-4 flex items-center justify-between gap-4">
+        <a href="../home/Home.html" class="inline-flex items-center gap-3 rounded-full px-1">
+          <svg class="w-9 h-9 text-dark-forest" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" class="fill-sage-soft stroke-dark-forest" stroke-width="2"></circle>
+            <path d="M23.5 11.5C18.5 12.2 15 16.5 15 21.5C15 26.8 19.2 31 24.5 31C26.2 31 27.8 30.5 29.2 29.7C27.4 31.1 25.1 32 22.5 32C16.7 32 12 27.3 12 21.5C12 15.7 16.7 11 22.5 11C22.8 11 23.2 11 23.5 11.5Z" class="fill-dark-forest"></path>
+            <path d="M27.5 13L28.3 15.2L30.5 16L28.3 16.8L27.5 19L26.7 16.8L24.5 16L26.7 15.2L27.5 13Z" class="fill-burnt-orange"></path>
+          </svg>
+          <span class="font-headline text-headline-sm text-dark-forest tracking-tight">Luna Café</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-2">
+          <a href="../home/Home.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">Home</a>
+          <a href="../games/Games.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">Games</a>
+          <a href="../menu/Menu.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">Menu</a>
+          <a href="../home/Home.html#game-reveal" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">Events</a>
+          <a href="../home/Home.html#cafe-intro" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">About</a>
+          <a href="../home/Home.html#visit-us" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg">Contact</a>
+        </nav>
+
+        <a href="../book-a-table/BookATable.html" aria-current="page" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm">
+          <span>Book a Table</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="flex-1 py-12">
+      <div class="max-w-3xl mx-auto px-gutter-lg">
+        <div class="text-center mb-8">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sage-soft text-dark-forest text-label-sm mb-3">
+            <span class="material-symbols-outlined text-body-sm" aria-hidden="true">event_seat</span>
+            No Deposit Required
+          </span>
+          <h1 class="font-headline text-display-lg-mobile md:text-headline-lg text-dark-forest">Your table is waiting.</h1>
+          <p class="font-body text-body-lg text-on-surface-muted mt-2">
+            Bring your favorite people. We&#39;ll take care of the coffee and the fun.
+          </p>
+        </div>
+
+        <!-- Multi-Step Reservation Card -->
+        <div class="bg-surface rounded-xl border border-outline p-6 md:p-10 shadow-sm">
+          <!-- Step Indicator -->
+          <div class="flex items-center justify-between border-b border-outline pb-4 mb-6">
+            <div class="flex items-center gap-2">
+              <span id="step-pill-1" class="px-3 py-1 rounded-full bg-forest-green text-on-forest-green text-label-sm">1. Date &amp; Table</span>
+              <span id="step-pill-2" class="px-3 py-1 rounded-full bg-cream text-on-surface-muted text-label-sm">2. Your Details</span>
+              <span id="step-pill-3" class="px-3 py-1 rounded-full bg-cream text-on-surface-muted text-label-sm">3. Confirmed</span>
+            </div>
+            <svg class="w-8 h-8 animate-dice text-burnt-orange" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <rect x="4" y="4" width="24" height="24" rx="6" class="fill-mustard stroke-dark-forest" stroke-width="2"></rect>
+              <circle cx="11" cy="11" r="2" class="fill-dark-forest"></circle>
+              <circle cx="16" cy="16" r="2" class="fill-burnt-orange"></circle>
+              <circle cx="21" cy="21" r="2" class="fill-dark-forest"></circle>
+            </svg>
+          </div>
+
+          <!-- Step 1: Date, Time, Party, Optional Game -->
+          <form id="booking-form" novalidate>
+            <div id="step-1" class="flex flex-col gap-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-label-lg text-dark-forest">Date</span>
+                  <input id="res-date" type="date" value="2026-11-27" class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                </label>
+
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-label-lg text-dark-forest">Party Size</span>
+                  <select id="res-party" class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                    <option value="2">2 Guests (Cozy Booth)</option>
+                    <option value="4" selected>4 Guests (Oak Game Table)</option>
+                    <option value="6">6 Guests (Large Table)</option>
+                    <option value="8">8 Guests (Luna Lounge)</option>
+                  </select>
+                </label>
+              </div>
+
+              <div>
+                <p class="text-label-lg text-dark-forest mb-2">Available Time Slots</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button type="button" data-slot="4:00 PM" class="slot-btn px-3 py-2.5 rounded-md border border-outline bg-cream text-dark-forest text-label-lg hover:border-forest-green">4:00 PM</button>
+                  <button type="button" data-slot="5:30 PM" class="slot-btn px-3 py-2.5 rounded-md border-2 border-forest-green bg-sage-soft text-dark-forest text-label-lg">5:30 PM</button>
+                  <button type="button" disabled class="px-3 py-2.5 rounded-md border border-outline bg-surface-muted text-on-surface-muted text-label-sm cursor-not-allowed">7:00 PM (Full)</button>
+                  <button type="button" data-slot="8:30 PM" class="slot-btn px-3 py-2.5 rounded-md border border-outline bg-cream text-dark-forest text-label-lg hover:border-forest-green">8:30 PM</button>
+                </div>
+              </div>
+
+              <label class="flex flex-col gap-1.5">
+                <span class="text-label-lg text-dark-forest">Reserve a Board Game (Optional)</span>
+                <select id="res-game" class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                  <option value="Decide at the café">We&#39;ll browse the shelves when we arrive</option>
+                  <option value="Moonlight Mischief">Moonlight Mischief</option>
+                  <option value="Catan">Catan</option>
+                  <option value="Wingspan">Wingspan</option>
+                  <option value="Azul">Azul</option>
+                  <option value="Ticket to Ride">Ticket to Ride</option>
+                </select>
+              </label>
+
+              <div class="flex justify-end pt-2">
+                <button id="to-step-2" type="button" class="px-7 py-3 rounded-full bg-forest-green text-on-forest-green text-label-lg hover:bg-dark-forest">Continue to Details</button>
+              </div>
+            </div>
+
+            <!-- Step 2: Guest Contact Info -->
+            <div id="step-2" class="hidden flex flex-col gap-5">
+              <label class="flex flex-col gap-1.5">
+                <span class="text-label-lg text-dark-forest">Full Name</span>
+                <input id="res-name" type="text" placeholder="Maya Lin" required class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+              </label>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-label-lg text-dark-forest">Email</span>
+                  <input id="res-email" type="email" placeholder="maya@example.com" required class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                </label>
+
+                <label class="flex flex-col gap-1.5">
+                  <span class="text-label-lg text-dark-forest">Phone Number</span>
+                  <input id="res-phone" type="tel" placeholder="(503) 555-0142" required class="rounded-md bg-cream border border-outline px-4 py-3 text-dark-forest focus:border-forest-green focus:ring-forest-green/20">
+                </label>
+              </div>
+
+              <div id="form-error" role="alert" class="hidden rounded-md bg-error-container text-on-error-container px-4 py-3 text-body-sm">
+                Please enter your full name, a valid email address, and a phone number to hold your table.
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <button id="back-step-1" type="button" class="px-5 py-2.5 rounded-full border border-outline text-dark-forest text-label-lg hover:bg-surface-muted">Back</button>
+                <button id="submit-booking" type="submit" class="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-burnt-orange text-on-burnt-orange text-label-lg shadow-sm hover:opacity-90">
+                  <span class="material-symbols-outlined text-title-md" aria-hidden="true">casino</span>
+                  <span id="submit-label">Confirm Table Reservation</span>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Step 3: Confirmation -->
+          <div id="step-3" class="hidden text-center py-6 flex flex-col items-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-success-container text-on-success-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-headline-lg" aria-hidden="true">check_circle</span>
+            </div>
+            <h2 class="font-headline text-headline-md text-dark-forest">Table Reserved!</h2>
+            <p id="conf-summary" class="font-body text-body-md text-on-surface-muted max-w-md"></p>
+            <div class="bg-cream border border-outline rounded-lg px-6 py-4">
+              <p class="text-label-sm text-on-surface-muted uppercase tracking-wider">Reference Code</p>
+              <p id="conf-code" class="font-mono text-headline-sm text-dark-forest mt-1">LUNA-4829</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 pt-4">
+              <a href="../games/Games.html" class="px-6 py-2.5 rounded-full border border-outline text-dark-forest text-label-lg hover:bg-surface-muted">Browse More Games</a>
+              <a href="../home/Home.html" class="px-6 py-2.5 rounded-full bg-forest-green text-on-forest-green text-label-lg hover:bg-dark-forest">Return Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Shared Footer -->
+    <footer class="bg-dark-forest text-on-dark-forest py-12">
+      <div class="max-w-7xl mx-auto px-gutter-lg flex flex-col sm:flex-row items-center justify-between gap-4 text-body-sm text-sage">
+        <p>Portfolio project, fictional café. Game names belong to their owners.</p>
+        <p>© 2026 Luna Café · <a href="../admin/AdminDashboard.html" class="underline hover:text-cream">Staff Admin</a></p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let selectedSlot = '5:30 PM';
+    const params = new URLSearchParams(window.location.search);
+    const preGame = params.get('game');
+    if (preGame) {
+      const sel = document.getElementById('res-game');
+      for (const opt of sel.options) {
+        if (opt.value.toLowerCase() === preGame.toLowerCase()) sel.value = opt.value;
+      }
+    }
+
+    document.querySelectorAll('.slot-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedSlot = btn.getAttribute('data-slot');
+        document.querySelectorAll('.slot-btn').forEach(b => {
+          b.className = 'slot-btn px-3 py-2.5 rounded-md border border-outline bg-cream text-dark-forest text-label-lg hover:border-forest-green';
+        });
+        btn.className = 'slot-btn px-3 py-2.5 rounded-md border-2 border-forest-green bg-sage-soft text-dark-forest text-label-lg';
+      });
+    });
+
+    document.getElementById('to-step-2').addEventListener('click', () => {
+      document.getElementById('step-1').classList.add('hidden');
+      document.getElementById('step-2').classList.remove('hidden');
+      document.getElementById('step-pill-2').className = 'px-3 py-1 rounded-full bg-forest-green text-on-forest-green text-label-sm';
+    });
+
+    document.getElementById('back-step-1').addEventListener('click', () => {
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('step-1').classList.remove('hidden');
+      document.getElementById('step-pill-2').className = 'px-3 py-1 rounded-full bg-cream text-on-surface-muted text-label-sm';
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('res-name').value.trim();
+      const email = document.getElementById('res-email').value.trim();
+      const phone = document.getElementById('res-phone').value.trim();
+      const err = document.getElementById('form-error');
+
+      if (!name || !email.includes('@') || !phone) {
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      const submitBtn = document.getElementById('submit-booking');
+      document.getElementById('submit-label').textContent = 'Holding your table...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        const party = document.getElementById('res-party').value;
+        const date = document.getElementById('res-date').value;
+        const game = document.getElementById('res-game').value;
+        document.getElementById('step-2').classList.add('hidden');
+        document.getElementById('step-3').classList.remove('hidden');
+        document.getElementById('step-pill-3').className = 'px-3 py-1 rounded-full bg-burnt-orange text-on-burnt-orange text-label-sm';
+        document.getElementById('conf-summary').textContent = `We're holding a table for ${party} guests under ${name} on ${date} at ${selectedSlot} (${game}).`;
+        document.getElementById('conf-code').textContent = `LUNA-${Math.floor(1000 + Math.random() * 9000)}`;
+      }, 450);
+    });
+  </script>
+
+
+</body></html>
