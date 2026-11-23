@@ -2,7 +2,7 @@ import { Link, type LinkProps } from 'react-router';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
-type Variant = 'primary' | 'secondary' | 'ghost';
+type Variant = 'primary' | 'secondary' | 'secondary-light' | 'ghost';
 type Size = 'md' | 'lg';
 
 const base =
@@ -12,6 +12,8 @@ const variants: Record<Variant, string> = {
   // Orange is reserved for actions.
   primary: 'bg-cta text-white shadow-soft hover:bg-cta-hover',
   secondary: 'border-2 border-forest-dark text-forest-dark hover:bg-forest-dark hover:text-cream',
+  // For dark (forest) backgrounds.
+  'secondary-light': 'border-2 border-cream text-cream hover:bg-cream hover:text-forest-dark',
   ghost: 'text-forest-dark hover:bg-forest-dark/8',
 };
 

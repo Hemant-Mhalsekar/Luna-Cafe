@@ -21,6 +21,12 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     res.status(err.status).json({ error: { code: err.code, message: err.message, details: err.details } });
     return;
   }
+  if (err instanceof mongoose.Error.ValidationError) {
+    const fields: Record<string, string> = {};
+    for (const [key, e] of Object.entries(err.errors)) fields[key] = e.message;
+    res.status(400).json({ error: { code: 'VALIDATION', message: 'Please check the highlighted fields.', fields } });
+    return;
+  }
   if (err instanceof mongoose.Error.CastError) {
     res.status(400).json({ error: { code: 'BAD_ID', message: 'Invalid id.' } });
     return;

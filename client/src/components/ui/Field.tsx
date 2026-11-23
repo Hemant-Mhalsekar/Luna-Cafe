@@ -67,9 +67,14 @@ export function SelectField({ label, error, hint, className, id, children, ...re
   return (
     <FieldShell label={label} error={error} hint={hint} className={className} id={id}>
       {(c) => (
-        <select id={c.id} aria-invalid={c.invalid || undefined} aria-describedby={c.describedBy} className={cn(controlClass(c.invalid), 'appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23294632%27 stroke-width=%272%27%3E%3Cpath d=%27m6 9 6 6 6-6%27/%3E%3C/svg%3E")] bg-[length:1.25rem] bg-[right_1rem_center] bg-no-repeat pr-11')} {...rest}>
-          {children}
-        </select>
+        <div className="relative">
+          <select id={c.id} aria-invalid={c.invalid || undefined} aria-describedby={c.describedBy} className={cn(controlClass(c.invalid), 'appearance-none pr-11')} {...rest}>
+            {children}
+          </select>
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-forest-dark" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
       )}
     </FieldShell>
   );

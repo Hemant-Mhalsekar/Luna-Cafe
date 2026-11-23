@@ -10,6 +10,7 @@ import { Modal } from '../components/ui/Modal';
 import { Tag } from '../components/ui/Tag';
 import { Card } from '../components/ui/Card';
 import { useGames } from '../lib/queries';
+import { GameQuiz } from '../components/GameQuiz';
 import { DIFFICULTY_LABEL, type Game, type GameMood, type GameType } from '../lib/types';
 
 const TYPES: GameType[] = ['party', 'strategy', 'cooperative', 'word', 'dexterity'];
@@ -73,6 +74,10 @@ export function Games() {
       </PageHeader>
 
       <div className="container-page grid gap-8 pb-20 lg:grid-cols-[18rem_1fr]">
+        <div className="lg:col-span-2">
+          <GameQuiz games={games.data ?? []} onSelect={setSelected} />
+        </div>
+
         <aside aria-label="Filters" className="lg:sticky lg:top-24 lg:self-start">
           <Card className="flex flex-col gap-6">
             <Field
@@ -161,13 +166,6 @@ export function Games() {
             </ul>
           )}
 
-          <Card id="quiz" className="mt-12 bg-sage-soft">
-            <h2 className="text-2xl">Not sure what to play?</h2>
-            <p className="mt-2 text-forest">
-              Our three-question game picker is coming soon. Until then, filter by mood above, or ask whoever is behind the
-              counter.
-            </p>
-          </Card>
         </section>
       </div>
 

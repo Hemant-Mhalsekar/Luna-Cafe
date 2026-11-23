@@ -4,7 +4,7 @@
 
 A portfolio project: the website of a fictional board game café. It opens as a calm specialty coffee shop, and the board game side is revealed as you scroll.
 
-**Status:** phase 1 (setup, design system, first deploy). See [`docs/SPEC.md`](docs/SPEC.md) for the full plan.
+**Status:** phase 1 (setup and design system). See [`docs/SPEC.md`](docs/SPEC.md) for the full plan.
 
 ## Stack
 
@@ -29,17 +29,24 @@ design/   Stitch mockups and the original design-system notes (visual reference 
 4. Start the API: `npm run dev:server` (http://localhost:4000/api/health)
 5. Start the site in a second tab: `npm run dev:client` (http://localhost:5173)
 
-## Hero photo
+## Admin
 
-Until the photo is ready the hero shows a drawn latte. To switch: save the photo as `client/public/images/hero.webp` (about 1600 × 1600, under 200 KB) and fill in `HERO_PHOTO` in `client/src/lib/cafe.ts`.
+The staff area lives at `/admin` (not linked from the site, and `robots.txt` asks search engines to skip it). Sign in with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `server/.env`; the account is created by `npm --prefix server run seed`.
+
+- **Today:** bookings and guests today, bookings this week, unread messages, today's tables
+- **Reservations:** filter by date range and status, cancel (frees the table immediately)
+- **Games, Menu, Events:** add, edit, hide (untick "Available") or delete
+- **Messages:** contact-form messages, mark read/unread, delete
+
+Security: bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie (Secure in production), login rate limit, same error for unknown email and wrong password, and admin POSTs must be JSON (blocks cross-site form posts).
 
 ## Tests
 
-`npm test` runs the server tests. They start a throwaway in-memory MongoDB (the first run downloads it, so allow a minute), so they never touch your Atlas data.
+`npm test` runs the server tests; `npm --prefix client test` runs the client unit tests (game quiz scoring). They start a throwaway in-memory MongoDB (the first run downloads it, so allow a minute), so they never touch your Atlas data.
 
 What they cover: café hours and time slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under concurrent requests (enforced by a unique database index), cancellation freeing a slot, nearest-free-slot suggestions, and API validation errors.
 
-## API so far
+## API
 
 | Method | Path | Notes |
 |---|---|---|
@@ -51,25 +58,12 @@ What they cover: café hours and time slots in café time (Asia/Kolkata), smalle
 | GET | `/api/reservations/slots` | the fixed time slots |
 | GET | `/api/reservations/availability?date=YYYY-MM-DD&partySize=4` | free / full / past / closed per slot |
 | POST | `/api/reservations` | `{ name, email, phone, date, slotId, partySize, gameId? }` → reference code, or 409 with suggestions |
-
-## Deploying
-
-The API runs on Render (free), the site on Vercel, the data on MongoDB Atlas. Vercel forwards `/api/*` to Render, so the browser only talks to one address.
-
-**1. MongoDB Atlas**
-- Network Access → Add IP address → `0.0.0.0/0` (Render's free plan has no fixed IP). Keep a strong database password.
-- Seed once from your machine: `npm --prefix server run seed`.
-
-**2. API on Render**
-- Dashboard → New → Blueprint → choose this repo. It reads `render.yaml`.
-- Fill in `MONGODB_URI` (same as `server/.env`) and `CLIENT_ORIGIN` (your Vercel address, e.g. `https://luna-cafe.vercel.app`). `JWT_SECRET` is generated for you.
-- When it is live, open `https://<service>.onrender.com/api/health`. It should say `"db":"connected"`.
-- The free plan sleeps after 15 minutes without traffic and takes about a minute to wake. The site shows a "Waking up the café…" note meanwhile. No keep-alive ping on purpose: the free hours are shared with other projects in the same Render workspace.
-
-**3. Site on Vercel**
-- In `client/vercel.json`, replace `REPLACE-WITH-RENDER-URL` with your Render service name and commit.
-- Vercel → Add New → Project → this repo. Root Directory: `client`. Framework: Vite (build `npm run build`, output `dist`).
-- Open the site, then `/api/health` on the Vercel address: it should answer through the rewrite.
+| POST | `/api/contact` | `{ name, email, message }` |
+| POST | `/api/auth/login` · `/api/auth/logout` | admin session cookie |
+| GET | `/api/auth/me` | current admin |
+| * | `/api/admin/games`, `/menu`, `/events` | list, create, `PATCH /:id`, `DELETE /:id` (admin) |
+| GET | `/api/admin/summary`, `/api/admin/reservations?from&to&status`, `/api/admin/messages` | admin |
+| PATCH | `/api/admin/reservations/:id/cancel`, `/api/admin/messages/:id` | admin |
 
 ---
 
