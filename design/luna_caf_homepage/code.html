@@ -1,0 +1,785 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Café — Coffee first. Then game on?</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'cream': '#F6EFDF',
+        'on-cream': '#294632',
+        'sage': '#A9BBA0',
+        'on-sage': '#193623',
+        'sage-soft': '#E4F6D9',
+        'forest-green': '#4A6B4F',
+        'on-forest-green': '#FFFDF8',
+        'dark-forest': '#294632',
+        'on-dark-forest': '#F6EFDF',
+        'burnt-orange': '#C85A24',
+        'on-burnt-orange': '#1F0900',
+        'surface': '#FFFDF8',
+        'on-surface': '#294632',
+        'surface-muted': '#E9E2D2',
+        'on-surface-muted': '#4A473B',
+        'outline': '#CCC6B7',
+        'outline-strong': '#7B776A',
+        'dusty-blue': '#E5F2FF',
+        'on-dusty-blue': '#153346',
+        'dusty-blue-accent': '#456277',
+        'terracotta': '#FFEDE8',
+        'on-terracotta': '#53210E',
+        'terracotta-accent': '#8C4E37',
+        'mustard': '#FFEED8',
+        'on-mustard': '#422C00',
+        'mustard-accent': '#7D5800',
+        'lavender': '#F8EDFF',
+        'on-lavender': '#362B48',
+        'lavender-accent': '#665979',
+        'success': '#2E4E34',
+        'on-success': '#FFFDF8',
+        'success-container': '#D5FAD7',
+        'on-success-container': '#01210C',
+        'warning': '#7D5800',
+        'on-warning': '#FFFDF8',
+        'warning-container': '#FFDEA9',
+        'on-warning-container': '#271900',
+        'error': '#BA1A1A',
+        'on-error': '#FFFDF8',
+        'error-container': '#FFDAD6',
+        'on-error-container': '#410002',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '12px',
+        'md': '16px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section-sm': '48px',
+        'section-lg': '80px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Fredoka"', 'sans-serif'],
+        'headline': ['"Fredoka"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"Fragment Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['56px', { lineHeight: '62px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '600' }],
+        'headline-md': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '500' }],
+        'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '500' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0.5px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '180ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'card-lift': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Fragment+Mono&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    .organic-blob {
+      border-radius: 58% 42% 48% 52% / 44% 55% 45% 56%;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(3deg); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.45; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    @keyframes steamRise {
+      0% { transform: translateY(4px) scaleY(0.9); opacity: 0; }
+      50% { opacity: 0.7; }
+      100% { transform: translateY(-10px) scaleY(1.1); opacity: 0; }
+    }
+    .animate-float-slow { animation: floatSlow 5s ease-in-out infinite; }
+    .animate-twinkle { animation: twinkle 3.2s ease-in-out infinite; }
+    .animate-steam-1 { animation: steamRise 2.8s ease-in-out infinite; }
+    .animate-steam-2 { animation: steamRise 2.8s ease-in-out 0.9s infinite; }
+    .reveal-section { opacity: 1; transform: translateY(0); transition: opacity 500ms ease-out, transform 500ms ease-out; }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-float-slow, .animate-twinkle, .animate-steam-1, .animate-steam-2 { animation: none !important; }
+      .reveal-section { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-on-cream font-body antialiased selection:bg-sage selection:text-dark-forest">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Shared Navigation Header -->
+    <header id="site-header" class="sticky top-0 z-40 w-full bg-cream/95 border-b border-transparent transition-colors duration-state-change">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-4 flex items-center justify-between gap-4">
+        <!-- Brand Logo -->
+        <a href="../home/Home.html" class="inline-flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark-forest rounded-full px-1">
+          <svg class="w-9 h-9 text-dark-forest group-hover:rotate-6 transition-transform duration-state-change" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" class="fill-sage-soft stroke-dark-forest" stroke-width="2"></circle>
+            <path d="M23.5 11.5C18.5 12.2 15 16.5 15 21.5C15 26.8 19.2 31 24.5 31C26.2 31 27.8 30.5 29.2 29.7C27.4 31.1 25.1 32 22.5 32C16.7 32 12 27.3 12 21.5C12 15.7 16.7 11 22.5 11C22.8 11 23.2 11 23.5 11.5Z" class="fill-dark-forest"></path>
+            <path d="M27.5 13L28.3 15.2L30.5 16L28.3 16.8L27.5 19L26.7 16.8L24.5 16L26.7 15.2L27.5 13Z" class="fill-burnt-orange"></path>
+          </svg>
+          <span class="font-headline text-headline-sm text-dark-forest tracking-tight">Luna Café</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-2">
+          <a href="../home/Home.html" aria-current="page" class="px-4 py-2 rounded-full bg-sage-soft text-dark-forest font-body text-label-lg">Home</a>
+          <a href="../games/Games.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Games</a>
+          <a href="../menu/Menu.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Menu</a>
+          <a href="#game-reveal" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Events</a>
+          <a href="#cafe-intro" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">About</a>
+          <a href="#visit-us" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors duration-state-change">Contact</a>
+        </nav>
+
+        <!-- Primary CTA & Mobile Trigger -->
+        <div class="flex items-center gap-3">
+          <a href="../book-a-table/BookATable.html" data-component-id="button-primary-nav" data-component-type="button" data-component-variant="primary" class="hidden sm:inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark-forest transition-transform duration-state-change">
+            <span data-design-text-token="label-lg">Book a Table</span>
+          </a>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface border border-outline text-dark-forest hover:bg-surface-muted">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+
+      <!-- Section 1: Hero -->
+      <section class="relative overflow-hidden bg-cream pt-8 pb-16 lg:pt-14 lg:pb-24">
+        <div class="max-w-7xl mx-auto px-gutter-lg grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <!-- Left Copy -->
+          <div class="lg:col-span-6 flex flex-col items-start gap-6">
+            <!-- Location & Hours Indicator -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-outline text-forest-green">
+              <span class="material-symbols-outlined text-body-md" aria-hidden="true">schedule</span>
+              <span data-design-text-token="label-sm" class="text-label-sm">412 Alderwood Lane · Open today 7:30 AM – 10:00 PM</span>
+            </div>
+
+            <h1 class="font-headline text-display-lg-mobile md:text-display-lg text-dark-forest text-balance">
+              Your little corner of calm.
+            </h1>
+
+            <p class="font-body text-body-lg text-on-surface-muted max-w-prose text-pretty">
+              Good coffee, cozy corners, and a little something fun waiting at your table.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-4 pt-1">
+              <a href="../menu/Menu.html" data-component-id="button-secondary" data-component-type="button" data-component-variant="secondary" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-forest-green text-on-forest-green font-body text-label-lg shadow-sm hover:bg-dark-forest transition-colors duration-state-change">
+                <span data-design-text-token="label-lg">Explore Our Menu</span>
+              </a>
+              <a href="../games/Games.html" data-component-id="button-tertiary" data-component-type="button" data-component-variant="tertiary" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-surface text-dark-forest border border-dark-forest font-body text-label-lg hover:bg-surface-muted transition-colors duration-state-change">
+                <span data-design-text-token="label-lg">Discover the Games</span>
+              </a>
+            </div>
+
+            <!-- Subtle Animated Latte-Art Illustration -->
+            <div class="flex items-center gap-3 pt-2 text-forest-green">
+              <svg class="w-12 h-12" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <path class="animate-steam-1 stroke-forest-green" d="M18 14C18 11 20 10 20 7" stroke-width="2" stroke-linecap="round" style="transform-box: fill-box; transform-origin: center;"></path>
+                <path class="animate-steam-2 stroke-forest-green" d="M26 14C26 11 28 10 28 7" stroke-width="2" stroke-linecap="round" style="transform-box: fill-box; transform-origin: center;"></path>
+                <path d="M11 20H33V29C33 34.5 28.5 39 23 39H21C15.5 39 11 34.5 11 29V20Z" class="fill-surface stroke-dark-forest" stroke-width="2"></path>
+                <path d="M33 22H36C38.2 22 40 23.8 40 26C40 28.2 38.2 30 36 30H33" class="stroke-dark-forest" stroke-width="2"></path>
+                <path d="M23 25.5C21.2 25.5 19.8 27 19.8 28.8C19.8 30.6 21.2 32 23 32C22 31.3 21.5 30.1 21.5 28.8C21.5 27.5 22 26.2 23 25.5Z" class="fill-burnt-orange"></path>
+              </svg>
+              <span class="font-body text-body-sm text-on-surface-muted">Freshly pulled single-origin espresso &amp; house-steeped botanicals all day.</span>
+            </div>
+          </div>
+
+          <!-- Right Hero Image in Organic Blob -->
+          <div class="lg:col-span-6 relative flex justify-center">
+            <!-- Decorative Crescent Moon & Stars -->
+            <svg class="w-10 h-10 absolute -top-3 left-6 lg:left-10 z-10 animate-float-slow" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path d="M26 8C19.5 9 15 14.5 15 21C15 27.5 20.5 32.5 27 32.5C22.5 34.5 17 33.5 13 29.5C8.5 25 8.5 17.5 13 13C16.5 9.5 21.5 8 26 8Z" class="fill-mustard-accent"></path>
+            </svg>
+            <svg class="w-6 h-6 absolute top-10 right-4 lg:right-8 z-10 animate-twinkle" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" class="fill-burnt-orange"></path>
+            </svg>
+            <svg class="w-5 h-5 absolute bottom-6 left-10 z-10 animate-twinkle" style="animation-delay: 1.1s;" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" class="fill-forest-green"></path>
+            </svg>
+
+            <div class="w-full max-w-lg aspect-[4/3] organic-blob overflow-hidden border-4 border-surface shadow-lg bg-surface-muted">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrAdQD6LGW5PW-abFlpmHJiVNp1FACOkOHF5r0XtZBmuC1P0g_wSmay3p6ZC7KHuar546_KPtyeSjNf4YfMvpqVv40F6twG1H_1K4IN7TUSFrCvDVXSIYgOoFGMMhfGKfUePtUHNjMLlu558ZLQJwmeqBh9Ak5JHKMKTs1_xjiiMGptXP5j9SF1pQY3l0w0cY0rGtDFDEhWkiA8JiUkBAJvjTjlNEkNKpBckrxACDdVisEXYV1VbT-Epaw" alt="Handcrafted ceramic coffee cup with crescent moon latte art on a warm oak café table" class="w-full h-full object-cover object-center">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Café Introduction (Sage Background) -->
+      <section id="cafe-intro" class="bg-sage text-on-sage py-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-5 flex flex-col gap-5">
+              <span class="inline-flex w-fit items-center gap-1.5 px-3 py-1 rounded-full bg-surface text-dark-forest text-label-sm">
+                <span class="material-symbols-outlined text-body-sm" aria-hidden="true">local_cafe</span>
+                Specialty Roastery &amp; Bakery
+              </span>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest text-balance">
+                Slow down. Sip something lovely.
+              </h2>
+              <p class="font-body text-body-lg text-on-sage text-pretty">
+                Every morning at Luna begins with small-batch espresso, warm cardamom knots fresh from the oven, and sunlit oak tables built for unhurried mornings. Whether you&#39;re journaling by the window or catching up with a friend, our space is designed to feel like a deep breath.
+              </p>
+              <div class="flex flex-wrap gap-6 pt-2 border-t border-dark-forest/15">
+                <div>
+                  <p class="font-headline text-headline-sm text-dark-forest tabular-nums">14+</p>
+                  <p class="font-body text-body-sm text-on-sage">House-crafted syrups &amp; teas</p>
+                </div>
+                <div>
+                  <p class="font-headline text-headline-sm text-dark-forest tabular-nums">42</p>
+                  <p class="font-body text-body-sm text-on-sage">Sunlit wooden seats</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7">
+              <div class="rounded-xl overflow-hidden border-4 border-surface shadow-md aspect-[16/9] bg-surface-muted">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrDuGHrWIp45VqueUQKbHX2cY3fJ-buBmTB5cymBeR6bUO6bLDzs9MKLJ4yqURplMzxnLz-pMpE_piTXJNJHHHRyJl2sxAtmyr7GOV9giG5wN2KjAwRHnjEKQFkCdpW5UugfKSwI4R60sFsbvo_M1HTUoVImMI4tfCyKi9AnyfiZ9NBweO020mCF1F3GAZQ9v0l8u--3vHzx54JPUQKZIzUp70XBQOUkvEsJcD3GKlqZI9hVjjii31T-mcAMjw" alt="Sunlit interior of Luna Café with light oak tables, plants, and cozy seating" class="w-full h-full object-cover object-center">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wavy SVG Divider: Sage to Cream -->
+      <div class="bg-sage leading-none" aria-hidden="true">
+        <svg class="w-full h-12 md:h-20 block text-cream" viewBox="0 0 1440 80" preserveAspectRatio="none" fill="currentColor">
+          <path d="M0,32 C240,80 480,0 720,40 C960,80 1200,12 1440,48 L1440,80 L0,80 Z"></path>
+        </svg>
+      </div>
+
+      <!-- Section 3: The Game Reveal -->
+      <section id="game-reveal" class="bg-cream py-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <div class="max-w-2xl mx-auto text-center flex flex-col items-center gap-4 mb-12">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-lavender text-on-lavender text-label-sm">
+              <span class="material-symbols-outlined text-body-sm" aria-hidden="true">auto_awesome</span>
+              Our Playful Secret
+            </span>
+            <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest text-balance">
+              Wait... did someone say game night?
+            </h2>
+            <p class="font-body text-body-lg text-on-surface-muted text-pretty">
+              Turns out, there&#39;s more to Luna than just great coffee. Pick a game, gather your people, and let the good times roll.
+            </p>
+          </div>
+
+          <!-- 4 Delightful Board Game Reveal Cards (Coded SVG Illustrations) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-10">
+            <!-- Card 1: UNO -->
+            <article data-component-id="card-game-terracotta" data-component-type="card" data-component-variant="action" class="bg-terracotta text-on-terracotta rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1.5 hover:-rotate-1 transition-transform duration-card-lift ease-card-lift">
+              <div class="h-28 rounded-md bg-surface/70 flex items-center justify-center p-4">
+                <svg class="w-20 h-20" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                  <rect x="14" y="16" width="34" height="48" rx="6" transform="rotate(-10 14 16)" class="fill-burnt-orange stroke-on-terracotta" stroke-width="2"></rect>
+                  <rect x="32" y="14" width="34" height="48" rx="6" transform="rotate(8 32 14)" class="fill-mustard-accent stroke-on-terracotta" stroke-width="2"></rect>
+                  <circle cx="48" cy="38" r="10" class="fill-surface"></circle>
+                  <text x="48" y="42" text-anchor="middle" class="fill-on-terracotta font-headline" font-size="11" font-weight="700">+4</text>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full bg-surface text-on-terracotta text-label-sm mb-2">Card Classic</span>
+                <h3 class="font-headline text-headline-sm text-on-terracotta">UNO</h3>
+                <p class="font-body text-body-sm text-on-terracotta mt-1">2–10 players · 20 min · Easy</p>
+              </div>
+            </article>
+
+            <!-- Card 2: Jenga -->
+            <article data-component-id="card-game-mustard" data-component-type="card" data-component-variant="action" class="bg-mustard text-on-mustard rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1.5 hover:rotate-1 transition-transform duration-card-lift ease-card-lift">
+              <div class="h-28 rounded-md bg-surface/70 flex items-center justify-center p-4">
+                <svg class="w-20 h-20" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                  <rect x="22" y="54" width="36" height="8" rx="2" class="fill-mustard-accent stroke-on-mustard" stroke-width="1.5"></rect>
+                  <rect x="22" y="44" width="36" height="8" rx="2" class="fill-surface stroke-on-mustard" stroke-width="1.5"></rect>
+                  <rect x="26" y="34" width="36" height="8" rx="2" class="fill-mustard-accent stroke-on-mustard" stroke-width="1.5"></rect>
+                  <rect x="22" y="24" width="36" height="8" rx="2" class="fill-surface stroke-on-mustard" stroke-width="1.5"></rect>
+                  <rect x="18" y="14" width="36" height="8" rx="2" transform="rotate(-4 18 14)" class="fill-burnt-orange stroke-on-mustard" stroke-width="1.5"></rect>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full bg-surface text-on-mustard text-label-sm mb-2">Dexterity</span>
+                <h3 class="font-headline text-headline-sm text-on-mustard">Jenga</h3>
+                <p class="font-body text-body-sm text-on-mustard mt-1">2–8 players · 15 min · Easy</p>
+              </div>
+            </article>
+
+            <!-- Card 3: Catan -->
+            <article data-component-id="card-game-dusty-blue" data-component-type="card" data-component-variant="action" class="bg-dusty-blue text-on-dusty-blue rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1.5 hover:-rotate-1 transition-transform duration-card-lift ease-card-lift">
+              <div class="h-28 rounded-md bg-surface/70 flex items-center justify-center p-4">
+                <svg class="w-20 h-20" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                  <polygon points="40,12 56,21 56,39 40,48 24,39 24,21" class="fill-sage stroke-on-dusty-blue" stroke-width="2"></polygon>
+                  <polygon points="24,39 40,48 40,66 24,75 8,66 8,48" class="fill-mustard-accent stroke-on-dusty-blue" stroke-width="2"></polygon>
+                  <polygon points="56,39 72,48 72,66 56,75 40,66 40,48" class="fill-dusty-blue-accent stroke-on-dusty-blue" stroke-width="2"></polygon>
+                  <circle cx="40" cy="30" r="6" class="fill-surface"></circle>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full bg-surface text-on-dusty-blue text-label-sm mb-2">Strategy</span>
+                <h3 class="font-headline text-headline-sm text-on-dusty-blue">Catan</h3>
+                <p class="font-body text-body-sm text-on-dusty-blue mt-1">3–4 players · 75 min · Medium</p>
+              </div>
+            </article>
+
+            <!-- Card 4: Moonlight Mischief (Invented) -->
+            <article data-component-id="card-game-lavender" data-component-type="card" data-component-variant="action" class="bg-lavender text-on-lavender rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1.5 hover:rotate-1 transition-transform duration-card-lift ease-card-lift">
+              <div class="h-28 rounded-md bg-surface/70 flex items-center justify-center p-4">
+                <svg class="w-20 h-20" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                  <circle cx="40" cy="40" r="24" class="fill-lavender-accent/20 stroke-on-lavender" stroke-width="2"></circle>
+                  <path d="M44 22C36 23 30 30 30 39C30 48 37 55 46 55C40 58 32 56 27 50C21 43 22 33 28 27C32 23 38 21 44 22Z" class="fill-on-lavender"></path>
+                  <path d="M52 25L53.5 29.5L58 31L53.5 32.5L52 37L50.5 32.5L46 31L50.5 29.5L52 25Z" class="fill-burnt-orange"></path>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full bg-surface text-on-lavender text-label-sm mb-2">Luna Original</span>
+                <h3 class="font-headline text-headline-sm text-on-lavender">Moonlight Mischief</h3>
+                <p class="font-body text-body-sm text-on-lavender mt-1">3–6 players · 25 min · Easy</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="text-center">
+            <a href="../games/Games.html" data-component-id="button-with-icon" data-component-type="button" data-component-variant="with-icon" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-forest-green text-on-forest-green font-body text-label-lg shadow-sm hover:bg-dark-forest transition-colors duration-state-change">
+              <span class="material-symbols-outlined text-title-lg" aria-hidden="true">casino</span>
+              <span data-design-text-token="label-lg">Explore Our Game Library</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Signature Drinks (Cream Background) -->
+      <section class="bg-cream py-section-sm border-t border-outline/60 reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest">
+                A little happiness in every cup.
+              </h2>
+              <p class="font-body text-body-md text-on-surface-muted mt-2">
+                Crafted with local oat milk, toasted spices, and double-shot espresso.
+              </p>
+            </div>
+            <a href="../menu/Menu.html" class="inline-flex items-center gap-1.5 font-body text-label-lg text-forest-green hover:text-dark-forest">
+              View full café menu
+              <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_forward</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <!-- Drink 1 -->
+            <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="bg-surface rounded-lg border border-outline p-5 flex flex-col gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="aspect-square rounded-md overflow-hidden bg-surface-muted">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrD-guFP3pWXKFqLEe8tJBXjUnPUdJHGaceXdsx0Ul15HeRVwCUZ7Vy-bR02Ai_xwwUokfKON-_stvdrUYgqq3DSlEQ05pzPHFU4l7t1doVuYSETO81opR1UTllscrjxYW9TawDzqBfCnay1tudOIkEfcykVyV5DAfiMCKmfoQw7O5R8Iwt9ZPsx-kBVPNe5C_Rid1PnmFhqiMBHt0N8xSV6hVSR9hLuRnRdeehQLmS7c21ODS-ORXZNQ5TYXKFhgw" alt="Moonlight Latte in a speckled ceramic mug" class="w-full h-full object-cover">
+              </div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-headline text-title-lg text-dark-forest">Moonlight Latte</h3>
+                <span class="font-body text-title-md text-forest-green tabular-nums">$5.75</span>
+              </div>
+              <p class="font-body text-body-sm text-on-surface-muted flex-1">Velvety oat milk steamed with toasted cardamom, vanilla bean, and our house espresso.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-sage-soft text-dark-forest text-label-sm">Vegan</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-muted text-on-surface-muted text-label-sm">House Favorite</span>
+              </div>
+            </article>
+
+            <!-- Drink 2 -->
+            <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="bg-surface rounded-lg border border-outline p-5 flex flex-col gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="aspect-square rounded-md overflow-hidden bg-surface-muted">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrBI_gDYjfSrv04Y25DOKqa05qdWRZPZdNhfA2WsuFU1yZsDNB9XR-jOxf0-hBADQ4O0xh4c6UKEIVeoOr6ixrV00visrdeQMCf-aAh-9qvm4hM0z1TczJoxRu4ce_w2MGco1IaTlsr17XLM-VmushaJoMqjbZfcih8sPMopI2e6bJuEYMM9Qx_ZzwZ_uyvhIA1_7lRl9nd3OQQ5j0RYQfJ9Bp-ydOQjXgQCpuvWgNzQnXzKDhLxTJlWSrb-WmYxZVM" alt="Honey Cinnamon Cappuccino with golden honey drizzle" class="w-full h-full object-cover">
+              </div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-headline text-title-lg text-dark-forest">Honey Cinnamon Cappuccino</h3>
+                <span class="font-body text-title-md text-forest-green tabular-nums">$5.50</span>
+              </div>
+              <p class="font-body text-body-sm text-on-surface-muted flex-1">Wildflower honey, Ceylon cinnamon, and thick microfoam over a rich double ristretto.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-muted text-on-surface-muted text-label-sm">Gluten-Free</span>
+              </div>
+            </article>
+
+            <!-- Drink 3 -->
+            <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="bg-surface rounded-lg border border-outline p-5 flex flex-col gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="aspect-square rounded-md overflow-hidden bg-surface-muted">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrDj49Lib_geYRA20jAMRh1bGLzD77CcRbqz49eITc9qjrXkcQIUE9mNx4ZaHTlVl4BbjCrB94ZXRhIPvAwu9yzXGK5V4jw-PBlPsL8MIpNijqL8IMSwFemfRcpo1PUMvBSllDJ-r5B4gEgFd57oFpWGCl6ooPvMzx5MaN_R0pimxIKBf5a3ijJjz6Oa-jrL-z3wbyBNwD5QitTtn_WinQrUwlOiftKpvG8ZT4k6mb1AYsKJ5n7bBOFMBu-UT_NmM5Ts" alt="Iced Vanilla Cloud espresso in a ribbed glass" class="w-full h-full object-cover">
+              </div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-headline text-title-lg text-dark-forest">Iced Vanilla Cloud</h3>
+                <span class="font-body text-title-md text-forest-green tabular-nums">$6.00</span>
+              </div>
+              <p class="font-body text-body-sm text-on-surface-muted flex-1">Chilled blonde espresso topped with whipped Madagascar vanilla oat cream.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-sage-soft text-dark-forest text-label-sm">Vegan</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-muted text-on-surface-muted text-label-sm">Iced</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Popular Board Games (Sage Background) -->
+      <section class="bg-sage text-on-sage py-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest">
+                Find your next favorite game.
+              </h2>
+              <p class="font-body text-body-lg text-on-sage mt-2">
+                Over 180 curated titles on our shelves—free to play with any drink or pastry.
+              </p>
+            </div>
+            <a href="../games/Games.html#quiz" data-component-id="button-primary" data-component-type="button" data-component-variant="primary" class="inline-flex w-fit items-center justify-center gap-2 px-6 py-3 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90 transition-transform duration-state-change">
+              <span class="material-symbols-outlined text-title-lg" aria-hidden="true">auto_fix_high</span>
+              <span data-design-text-token="label-lg">Find my game</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            <!-- Popular 1: Ticket to Ride -->
+            <article class="bg-dusty-blue text-on-dusty-blue rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="h-24 rounded-md bg-surface/75 flex items-center justify-center">
+                <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <path d="M10 44C20 44 24 22 36 22C46 22 48 38 56 38" class="stroke-dusty-blue-accent" stroke-width="3" stroke-dasharray="5 4" stroke-linecap="round"></path>
+                  <rect x="16" y="34" width="18" height="10" rx="3" class="fill-burnt-orange"></rect>
+                  <circle cx="20" cy="46" r="2.5" class="fill-on-dusty-blue"></circle>
+                  <circle cx="30" cy="46" r="2.5" class="fill-on-dusty-blue"></circle>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-surface text-on-dusty-blue text-label-sm mb-2">Family Strategy</span>
+                <h3 class="font-headline text-headline-sm">Ticket to Ride</h3>
+                <p class="font-body text-body-sm mt-1">2–5 players · 45 min · Easy</p>
+              </div>
+            </article>
+
+            <!-- Popular 2: Codenames -->
+            <article class="bg-terracotta text-on-terracotta rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="h-24 rounded-md bg-surface/75 flex items-center justify-center">
+                <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <rect x="12" y="16" width="18" height="14" rx="3" class="fill-terracotta-accent"></rect>
+                  <rect x="34" y="16" width="18" height="14" rx="3" class="fill-surface stroke-terracotta-accent" stroke-width="2"></rect>
+                  <rect x="12" y="34" width="18" height="14" rx="3" class="fill-surface stroke-terracotta-accent" stroke-width="2"></rect>
+                  <rect x="34" y="34" width="18" height="14" rx="3" class="fill-dusty-blue-accent"></rect>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-surface text-on-terracotta text-label-sm mb-2">Word &amp; Party</span>
+                <h3 class="font-headline text-headline-sm">Codenames</h3>
+                <p class="font-body text-body-sm mt-1">4–8 players · 20 min · Easy</p>
+              </div>
+            </article>
+
+            <!-- Popular 3: Wingspan -->
+            <article class="bg-mustard text-on-mustard rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="h-24 rounded-md bg-surface/75 flex items-center justify-center">
+                <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <ellipse cx="26" cy="36" rx="9" ry="12" class="fill-sage stroke-on-mustard" stroke-width="2"></ellipse>
+                  <ellipse cx="42" cy="34" rx="8" ry="10" class="fill-dusty-blue stroke-on-mustard" stroke-width="2"></ellipse>
+                  <path d="M18 20C24 14 34 14 40 20" class="stroke-mustard-accent" stroke-width="2.5" stroke-linecap="round"></path>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-surface text-on-mustard text-label-sm mb-2">Engine Building</span>
+                <h3 class="font-headline text-headline-sm">Wingspan</h3>
+                <p class="font-body text-body-sm mt-1">1–5 players · 60 min · Medium</p>
+              </div>
+            </article>
+
+            <!-- Popular 4: Azul -->
+            <article class="bg-lavender text-on-lavender rounded-lg border border-outline p-6 flex flex-col justify-between gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+              <div class="h-24 rounded-md bg-surface/75 flex items-center justify-center">
+                <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <rect x="18" y="18" width="12" height="12" rx="2" class="fill-dusty-blue-accent"></rect>
+                  <rect x="34" y="18" width="12" height="12" rx="2" class="fill-mustard-accent"></rect>
+                  <rect x="18" y="34" width="12" height="12" rx="2" class="fill-lavender-accent"></rect>
+                  <rect x="34" y="34" width="12" height="12" rx="2" class="fill-burnt-orange"></rect>
+                </svg>
+              </div>
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-surface text-on-lavender text-label-sm mb-2">Abstract Tile</span>
+                <h3 class="font-headline text-headline-sm">Azul</h3>
+                <p class="font-body text-body-sm mt-1">2–4 players · 35 min · Easy</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Today's Special (Cream Background) -->
+      <section class="bg-cream py-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <div class="bg-surface rounded-xl border border-outline p-6 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-sm">
+            <div class="lg:col-span-6">
+              <div class="rounded-lg overflow-hidden aspect-[4/3] bg-surface-muted">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrCbWhy-N1Rc8z-R0QrpGghJspqjO8IKABkYsASNcJ0itpQSPD1GBvIqm-Uldi5hd0UmyGyU3wlm2czKAoKfy4m6_7-AXymGIk3lR2roLPoItiCUpf_kDNjdPPp9IhE0MQBaTXF_o4WkiOu0YJQyrkFMvsNqB_QFDk_2wTtNzWhuSjMVqlYtgOfzoXRnccNP2zSvZ8e9HgAkj-KWX10_FFGQnJX1cXeT44rapIjeE2NTSJ_rKwR49ucL4i9XsxYkIw" alt="Seasonal spiced cardamom croissant and maple oat latte" class="w-full h-full object-cover">
+              </div>
+            </div>
+            <div class="lg:col-span-6 flex flex-col items-start gap-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mustard text-on-mustard text-label-sm">
+                <span class="material-symbols-outlined text-body-sm" aria-hidden="true">bakery_dining</span>
+                Today&#39;s Special
+              </span>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest text-balance">
+                Spiced Cardamom Croissant &amp; Maple Oat Latte
+              </h2>
+              <p class="font-body text-body-lg text-on-surface-muted text-pretty">
+                Flaky, laminated butter pastry braided with freshly ground green cardamom, paired with a warm maple-sweetened oat latte. Baked at 6:30 AM daily until sold out.
+              </p>
+              <a href="../menu/Menu.html" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-forest-green text-on-forest-green font-body text-label-lg hover:bg-dark-forest transition-colors duration-state-change">
+                <span data-design-text-token="label-lg">Explore the Menu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Customer Testimonials -->
+      <section class="bg-cream pb-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest text-center mb-10 text-balance">
+            Good coffee. Great company. Happy memories.
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            <blockquote class="bg-surface rounded-lg border border-outline p-6 flex flex-col justify-between gap-4">
+              <p class="font-body text-body-md text-on-surface-muted text-pretty">
+                “I came in for a quiet iced latte and a book, and ended up joining a table for Moonlight Mischief an hour later. Warmest spot in the neighborhood.”
+              </p>
+              <footer class="flex items-center gap-3 pt-2 border-t border-outline/60">
+                <div class="w-10 h-10 rounded-full bg-sage-soft text-dark-forest flex items-center justify-center font-headline text-title-md">SC</div>
+                <div>
+                  <p class="font-body text-title-md text-dark-forest">Sofia Chen</p>
+                  <p class="font-body text-body-sm text-on-surface-muted">Sunday regular</p>
+                </div>
+              </footer>
+            </blockquote>
+
+            <blockquote class="bg-surface rounded-lg border border-outline p-6 flex flex-col justify-between gap-4">
+              <p class="font-body text-body-md text-on-surface-muted text-pretty">
+                “Finally a board game café where the espresso is genuinely specialty-grade. The Honey Cinnamon Cappuccino and a round of Azul is our Friday ritual.”
+              </p>
+              <footer class="flex items-center gap-3 pt-2 border-t border-outline/60">
+                <div class="w-10 h-10 rounded-full bg-dusty-blue text-on-dusty-blue flex items-center justify-center font-headline text-title-md">MR</div>
+                <div>
+                  <p class="font-body text-title-md text-dark-forest">Marcus &amp; Priya</p>
+                  <p class="font-body text-body-sm text-on-surface-muted">Friday night regulars</p>
+                </div>
+              </footer>
+            </blockquote>
+
+            <blockquote class="bg-surface rounded-lg border border-outline p-6 flex flex-col justify-between gap-4">
+              <p class="font-body text-body-md text-on-surface-muted text-pretty">
+                “The staff taught us Wingspan in five minutes flat. No pretentiousness, just great vibes, cozy lighting, and amazing cardamom pastries.”
+              </p>
+              <footer class="flex items-center gap-3 pt-2 border-t border-outline/60">
+                <div class="w-10 h-10 rounded-full bg-lavender text-on-lavender flex items-center justify-center font-headline text-title-md">JL</div>
+                <div>
+                  <p class="font-body text-title-md text-dark-forest">Jonas Lindqvist</p>
+                  <p class="font-body text-body-sm text-on-surface-muted">First-time visitor</p>
+                </div>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: Visit Us (Sage Background) -->
+      <section id="visit-us" class="bg-sage text-on-sage py-section-lg reveal-section">
+        <div class="max-w-7xl mx-auto px-gutter-lg grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-6">
+            <div class="rounded-xl overflow-hidden border-4 border-surface shadow-md aspect-[4/3] bg-surface-muted">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrBwg_gxHmQzH-YVN9llFcGEkibTtt-nn2GzTiMD_7ABNkqoZ-O_Ge9zRuO48XuW3m9SNYQPKSYjg2ZfO8v-Z7K02uUurjon8oKGpHLqcqslZAn2xZ-cFGpxrG7YlIfPK8tBGSiUpC1vnZhEFVT85T8v_u7jeFyA4v6Q-1LdfEzs_v6UOU2RtigmLI_dDmj-4ivF2YmUK9lBkO0TNPbmJwbNqaF9C3OtOHE_ElU6ZbY-8oCP59hv3Rfgpql9_xM" alt="Luna Café sunlit storefront and cozy window tables" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 bg-surface text-on-surface rounded-xl border border-outline p-8 flex flex-col gap-6 shadow-sm">
+            <div>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-forest">Visit Luna Café</h2>
+              <p class="font-body text-body-md text-on-surface-muted mt-1">Walk-ins are always welcome for coffee, and reservations hold your favorite game table.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-body-sm">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-forest-green" aria-hidden="true">location_on</span>
+                <div>
+                  <p class="font-bold text-dark-forest">Address</p>
+                  <p class="text-on-surface-muted">412 Alderwood Lane<br>Portland, OR 97205</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-forest-green" aria-hidden="true">schedule</span>
+                <div>
+                  <p class="font-bold text-dark-forest">Opening Hours</p>
+                  <p class="text-on-surface-muted">Mon–Thu: 7:30 AM – 10:00 PM<br>Fri–Sun: 8:00 AM – 11:30 PM</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 sm:col-span-2">
+                <span class="material-symbols-outlined text-forest-green" aria-hidden="true">mail</span>
+                <div>
+                  <p class="font-bold text-dark-forest">Contact</p>
+                  <p class="text-on-surface-muted">hello@lunacafe.example · (503) 555-0194</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stylized Map Placeholder -->
+            <div class="rounded-md bg-cream border border-outline p-4 flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-sage-soft text-dark-forest flex items-center justify-center">
+                  <span class="material-symbols-outlined" aria-hidden="true">map</span>
+                </span>
+                <div>
+                  <p class="font-body text-title-md text-dark-forest">Alderwood Creative District</p>
+                  <p class="font-body text-body-sm text-on-surface-muted">2 blocks from Hawthorne Streetcar Stop</p>
+                </div>
+              </div>
+              <span class="font-mono text-mono-md text-forest-green">45.52° N</span>
+            </div>
+
+            <a href="../book-a-table/BookATable.html" data-component-id="button-primary" data-component-type="button" data-component-variant="primary" class="inline-flex w-full sm:w-fit items-center justify-center gap-2 px-6 py-3 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90 transition-transform duration-state-change">
+              <span data-design-text-token="label-lg">Book Your Table</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Section 9: Shared Footer -->
+    <footer class="bg-dark-forest text-on-dark-forest py-12">
+      <div class="max-w-7xl mx-auto px-gutter-lg">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-on-dark-forest/15">
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2.5">
+              <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <circle cx="20" cy="20" r="18" class="fill-forest-green stroke-cream" stroke-width="2"></circle>
+                <path d="M23.5 11.5C18.5 12.2 15 16.5 15 21.5C15 26.8 19.2 31 24.5 31C26.2 31 27.8 30.5 29.2 29.7C27.4 31.1 25.1 32 22.5 32C16.7 32 12 27.3 12 21.5C12 15.7 16.7 11 22.5 11C22.8 11 23.2 11 23.5 11.5Z" class="fill-cream"></path>
+              </svg>
+              <span class="font-headline text-headline-sm text-cream">Luna Café</span>
+            </div>
+            <p class="font-body text-body-sm text-sage">Coffee first. Then game on?</p>
+          </div>
+
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Explore</h3>
+            <ul class="flex flex-col gap-2 text-body-sm text-sage">
+              <li><a href="../home/Home.html" class="hover:text-cream transition-colors">Home</a></li>
+              <li><a href="../games/Games.html" class="hover:text-cream transition-colors">Games Library</a></li>
+              <li><a href="../menu/Menu.html" class="hover:text-cream transition-colors">Café Menu</a></li>
+              <li><a href="../book-a-table/BookATable.html" class="hover:text-cream transition-colors">Book a Table</a></li>
+              <li><a href="../admin/AdminDashboard.html" class="hover:text-cream transition-colors">Staff Admin</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Hours</h3>
+            <p class="font-body text-body-sm text-sage">Mon–Thu: 7:30 AM – 10:00 PM</p>
+            <p class="font-body text-body-sm text-sage mt-1">Fri–Sun: 8:00 AM – 11:30 PM</p>
+          </div>
+
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Connect</h3>
+            <p class="font-body text-body-sm text-sage">412 Alderwood Lane, Portland</p>
+            <p class="font-body text-body-sm text-sage mt-1">hello@lunacafe.example</p>
+            <div class="flex items-center gap-3 mt-4">
+              <a href="#visit-us" aria-label="Instagram" class="w-9 h-9 rounded-full bg-forest-green flex items-center justify-center text-cream hover:bg-burnt-orange hover:text-on-burnt-orange transition-colors">
+                <span class="material-symbols-outlined text-body-lg" aria-hidden="true">photo_camera</span>
+              </a>
+              <a href="#visit-us" aria-label="Community" class="w-9 h-9 rounded-full bg-forest-green flex items-center justify-center text-cream hover:bg-burnt-orange hover:text-on-burnt-orange transition-colors">
+                <span class="material-symbols-outlined text-body-lg" aria-hidden="true">forum</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-body-sm text-sage">
+          <p>Portfolio project, fictional café. Game names belong to their owners.</p>
+          <p>© 2026 Luna Café</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mobile Navigation Drawer -->
+  <dialog id="mobile-drawer" data-component-id="modal-drawer" data-component-type="modal" data-component-variant="drawer" aria-labelledby="mobile-drawer-title" class="bg-cream text-on-cream p-6 w-80 max-w-full min-h-[1024px] ml-auto mr-0 my-0 border-l border-outline shadow-xl backdrop:bg-dark-forest/50" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <header class="flex items-center justify-between mb-8">
+      <h2 id="mobile-drawer-title" class="font-headline text-headline-sm text-dark-forest">Luna Café</h2>
+      <button id="close-drawer-btn" type="button" aria-label="Close navigation menu" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface text-dark-forest border border-outline">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">close</span>
+      </button>
+    </header>
+    <nav class="flex flex-col gap-3">
+      <a href="../home/Home.html" class="px-4 py-3 rounded-full bg-sage-soft text-dark-forest font-body text-title-md">Home</a>
+      <a href="../games/Games.html" class="px-4 py-3 rounded-full text-dark-forest hover:bg-surface-muted font-body text-title-md">Games</a>
+      <a href="../menu/Menu.html" class="px-4 py-3 rounded-full text-dark-forest hover:bg-surface-muted font-body text-title-md">Menu</a>
+      <a href="#game-reveal" class="px-4 py-3 rounded-full text-dark-forest hover:bg-surface-muted font-body text-title-md">Events</a>
+      <a href="#cafe-intro" class="px-4 py-3 rounded-full text-dark-forest hover:bg-surface-muted font-body text-title-md">About</a>
+      <a href="#visit-us" class="px-4 py-3 rounded-full text-dark-forest hover:bg-surface-muted font-body text-title-md">Contact</a>
+      <a href="../book-a-table/BookATable.html" class="mt-4 px-5 py-3 rounded-full bg-burnt-orange text-on-burnt-orange text-center font-body text-label-lg">Book a Table</a>
+    </nav>
+  </dialog>
+
+  <script>
+    (function () {
+      const header = document.getElementById('site-header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 24) {
+          header.classList.add('border-outline', 'shadow-sm');
+          header.classList.remove('border-transparent');
+        } else {
+          header.classList.remove('border-outline', 'shadow-sm');
+          header.classList.add('border-transparent');
+        }
+      }, { passive: true });
+
+      const drawer = document.getElementById('mobile-drawer');
+      const openBtn = document.getElementById('mobile-menu-btn');
+      const closeBtn = document.getElementById('close-drawer-btn');
+      if (openBtn && drawer) openBtn.addEventListener('click', () => drawer.showModal());
+      if (closeBtn && drawer) closeBtn.addEventListener('click', () => drawer.close());
+    })();
+  </script>
+
+
+</body></html>

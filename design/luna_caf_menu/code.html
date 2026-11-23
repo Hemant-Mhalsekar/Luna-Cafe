@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna Café — Menu</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'cream': '#F6EFDF',
+        'on-cream': '#294632',
+        'sage': '#A9BBA0',
+        'on-sage': '#193623',
+        'sage-soft': '#E4F6D9',
+        'forest-green': '#4A6B4F',
+        'on-forest-green': '#FFFDF8',
+        'dark-forest': '#294632',
+        'on-dark-forest': '#F6EFDF',
+        'burnt-orange': '#C85A24',
+        'on-burnt-orange': '#1F0900',
+        'surface': '#FFFDF8',
+        'on-surface': '#294632',
+        'surface-muted': '#E9E2D2',
+        'on-surface-muted': '#4A473B',
+        'outline': '#CCC6B7',
+        'outline-strong': '#7B776A',
+        'dusty-blue': '#E5F2FF',
+        'on-dusty-blue': '#153346',
+        'dusty-blue-accent': '#456277',
+        'terracotta': '#FFEDE8',
+        'on-terracotta': '#53210E',
+        'terracotta-accent': '#8C4E37',
+        'mustard': '#FFEED8',
+        'on-mustard': '#422C00',
+        'mustard-accent': '#7D5800',
+        'lavender': '#F8EDFF',
+        'on-lavender': '#362B48',
+        'lavender-accent': '#665979',
+        'success': '#2E4E34',
+        'on-success': '#FFFDF8',
+        'success-container': '#D5FAD7',
+        'on-success-container': '#01210C',
+        'warning': '#7D5800',
+        'on-warning': '#FFFDF8',
+        'warning-container': '#FFDEA9',
+        'on-warning-container': '#271900',
+        'error': '#BA1A1A',
+        'on-error': '#FFFDF8',
+        'error-container': '#FFDAD6',
+        'on-error-container': '#410002',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '12px',
+        'md': '16px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section-sm': '48px',
+        'section-lg': '80px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Fredoka"', 'sans-serif'],
+        'headline': ['"Fredoka"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"Fragment Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['56px', { lineHeight: '62px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '600' }],
+        'headline-md': ['28px', { lineHeight: '34px', letterSpacing: '0px', fontWeight: '500' }],
+        'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '500' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.3px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0.5px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '180ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'card-lift': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Fragment+Mono&amp;family=Fredoka:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-on-cream font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Shared Navigation Header -->
+    <header class="sticky top-0 z-40 w-full bg-cream border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-4 flex items-center justify-between gap-4">
+        <a href="../home/Home.html" class="inline-flex items-center gap-3 rounded-full px-1">
+          <svg class="w-9 h-9 text-dark-forest" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" class="fill-sage-soft stroke-dark-forest" stroke-width="2"></circle>
+            <path d="M23.5 11.5C18.5 12.2 15 16.5 15 21.5C15 26.8 19.2 31 24.5 31C26.2 31 27.8 30.5 29.2 29.7C27.4 31.1 25.1 32 22.5 32C16.7 32 12 27.3 12 21.5C12 15.7 16.7 11 22.5 11C22.8 11 23.2 11 23.5 11.5Z" class="fill-dark-forest"></path>
+            <path d="M27.5 13L28.3 15.2L30.5 16L28.3 16.8L27.5 19L26.7 16.8L24.5 16L26.7 15.2L27.5 13Z" class="fill-burnt-orange"></path>
+          </svg>
+          <span class="font-headline text-headline-sm text-dark-forest tracking-tight">Luna Café</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-2">
+          <a href="../home/Home.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors">Home</a>
+          <a href="../games/Games.html" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors">Games</a>
+          <a href="../menu/Menu.html" aria-current="page" class="px-4 py-2 rounded-full bg-sage-soft text-dark-forest font-body text-label-lg">Menu</a>
+          <a href="../home/Home.html#game-reveal" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors">Events</a>
+          <a href="../home/Home.html#cafe-intro" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors">About</a>
+          <a href="../home/Home.html#visit-us" class="px-4 py-2 rounded-full text-dark-forest hover:bg-surface-muted font-body text-label-lg transition-colors">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="../book-a-table/BookATable.html" class="hidden sm:inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-burnt-orange text-on-burnt-orange font-body text-label-lg shadow-sm hover:opacity-90">
+            <span data-design-text-token="label-lg">Book a Table</span>
+          </a>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface border border-outline text-dark-forest">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <!-- Page Hero -->
+      <section class="bg-cream pt-10 pb-8 border-b border-outline/60">
+        <div class="max-w-7xl mx-auto px-gutter-lg">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sage-soft text-dark-forest text-label-sm mb-3">
+            <span class="material-symbols-outlined text-body-sm" aria-hidden="true">local_cafe</span>
+            Specialty Coffee &amp; Scratch Bakery
+          </span>
+          <h1 class="font-headline text-display-lg-mobile md:text-headline-lg text-dark-forest text-balance">
+            Made with love. Served with a little magic.
+          </h1>
+          <p class="font-body text-body-lg text-on-surface-muted mt-2 max-w-2xl text-pretty">
+            Oat milk is always complimentary. Ask your barista for decaf espresso or caffeine-free herbal infusions for late-night game sessions.
+          </p>
+
+          <!-- Category Tabs -->
+          <div role="tablist" aria-label="Menu categories" class="flex items-center gap-2 overflow-x-auto pt-6 pb-1">
+            <button role="tab" aria-selected="true" data-cat="Coffee" class="menu-tab px-5 py-2.5 rounded-full bg-forest-green text-on-forest-green font-body text-label-lg shrink-0">Coffee</button>
+            <button role="tab" aria-selected="false" data-cat="Tea" class="menu-tab px-5 py-2.5 rounded-full bg-surface border border-outline text-dark-forest font-body text-label-lg shrink-0 hover:bg-surface-muted">Tea</button>
+            <button role="tab" aria-selected="false" data-cat="Cold Drinks" class="menu-tab px-5 py-2.5 rounded-full bg-surface border border-outline text-dark-forest font-body text-label-lg shrink-0 hover:bg-surface-muted">Cold Drinks</button>
+            <button role="tab" aria-selected="false" data-cat="Bakes" class="menu-tab px-5 py-2.5 rounded-full bg-surface border border-outline text-dark-forest font-body text-label-lg shrink-0 hover:bg-surface-muted">Bakes</button>
+            <button role="tab" aria-selected="false" data-cat="Snacks" class="menu-tab px-5 py-2.5 rounded-full bg-surface border border-outline text-dark-forest font-body text-label-lg shrink-0 hover:bg-surface-muted">Snacks</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Menu Grid -->
+      <section class="py-12 max-w-7xl mx-auto px-gutter-lg">
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared Footer -->
+    <footer class="bg-dark-forest text-on-dark-forest py-12">
+      <div class="max-w-7xl mx-auto px-gutter-lg">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-on-dark-forest/15">
+          <div class="flex flex-col gap-3">
+            <span class="font-headline text-headline-sm text-cream">Luna Café</span>
+            <p class="font-body text-body-sm text-sage">Coffee first. Then game on?</p>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Explore</h3>
+            <ul class="flex flex-col gap-2 text-body-sm text-sage">
+              <li><a href="../home/Home.html" class="hover:text-cream">Home</a></li>
+              <li><a href="../games/Games.html" class="hover:text-cream">Games Library</a></li>
+              <li><a href="../menu/Menu.html" class="hover:text-cream">Café Menu</a></li>
+              <li><a href="../book-a-table/BookATable.html" class="hover:text-cream">Book a Table</a></li>
+              <li><a href="../admin/AdminDashboard.html" class="hover:text-cream">Staff Admin</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Hours</h3>
+            <p class="font-body text-body-sm text-sage">Mon–Thu: 7:30 AM – 10:00 PM</p>
+            <p class="font-body text-body-sm text-sage mt-1">Fri–Sun: 8:00 AM – 11:30 PM</p>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-cream mb-3">Connect</h3>
+            <p class="font-body text-body-sm text-sage">412 Alderwood Lane, Portland</p>
+            <p class="font-body text-body-sm text-sage mt-1">hello@lunacafe.example</p>
+          </div>
+        </div>
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-body-sm text-sage">
+          <p>Portfolio project, fictional café. Game names belong to their owners.</p>
+          <p>© 2026 Luna Café</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Item Detail Modal -->
+  <dialog id="item-modal" data-component-id="modal-standard" data-component-type="modal" data-component-variant="standard" aria-labelledby="item-modal-title" class="bg-surface text-on-surface rounded-xl border border-outline p-6 md:p-8 max-w-md w-full shadow-xl backdrop:bg-dark-forest/50">
+    <header class="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <span id="item-modal-cat" class="inline-block px-3 py-0.5 rounded-full bg-sage-soft text-dark-forest text-label-sm mb-2">Coffee</span>
+        <h2 id="item-modal-title" class="font-headline text-headline-sm text-dark-forest">Moonlight Latte</h2>
+      </div>
+      <button id="item-modal-close" type="button" aria-label="Close dialog" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-cream text-dark-forest border border-outline">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">close</span>
+      </button>
+    </header>
+    <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-muted mb-4">
+      <img id="item-modal-img" src="https://lh3.googleusercontent.com/aida/ALJJyrD-guFP3pWXKFqLEe8tJBXjUnPUdJHGaceXdsx0Ul15HeRVwCUZ7Vy-bR02Ai_xwwUokfKON-_stvdrUYgqq3DSlEQ05pzPHFU4l7t1doVuYSETO81opR1UTllscrjxYW9TawDzqBfCnay1tudOIkEfcykVyV5DAfiMCKmfoQw7O5R8Iwt9ZPsx-kBVPNe5C_Rid1PnmFhqiMBHt0N8xSV6hVSR9hLuRnRdeehQLmS7c21ODS-ORXZNQ5TYXKFhgw" alt class="w-full h-full object-cover">
+    </div>
+    <div class="flex items-center justify-between mb-2">
+      <span id="item-modal-tags" class="text-label-sm text-forest-green">Vegan · House Favorite</span>
+      <span id="item-modal-price" class="font-body text-title-lg text-dark-forest tabular-nums">$5.75</span>
+    </div>
+    <p id="item-modal-desc" class="font-body text-body-md text-on-surface-muted mb-6"></p>
+    <footer class="flex justify-end">
+      <button id="item-modal-done" type="button" class="px-6 py-2.5 rounded-full bg-forest-green text-on-forest-green text-label-lg hover:bg-dark-forest">Back to Menu</button>
+    </footer>
+  </dialog>
+
+  <script data-stitch-original-script="f3bf4d40f6a15e03===../../images/drink_moonlight_latte.jpg|||9fba2f4ee03df66e===../../images/drink_honey_cappuccino.jpg|||6549f36eb9087d18===../../images/todays_special_pastry.jpg|||a4cee33ee47ec5f8===../../images/menu_herbal_tea.jpg|||55b2a7294062bcfd===../../images/menu_matcha_latte.jpg|||5e57fdc65e9751d1===../../images/drink_iced_vanilla_cloud.jpg|||790ca2e7d342b741===../../images/menu_cold_brew.jpg|||6549f36eb9087d18===../../images/todays_special_pastry.jpg|||3cae3776e8688b61===../../images/menu_almond_croissant.jpg|||a8d2f2bb4924a0a5===../../images/menu_board_snack.jpg">
+    const MENU_ITEMS = [
+      { id: 1, cat: 'Coffee', name: 'Moonlight Latte', price: '$5.75', img: 'https://lh3.googleusercontent.com/aida/ALJJyrD-guFP3pWXKFqLEe8tJBXjUnPUdJHGaceXdsx0Ul15HeRVwCUZ7Vy-bR02Ai_xwwUokfKON-_stvdrUYgqq3DSlEQ05pzPHFU4l7t1doVuYSETO81opR1UTllscrjxYW9TawDzqBfCnay1tudOIkEfcykVyV5DAfiMCKmfoQw7O5R8Iwt9ZPsx-kBVPNe5C_Rid1PnmFhqiMBHt0N8xSV6hVSR9hLuRnRdeehQLmS7c21ODS-ORXZNQ5TYXKFhgw', tags: ['Vegan'], desc: 'Velvety oat milk steamed with toasted cardamom, vanilla bean, and our house espresso.' },
+      { id: 2, cat: 'Coffee', name: 'Honey Cinnamon Cappuccino', price: '$5.50', img: 'https://lh3.googleusercontent.com/aida/ALJJyrBI_gDYjfSrv04Y25DOKqa05qdWRZPZdNhfA2WsuFU1yZsDNB9XR-jOxf0-hBADQ4O0xh4c6UKEIVeoOr6ixrV00visrdeQMCf-aAh-9qvm4hM0z1TczJoxRu4ce_w2MGco1IaTlsr17XLM-VmushaJoMqjbZfcih8sPMopI2e6bJuEYMM9Qx_ZzwZ_uyvhIA1_7lRl9nd3OQQ5j0RYQfJ9Bp-ydOQjXgQCpuvWgNzQnXzKDhLxTJlWSrb-WmYxZVM', tags: ['Gluten-Free'], desc: 'Wildflower honey, Ceylon cinnamon, and thick microfoam over a rich double ristretto.' },
+      { id: 3, cat: 'Coffee', name: 'Maple Oat Cortado', price: '$4.95', img: 'https://lh3.googleusercontent.com/aida/ALJJyrCbWhy-N1Rc8z-R0QrpGghJspqjO8IKABkYsASNcJ0itpQSPD1GBvIqm-Uldi5hd0UmyGyU3wlm2czKAoKfy4m6_7-AXymGIk3lR2roLPoItiCUpf_kDNjdPPp9IhE0MQBaTXF_o4WkiOu0YJQyrkFMvsNqB_QFDk_2wTtNzWhuSjMVqlYtgOfzoXRnccNP2zSvZ8e9HgAkj-KWX10_FFGQnJX1cXeT44rapIjeE2NTSJ_rKwR49ucL4i9XsxYkIw', tags: ['Vegan', 'Gluten-Free'], desc: 'Equal parts double espresso and warm maple-infused steamed oat milk.' },
+      { id: 4, cat: 'Tea', name: 'Chamomile Lavender Pot', price: '$4.75', img: 'https://lh3.googleusercontent.com/aida/ALJJyrDE8JD6w0WtgeVATYgykSPLibFlTfVXoeq6D_nCara6SF_L5KVHKs74l3q7LRj4pSiGo_3YnVo1Xc9H_pZ3Y7OMrWLvHXm8pPfTt3P4kpsY36GXD2iBzp9NpWvYzBEIQZfs1BUDvJKP3sko7l6TdRxx8T7Au_VbhFkTpfvfDjYTot8W38RtYPeF75GJvVbh-Dfv0Sk3l_AaH0JT2Zcku0hNpih7m7w-wNNlF5zm9bhQw0Sw1rSQtsD3kQ', tags: ['Vegan', 'Caffeine-Free'], desc: 'Whole Egyptian chamomile blossoms steeped with culinary French lavender for a calm evening pot.' },
+      { id: 5, cat: 'Tea', name: 'Ceremonial Matcha Latte', price: '$5.95', img: 'https://lh3.googleusercontent.com/aida/ALJJyrDFoYBOCg_uQQGu2D5PbHBcEwAp78H4jw-QbYZv_33yXI8Joeawcj3xIvFGMzJ3ic69V_3Rq_LxDhidKtZRGKM7HKLl8UA8w--ucqKBCjMH9-crtowSl5tTsmCVRjWAToNO5TTGHnuiSzQaLc82JtQEh4i7GNYk5bX7CtnATZYTcWiWa-qB8SZ2qQklOtB5R_jkOzvpxNsaCg2iRMtpE4jr-GPFm7QYZI0Zc8FDTJLSZim1kaWv687SJVA', tags: ['Vegan', 'Gluten-Free'], desc: 'First-harvest Uji matcha whisked to order over silky oat milk.' },
+      { id: 6, cat: 'Cold Drinks', name: 'Iced Vanilla Cloud', price: '$6.00', img: 'https://lh3.googleusercontent.com/aida/ALJJyrDj49Lib_geYRA20jAMRh1bGLzD77CcRbqz49eITc9qjrXkcQIUE9mNx4ZaHTlVl4BbjCrB94ZXRhIPvAwu9yzXGK5V4jw-PBlPsL8MIpNijqL8IMSwFemfRcpo1PUMvBSllDJ-r5B4gEgFd57oFpWGCl6ooPvMzx5MaN_R0pimxIKBf5a3ijJjz6Oa-jrL-z3wbyBNwD5QitTtn_WinQrUwlOiftKpvG8ZT4k6mb1AYsKJ5n7bBOFMBu-UT_NmM5Ts', tags: ['Vegan'], desc: 'Chilled blonde espresso topped with whipped Madagascar vanilla oat cream.' },
+      { id: 7, cat: 'Cold Drinks', name: 'Citrus Cold Brew Tonic', price: '$5.50', img: 'https://lh3.googleusercontent.com/aida/ALJJyrCejifVBhRH3lkQcpr9kwEbJ3Ee6e-8KYNOA2eWZzmEsqDhL8dgzfUUkLqBz3intSBt62T8IIsArbotXqat9vYaPWmX6BDhmUZ4WCr7UisbX1M6cwd_WNipFHJYJmS5aM0F3kiwE0I-V9qllXQstHvH02oywJOB6S4zapmMr0jf0BKH-HTl2gmk7MwVa9L5nNKEQaOrEmpLAUlhfZRjoNsV0y_tx8KRQ6GXLWKQvXQEbKffkm_cabHd', tags: ['Vegan', 'Gluten-Free'], desc: '18-hour single-origin cold brew poured over botanical tonic water and fresh orange peel.' },
+      { id: 8, cat: 'Bakes', name: 'Spiced Cardamom Croissant', price: '$4.75', img: 'https://lh3.googleusercontent.com/aida/ALJJyrCbWhy-N1Rc8z-R0QrpGghJspqjO8IKABkYsASNcJ0itpQSPD1GBvIqm-Uldi5hd0UmyGyU3wlm2czKAoKfy4m6_7-AXymGIk3lR2roLPoItiCUpf_kDNjdPPp9IhE0MQBaTXF_o4WkiOu0YJQyrkFMvsNqB_QFDk_2wTtNzWhuSjMVqlYtgOfzoXRnccNP2zSvZ8e9HgAkj-KWX10_FFGQnJX1cXeT44rapIjeE2NTSJ_rKwR49ucL4i9XsxYkIw', tags: ['Vegetarian'], desc: 'Flaky laminated butter pastry braided with freshly ground green cardamom.' },
+      { id: 9, cat: 'Bakes', name: 'Twice-Baked Almond Croissant', price: '$5.25', img: 'https://lh3.googleusercontent.com/aida/ALJJyrBxFElU3-pSuz8i636twmv4-eliItTI3VQfPxcysY3WbEDjdJJ6LspcI5sK7G9f3btDNc-DywdoLGKXLDkKSYQPc3v0e2_DhjrJVhXZDR4Ez4OMeFq_3zjngdnwklNjPaSge2W7NXu5KUJXHvGT5w3Bu-tfXAwdoGXAYlMoTwHKa2mrys4zJfnsQl3NZLO_SVlLSrvvds9_f8r3hrN21Ca4Rgp1l3UV9EwX65EhSIX5SPzfWEoNJpQ9ki6Bu-6r', tags: ['Vegetarian'], desc: 'Filled with toasted almond frangipane and crowned with crisp flaked almonds.' },
+      { id: 10, cat: 'Snacks', name: 'Warm Rosemary Focaccia Bites', price: '$6.50', img: 'https://lh3.googleusercontent.com/aida/ALJJyrAyEixJApkyM7LoX5JqwR0RkV9o2uckC2XU2b7WnAvM_2Oz8ML47nokVHrAdTLe4yEka4RUHHYyC1yzUhR96tNS8iuJM_Kfi9WC13EKlk6Iw33yPLRxEPk19od9XeKfgfIZ0Ur6vOF-t4QIbBYSLPzLsKxzdHNGAkDsHcVXpogmGBUhDtfnOEa-OXjFex-PI1qoTroVwmWsiW1HCajkJWWdrSa5-3Y-j8Djag6bxN4kaFB7lhOSy8b5YJo', tags: ['Vegan'], desc: 'Crispy-edged sourdough focaccia cubes served with flaky sea salt and herb olive oil—zero greasy fingers on the cards.' }
+    ];
+
+    let activeCat = 'Coffee';
+    const grid = document.getElementById('menu-grid');
+    const modal = document.getElementById('item-modal');
+
+    function renderMenu() {
+      const items = MENU_ITEMS.filter(i => i.cat === activeCat);
+      grid.innerHTML = items.map(item => `
+        <article class="bg-surface rounded-lg border border-outline p-5 flex flex-col gap-4 shadow-sm hover:-translate-y-1 transition-transform duration-card-lift">
+          <div class="aspect-square rounded-md overflow-hidden bg-surface-muted">
+            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover"/>
+          </div>
+          <div class="flex items-start justify-between gap-2">
+            <h2 class="font-headline text-title-lg text-dark-forest">${item.name}</h2>
+            <span class="font-body text-title-md text-forest-green tabular-nums">${item.price}</span>
+          </div>
+          <p class="font-body text-body-sm text-on-surface-muted flex-1">${item.desc}</p>
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <div class="flex flex-wrap gap-1.5">
+              ${item.tags.map(t => `<span class="px-2.5 py-0.5 rounded-full bg-sage-soft text-dark-forest text-label-sm">${t}</span>`).join('')}
+            </div>
+            <button type="button" data-item-id="${item.id}" class="text-label-lg text-forest-green hover:text-dark-forest underline">Details</button>
+          </div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('[data-item-id]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = MENU_ITEMS.find(m => m.id === Number(btn.getAttribute('data-item-id')));
+          if (!item) return;
+          document.getElementById('item-modal-cat').textContent = item.cat;
+          document.getElementById('item-modal-title').textContent = item.name;
+          document.getElementById('item-modal-img').src = item.img;
+          document.getElementById('item-modal-img').alt = item.name;
+          document.getElementById('item-modal-tags').textContent = item.tags.join(' · ');
+          document.getElementById('item-modal-price').textContent = item.price;
+          document.getElementById('item-modal-desc').textContent = item.desc;
+          modal.showModal();
+        });
+      });
+    }
+
+    document.querySelectorAll('.menu-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        activeCat = tab.getAttribute('data-cat');
+        document.querySelectorAll('.menu-tab').forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+          t.className = 'menu-tab px-5 py-2.5 rounded-full bg-surface border border-outline text-dark-forest font-body text-label-lg shrink-0 hover:bg-surface-muted';
+        });
+        tab.setAttribute('aria-selected', 'true');
+        tab.className = 'menu-tab px-5 py-2.5 rounded-full bg-forest-green text-on-forest-green font-body text-label-lg shrink-0';
+        renderMenu();
+      });
+    });
+
+    document.getElementById('item-modal-close').addEventListener('click', () => modal.close());
+    document.getElementById('item-modal-done').addEventListener('click', () => modal.close());
+
+    renderMenu();
+  </script>
+
+
+</body></html>
