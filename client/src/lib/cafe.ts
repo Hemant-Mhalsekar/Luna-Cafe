@@ -18,3 +18,10 @@ export const NAV_LINKS = [
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ] as const;
+
+/**
+ * Hero photo. Leave as null to show the drawn latte.
+ * To use the photo: save it as client/public/images/hero.webp (about 1600 x 1600, under 200 KB)
+ * and set src to '/images/hero.webp'. Set width/height to the file's real size.
+ */
+export const HERO_PHOTO: { src: string; width: number; height: number; alt: string } | null = null;

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { Link } from 'react-router';
 import { LinkButton } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -6,7 +6,7 @@ import { Tag } from '../components/ui/Tag';
 import { Eyebrow, Section } from '../components/ui/Section';
 import { Reveal } from '../components/Reveal';
 import { GameCard, type GameCardData } from '../components/GameCard';
-import { LatteCup } from '../components/illustrations/LatteCup';
+import { HeroImage } from '../components/HeroImage';
 import { ClockIcon, CupIcon, DieIcon, PinIcon } from '../components/illustrations/GameIcons';
 import { CAFE } from '../lib/cafe';
 
@@ -30,7 +30,7 @@ export function Home() {
       {/* Hero: the calm café first */}
       <section aria-labelledby="hero-title" className="overflow-hidden">
         <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.2, 0, 0, 1] }}
@@ -53,19 +53,16 @@ export function Home() {
                 See the menu
               </LinkButton>
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             className="relative mx-auto w-full max-w-md lg:max-w-none"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.15, ease: [0.2, 0, 0, 1] }}
           >
-            {/* Blob-shaped frame. Swap LatteCup for <img src="/images/hero.webp"> when the photo is ready. */}
-            <div className="hero-blob aspect-square bg-sage p-6 sm:p-10">
-              <LatteCup />
-            </div>
-          </motion.div>
+            <HeroImage />
+          </m.div>
         </div>
       </section>
 
