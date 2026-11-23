@@ -1,0 +1,117 @@
+@import 'tailwindcss';
+
+/* Luna Café design tokens (spec v2). Contrast ratios are noted where they matter. */
+@theme {
+  --color-cream: #f6efdf;
+  --color-cream-deep: #e9e2d2;
+  --color-sage: #a9bba0;
+  --color-sage-soft: #e4ecdc;
+  --color-forest: #4a6b4f; /* text on cream 5.2:1. Never as text on sage (2.9:1). */
+  --color-forest-dark: #294632; /* headings, nav, all text on sage (5.1:1) */
+  --color-card: #fffdf8;
+  --color-outline: #ccc6b7;
+  --color-outline-strong: #7b776a; /* borders only, 3.9:1 */
+  --color-muted: #4a473b;
+
+  /* Orange is for actions only. White text on cta = 5.1:1 */
+  --color-cta: #b4501f;
+  --color-cta-hover: #9e4419;
+
+  /* Game accents: game cards and tags only. Each 6.3:1 on card. */
+  --color-game-blue: #456277;
+  --color-game-blue-soft: #e5f0f8;
+  --color-game-terracotta: #8c4e37;
+  --color-game-terracotta-soft: #fbe9e1;
+  --color-game-mustard: #7d5800;
+  --color-game-mustard-soft: #fbefd6;
+  --color-game-lavender: #665979;
+  --color-game-lavender-soft: #f0e9f7;
+
+  --color-error: #ba1a1a;
+
+  --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-sans: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'Fragment Mono', ui-monospace, monospace;
+
+  --radius-card: 1.5rem;
+  --radius-blob: 2rem;
+
+  --shadow-soft: 0 8px 24px rgb(41 70 50 / 0.06);
+  --shadow-lift: 0 14px 32px rgb(41 70 50 / 0.12);
+
+  --ease-out-soft: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-cream);
+    color: var(--color-forest-dark);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-sans);
+    min-height: 100dvh;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-forest-dark);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--color-sage);
+    color: var(--color-forest-dark);
+  }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Twinkling stars (hover on anything with .twinkle-host). */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+.twinkle-host .star {
+  opacity: 0.35;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.twinkle-host:hover .star,
+.twinkle-host:focus-visible .star {
+  animation: twinkle 1.6s ease-in-out infinite;
+}
+.twinkle-host .star:nth-child(2) { animation-delay: 0.3s; }
+.twinkle-host .star:nth-child(3) { animation-delay: 0.7s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Organic blob mask for the hero image (border-radius blob, works everywhere). */
+.hero-blob {
+  border-radius: 58% 42% 46% 54% / 52% 44% 56% 48%;
+}
