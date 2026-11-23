@@ -115,3 +115,17 @@
 .hero-blob {
   border-radius: 58% 42% 46% 54% / 52% 44% 56% 48%;
 }
+
+/* Latte art: the leaf's veins draw themselves in when the hero loads. */
+@keyframes draw-line {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.latte-vein,
+.latte-vein-group path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-line 0.9s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+.latte-vein { animation-delay: 0.3s; }
+.latte-vein-group path { animation-delay: inherit; }
