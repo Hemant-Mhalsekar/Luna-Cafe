@@ -80,14 +80,15 @@ The API runs on Render (free), the site on Vercel, the data on MongoDB Atlas. Ve
 - Seed once from your machine: `npm --prefix server run seed`.
 
 **2. API on Render**
-- Dashboard → New → Blueprint → choose this repo. It reads `render.yaml` (service `luna-cafe-api`, root `server`, branch `main`).
+- Dashboard → New → Blueprint → choose this repo. It reads `render.yaml` (service `luna-cafe`, root `server`, branch `main`).
+- Or create a Web Service by hand: root directory `server`, build `npm ci --include=dev && npm run build`, start `npm start`, health check `/api/health`, and add `NODE_ENV=production`, `NODE_VERSION=22`, `MONGODB_URI`, `CLIENT_ORIGIN` and a random `JWT_SECRET`.
 - Fill in `MONGODB_URI` (same as `server/.env`) and `CLIENT_ORIGIN` (your Vercel address, e.g. `https://luna-cafe.vercel.app`). `JWT_SECRET` is generated for you.
-- When it is live, open `https://luna-cafe-api.onrender.com/api/health`. It should say `"db":"connected"`.
+- When it is live, open `https://luna-cafe.onrender.com/api/health`. It should say `"db":"connected"`.
 - The free plan sleeps after 15 minutes without traffic and takes about a minute to wake. The site shows a "Waking up the café…" note meanwhile. No keep-alive ping on purpose: the free hours are shared with other projects in the same Render workspace.
 
 **3. Site on Vercel**
 - Vercel → Add New → Project → import `Luna-Cafe`. Set **Root Directory** to `client`. Everything else comes from `client/vercel.json` (Vite, `npm ci`, `npm run build`, output `dist`, Node 22). No environment variables are needed.
-- `client/vercel.json` forwards `/api/*` to `https://luna-cafe-api.onrender.com`. If Render gave your service a different address (it adds a suffix when the name is taken), change that one line and push.
+- `client/vercel.json` forwards `/api/*` to `https://luna-cafe.onrender.com`. If Render gave your service a different address (it adds a suffix when the name is taken), change that one line and push.
 - Deep links (`/games`, `/admin/…`) fall back to the app; `/assets/*` is cached for a year (file names change on every build).
 - Security headers: a strict Content-Security-Policy (only this site's own scripts, styles, fonts and API), `nosniff`, `frame-ancestors 'none'`, HSTS, a tight Permissions-Policy, and `noindex` on `/admin`.
 - Production branch: `main`. Every pull request also gets its own preview URL.
