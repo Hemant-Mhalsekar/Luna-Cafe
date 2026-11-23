@@ -4,7 +4,7 @@ import request from 'supertest';
 import { connectDb, disconnectDb } from '../src/db.js';
 import { resetEnvCache } from '../src/config/env.js';
 import { createApp } from '../src/app.js';
-import { Game, Reservation, Table } from '../src/models/index.js';
+import { ContactMessage, Game, Reservation, Table } from '../src/models/index.js';
 import { seedCatalog } from '../src/seed/catalog.js';
 import { availability, createReservation, type ReservationInput } from '../src/services/reservations.js';
 import { HttpError } from '../src/lib/httpError.js';
@@ -170,6 +170,30 @@ describe('HTTP API', () => {
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION');
     expect(Object.keys(res.body.error.fields)).toEqual(expect.arrayContaining(['email', 'partySize']));
+  });
+
+  it('POST /api/contact stores a message', async () => {
+    await ContactMessage.deleteMany({});
+    const res = await request(createApp())
+      .post('/api/contact')
+      .send({ name: 'Ravi', email: 'ravi@example.com', message: 'Can we book the whole café for a birthday?' });
+    expect(res.status).toBe(201);
+    expect(await ContactMessage.countDocuments()).toBe(1);
+  });
+
+  it('POST /api/contact quietly drops honeypot submissions', async () => {
+    await ContactMessage.deleteMany({});
+    const res = await request(createApp())
+      .post('/api/contact')
+      .send({ name: 'Bot', email: 'bot@example.com', message: 'Buy cheap things now please', website: 'spam.example' });
+    expect(res.status).toBe(201);
+    expect(await ContactMessage.countDocuments()).toBe(0);
+  });
+
+  it('POST /api/contact returns field errors', async () => {
+    const res = await request(createApp()).post('/api/contact').send({ name: 'R', email: 'x', message: 'hi' });
+    expect(res.status).toBe(400);
+    expect(Object.keys(res.body.error.fields)).toEqual(expect.arrayContaining(['name', 'email', 'message']));
   });
 
   it('unknown routes return 404 JSON', async () => {
