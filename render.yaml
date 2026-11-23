@@ -2,7 +2,7 @@
 # Render dashboard → New → Blueprint → pick this repo. Secrets marked sync: false are asked for once.
 services:
   - type: web
-    name: luna-cafe-api
+    name: luna-cafe
     runtime: node
     plan: free
     region: singapore
