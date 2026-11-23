@@ -25,7 +25,7 @@ design/   Stitch mockups and the original design-system notes (visual reference 
 
 1. Install dependencies: `npm run install:all`
 2. Create `server/.env` from `server/.env.example` and set `MONGODB_URI` (and the admin values).
-3. Seed the database: `npm --prefix server run seed`
+3. Seed the database: `npm --prefix server run seed` (tables, games, menu, four upcoming sample events, admin account). Safe to run again: it updates instead of duplicating, and keeps event sign-ups.
 4. Start the API: `npm run dev:server` (http://localhost:4000/api/health)
 5. Start the site in a second tab: `npm run dev:client` (http://localhost:5173)
 
@@ -44,7 +44,7 @@ Security: bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie
 
 `npm test` runs the server tests; `npm --prefix client test` runs the client unit tests (game quiz scoring). They start a throwaway in-memory MongoDB (the first run downloads it, so allow a minute), so they never touch your Atlas data.
 
-What they cover: café hours and time slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under concurrent requests (enforced by a unique database index), cancellation freeing a slot, nearest-free-slot suggestions, and API validation errors.
+What they cover: event sign-ups that never overfill (even when people sign up at the same moment), café hours and time slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under concurrent requests (enforced by a unique database index), cancellation freeing a slot, nearest-free-slot suggestions, and API validation errors.
 
 ## API
 
@@ -59,6 +59,8 @@ What they cover: café hours and time slots in café time (Asia/Kolkata), smalle
 | GET | `/api/reservations/availability?date=YYYY-MM-DD&partySize=4` | free / full / past / closed per slot |
 | POST | `/api/reservations` | `{ name, email, phone, date, slotId, partySize, gameId? }` → reference code, or 409 with suggestions |
 | POST | `/api/contact` | `{ name, email, message }` |
+| GET | `/api/events` | upcoming events with `spotsLeft` (never who signed up) |
+| POST | `/api/events/:slug/signup` | `{ name, email }`; 409 when full or already signed up |
 | POST | `/api/auth/login` · `/api/auth/logout` | admin session cookie |
 | GET | `/api/auth/me` | current admin |
 | * | `/api/admin/games`, `/menu`, `/events` | list, create, `PATCH /:id`, `DELETE /:id` (admin) |
