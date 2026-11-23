@@ -12,6 +12,8 @@ const tones: Record<Tone, { band: string; wave: string }> = {
 
 interface SectionProps {
   tone?: Tone;
+  /** Colour of the band above, shown behind the wave. Defaults to the other of cream/sage. */
+  from?: Tone;
   wave?: boolean;
   id?: string;
   className?: string;
@@ -20,11 +22,16 @@ interface SectionProps {
 }
 
 /** A full-width colour band, optionally with a wave on top. Bands alternate cream and sage. */
-export function Section({ tone = 'cream', wave = false, id, className, labelledBy, children }: SectionProps) {
+export function Section({ tone = 'cream', from, wave = false, id, className, labelledBy, children }: SectionProps) {
   const t = tones[tone];
+  const above = tones[from ?? (tone === 'cream' ? 'sage' : 'cream')];
   return (
     <section id={id} aria-labelledby={labelledBy} className="relative">
-      {wave && <Wave className={cn('-mb-px', t.wave)} />}
+      {wave && (
+        <div className={above.band.split(' ')[0]}>
+          <Wave className={cn('-mb-px', t.wave)} />
+        </div>
+      )}
       <div className={cn(t.band, 'py-16 sm:py-20', className)}>
         <div className="container-page">{children}</div>
       </div>

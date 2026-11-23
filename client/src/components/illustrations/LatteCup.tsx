@@ -20,11 +20,11 @@ export function LatteCup({ className }: { className?: string }) {
       {/* latte art leaf */}
       <g fill="#F6EBD9" className="latte-leaf">
         <path d="M200 120c26 22 40 48 40 78s-14 56-40 78c-26-22-40-48-40-78s14-56 40-78Z" opacity="0.95" />
-        <path d="M200 132v140" stroke="#9A6238" strokeWidth="5" strokeLinecap="round" fill="none" />
+        <path d="M200 132v140" stroke="#9A6238" strokeWidth="5" strokeLinecap="round" fill="none" pathLength={1} className="latte-vein" />
         {[150, 170, 190, 210, 230, 250].map((y, i) => (
-          <g key={y} stroke="#9A6238" strokeWidth="4" strokeLinecap="round" fill="none">
-            <path d={`M200 ${y}c-${12 + i * 2} -6 -${20 + i * 2} -14 -${24 - i} -24`} />
-            <path d={`M200 ${y}c${12 + i * 2} -6 ${20 + i * 2} -14 ${24 - i} -24`} />
+          <g key={y} stroke="#9A6238" strokeWidth="4" strokeLinecap="round" fill="none" style={{ animationDelay: `${0.5 + i * 0.12}s` }} className="latte-vein-group">
+            <path d={`M200 ${y}c-${12 + i * 2} -6 -${20 + i * 2} -14 -${24 - i} -24`} pathLength={1} />
+            <path d={`M200 ${y}c${12 + i * 2} -6 ${20 + i * 2} -14 ${24 - i} -24`} pathLength={1} />
           </g>
         ))}
         <circle cx="200" cy="284" r="9" />

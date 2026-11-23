@@ -1,5 +1,5 @@
 /**
- * Seeds tables, games and menu items (upsert by number/slug, so it is safe to run again),
+ * Seeds tables, games, menu items and sample events (upsert by number/slug, so it is safe to run again),
  * and creates the admin account from ADMIN_EMAIL / ADMIN_PASSWORD if no admin exists yet.
  * Run with: npm run seed
  */
@@ -22,7 +22,7 @@ async function main() {
   const env = getEnv();
   await connectDb(env.MONGODB_URI);
   const counts = await seedCatalog();
-  console.log(`Seeded ${counts.tables} tables, ${counts.games} games, ${counts.menuItems} menu items`);
+  console.log(`Seeded ${counts.tables} tables, ${counts.games} games, ${counts.menuItems} menu items, ${counts.events} events`);
   console.log(await seedAdmin(env.ADMIN_EMAIL, env.ADMIN_PASSWORD));
   await disconnectDb();
 }

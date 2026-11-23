@@ -9,6 +9,8 @@ import { Button, LinkButton } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { Tag } from '../components/ui/Tag';
 import { Card } from '../components/ui/Card';
+import { AnimatePresence } from 'motion/react';
+import * as m from 'motion/react-m';
 import { useGames } from '../lib/queries';
 import { GameQuiz } from '../components/GameQuiz';
 import { DIFFICULTY_LABEL, type Game, type GameMood, type GameType } from '../lib/types';
@@ -151,8 +153,16 @@ export function Games() {
 
           {results.length > 0 && (
             <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <AnimatePresence mode="popLayout" initial={false}>
               {results.map((g) => (
-                <li key={g._id}>
+                <m.li
+                  key={g._id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                >
                   <button
                     type="button"
                     onClick={() => setSelected(g)}
@@ -161,8 +171,9 @@ export function Games() {
                   >
                     <GameCard game={g} />
                   </button>
-                </li>
+                </m.li>
               ))}
+              </AnimatePresence>
             </ul>
           )}
 

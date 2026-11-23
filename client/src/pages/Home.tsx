@@ -10,6 +10,9 @@ import { HeroImage } from '../components/HeroImage';
 import { ClockIcon, CupIcon, DieIcon, PinIcon } from '../components/illustrations/GameIcons';
 import { CAFE } from '../lib/cafe';
 import { MiniMap } from '../components/MiniMap';
+import { LoyaltyCard } from '../components/LoyaltyCard';
+import { Overheard } from '../components/Overheard';
+import { TodaysSpecial } from '../components/TodaysSpecial';
 
 // Static for now; the Games page loads the full library from the API in phase 3.
 const popularGames: GameCardData[] = [
@@ -155,6 +158,37 @@ export function Home() {
             </Reveal>
           ))}
         </div>
+        <TodaysSpecial />
+      </Section>
+
+      {/* Moon Club loyalty card */}
+      <Section tone="cream" wave labelledBy="club-title">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <Reveal>
+            <Eyebrow className="text-forest">The Moon Club</Eyebrow>
+            <h2 id="club-title" className="text-4xl">
+              Eight drinks, one full cycle
+            </h2>
+            <p className="mt-4 max-w-md text-lg text-forest">
+              Every drink fills in the next phase of the moon. Complete the cycle and your next one is on us. No app, no sign-up: just ask
+              for a stamp. Try it here, your card is saved on this device.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <LoyaltyCard />
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* Overheard */}
+      <Section tone="sage" wave labelledBy="overheard-title">
+        <Reveal>
+          <Eyebrow>Overheard at Luna</Eyebrow>
+          <h2 id="overheard-title" className="text-4xl">
+            What the tables are saying
+          </h2>
+        </Reveal>
+        <Overheard />
       </Section>
 
       {/* Hours and location */}

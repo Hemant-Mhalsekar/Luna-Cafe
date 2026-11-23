@@ -8,6 +8,7 @@ import { gamesRouter } from './routes/games.js';
 import { menuRouter } from './routes/menu.js';
 import { reservationsRouter } from './routes/reservations.js';
 import { contactRouter } from './routes/contact.js';
+import { eventsRouter } from './routes/events.js';
 import { authRouter } from './routes/auth.js';
 import { adminRouter } from './routes/admin/index.js';
 import { errorHandler, notFound } from './middleware/error.js';
@@ -30,6 +31,7 @@ export function createApp() {
   app.use('/api/menu', menuRouter);
   app.use('/api/reservations', reservationsRouter);
   app.use('/api/contact', contactRouter);
+  app.use('/api/events', eventsRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/admin', adminRouter);
 

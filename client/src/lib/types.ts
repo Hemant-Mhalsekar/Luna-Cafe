@@ -80,3 +80,15 @@ export const CATEGORY_LABEL: Record<MenuCategory, string> = {
 };
 
 export const DIETARY_LABEL: Record<DietaryTag, string> = { vegan: 'Vegan', 'gluten-free': 'Gluten-free' };
+
+export interface PublicEvent {
+  _id: string;
+  title: string;
+  slug: string;
+  type: 'game-night' | 'tournament';
+  date: string;
+  startTime: string;
+  description: string;
+  capacity: number;
+  spotsLeft: number;
+}

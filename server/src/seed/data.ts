@@ -168,3 +168,48 @@ export const menuItems: SeedMenuItem[] = [
   { name: 'Hummus & Pita', slug: 'hummus-and-pita', category: 'snacks', price: 220, description: 'Smooth hummus, olive oil and warm pita triangles.', dietaryTags: ['vegan'] },
   { name: 'Loaded Nachos', slug: 'loaded-nachos', category: 'snacks', price: 230, description: 'Corn chips, beans, cheese, salsa and jalapeños.', dietaryTags: ['gluten-free'] },
 ];
+
+// Sample events, placed relative to the seed date so they are always upcoming.
+// weekday: 0 = Sunday ... 6 = Saturday; daysAhead: earliest offset from today.
+export const sampleEvents = [
+  {
+    slug: 'new-moon-game-night',
+    title: 'New Moon Game Night',
+    type: 'game-night' as const,
+    weekday: 3,
+    daysAhead: 2,
+    startTime: '19:00',
+    capacity: 30,
+    description: 'Come alone or bring friends. We mix tables, teach the rules and keep the chai coming. Perfect if you are new to board games.',
+  },
+  {
+    slug: 'codenames-cup',
+    title: 'The Codenames Cup',
+    type: 'tournament' as const,
+    weekday: 6,
+    daysAhead: 7,
+    startTime: '17:30',
+    capacity: 32,
+    description: 'Teams of four, three rounds, one very small trophy. Sign up as a team or on your own and we will match you.',
+  },
+  {
+    slug: 'cosy-strategy-sunday',
+    title: 'Cosy Strategy Sunday',
+    type: 'game-night' as const,
+    weekday: 0,
+    daysAhead: 10,
+    startTime: '14:30',
+    capacity: 20,
+    description: 'A slow afternoon for longer games like Wingspan and Catan. Our game guru helps you set up and learn.',
+  },
+  {
+    slug: 'full-moon-party-night',
+    title: 'Full Moon Party Night',
+    type: 'game-night' as const,
+    weekday: 5,
+    daysAhead: 17,
+    startTime: '19:00',
+    capacity: 40,
+    description: 'Loud, silly, fast games: Moonlight Mischief, Dixit, Exploding Kittens. Laughter is basically guaranteed.',
+  },
+];

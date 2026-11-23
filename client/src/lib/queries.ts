@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from './api';
-import type { Game, MenuItem, ReservationConfirmation, ReservationRequest, SlotAvailability } from './types';
+import type { Game, MenuItem, PublicEvent, ReservationConfirmation, ReservationRequest, SlotAvailability } from './types';
 
 // The free API may be waking up, so data queries retry patiently instead of failing fast.
 const patient = { retry: 8, retryDelay: 5000 } as const;
@@ -52,5 +52,33 @@ export function useSendMessage() {
   return useMutation({
     mutationFn: (body: { name: string; email: string; message: string; website?: string }) =>
       api<{ ok: true }>('/contact', { method: 'POST', body: JSON.stringify(body) }),
+  });
+}
+
+export function useSpecial() {
+  return useQuery({
+    queryKey: ['menu', 'special'],
+    queryFn: () => api<{ date: string; item: MenuItem | null; note: string | null }>('/menu/special'),
+    staleTime: 10 * 60_000,
+    ...patient,
+  });
+}
+
+export function useEvents() {
+  return useQuery({
+    queryKey: ['events'],
+    queryFn: () => api<{ events: PublicEvent[] }>('/events').then((r) => r.events),
+    staleTime: 60_000,
+    ...patient,
+  });
+}
+
+export function useEventSignup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ slug, ...body }: { slug: string; name: string; email: string }) =>
+      api<{ event: PublicEvent }>(`/events/${slug}/signup`, { method: 'POST', body: JSON.stringify(body) }).then((r) => r.event),
+    // Seats left changed either way (signed up, or someone else took the last seat).
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['events'] }),
   });
 }

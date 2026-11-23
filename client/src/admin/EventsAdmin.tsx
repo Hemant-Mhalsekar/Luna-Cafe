@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { ResourceManager } from './shared';
+import { Modal } from '../components/ui/Modal';
 import type { AdminEvent } from './api';
 import { Field, SelectField, TextAreaField } from '../components/ui/Field';
 import { Tag } from '../components/ui/Tag';
@@ -15,8 +17,10 @@ interface EventForm {
 }
 
 export function EventsAdmin() {
+  const [viewing, setViewing] = useState<AdminEvent | null>(null);
   const empty: EventForm = { title: '', slug: '', type: 'game-night', date: cafeToday(), startTime: '19:00', description: '', capacity: '24' };
   return (
+    <>
     <ResourceManager<AdminEvent, EventForm>
       resource="events"
       title="Events"
@@ -29,7 +33,14 @@ export function EventsAdmin() {
         { label: 'Date', render: (ev) => `${formatDate(ev.date).split(' ').slice(0, 3).join(' ')}, ${ev.startTime}` },
         { label: 'Title', render: (ev) => <span className="font-semibold">{ev.title}</span> },
         { label: 'Type', render: (ev) => <Tag tone={ev.type === 'tournament' ? 'terracotta' : 'lavender'}>{ev.type === 'tournament' ? 'Tournament' : 'Game night'}</Tag> },
-        { label: 'Sign-ups', render: (ev) => `${ev.signups.length} / ${ev.capacity}` },
+        {
+          label: 'Sign-ups',
+          render: (ev) => (
+            <button type="button" className="font-semibold underline underline-offset-4" onClick={() => setViewing(ev)} aria-label={`${ev.signups.length} of ${ev.capacity} signed up for ${ev.title}: see list`}>
+              {ev.signups.length} / {ev.capacity}
+            </button>
+          ),
+        },
       ]}
       renderForm={(f, set, e) => (
         <>
@@ -49,5 +60,21 @@ export function EventsAdmin() {
         </>
       )}
     />
+    <Modal open={viewing !== null} onClose={() => setViewing(null)} title={viewing ? `Sign-ups: ${viewing.title}` : ''}>
+      {viewing && viewing.signups.length === 0 && <p className="text-forest">Nobody yet.</p>}
+      {viewing && viewing.signups.length > 0 && (
+        <ol className="flex list-decimal flex-col gap-2 pl-6">
+          {viewing.signups.map((s) => (
+            <li key={s.email}>
+              <span className="font-semibold">{s.name}</span>{' '}
+              <a href={`mailto:${s.email}`} className="text-sm underline underline-offset-4">
+                {s.email}
+              </a>
+            </li>
+          ))}
+        </ol>
+      )}
+    </Modal>
+    </>
   );
 }
