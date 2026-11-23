@@ -1,0 +1,28 @@
+# Render Blueprint for the Luna Café API.
+# Render dashboard → New → Blueprint → pick this repo. Secrets marked sync: false are asked for once.
+services:
+  - type: web
+    name: luna-cafe-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: server
+    branch: main
+    buildFilter:
+      paths:
+        - server/**
+    # Dev dependencies (TypeScript) are needed to build, even though NODE_ENV is production.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_ORIGIN
+        sync: false
