@@ -2,7 +2,7 @@ import * as m from 'motion/react-m';
 import { cn } from '../lib/cn';
 import { ClockIcon, DieIcon, MeepleIcon } from './illustrations/GameIcons';
 
-export type Accent = 'blue' | 'terracotta' | 'mustard' | 'lavender';
+import type { Accent } from '../lib/types';
 
 export interface GameCardData {
   name: string;

@@ -25,3 +25,36 @@ export const NAV_LINKS = [
  * and set src to '/images/hero.webp'. Set width/height to the file's real size.
  */
 export const HERO_PHOTO: { src: string; width: number; height: number; alt: string } | null = null;
+
+// Booking rules, mirrored from server/src/lib/cafe.ts so the form can guide people before they submit.
+export const BOOKING = {
+  maxPartySize: 8,
+  windowDays: 30,
+  closedWeekdays: [1] as number[], // Monday
+  tzOffsetMinutes: 330, // Asia/Kolkata
+};
+
+/** Today's date (YYYY-MM-DD) in café time, whatever the visitor's timezone. */
+export function cafeToday(now: Date = new Date()): string {
+  return new Date(now.getTime() + BOOKING.tzOffsetMinutes * 60_000).toISOString().slice(0, 10);
+}
+
+export function addDays(date: string, days: number): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+export function isClosedDay(date: string): boolean {
+  return BOOKING.closedWeekdays.includes(new Date(`${date}T00:00:00Z`).getUTCDay());
+}
+
+/** "Wednesday 25 November" */
+export function formatDate(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+  });
+}
