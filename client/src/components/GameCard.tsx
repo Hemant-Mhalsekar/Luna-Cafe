@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import * as m from 'motion/react-m';
 import { cn } from '../lib/cn';
 import { ClockIcon, DieIcon, MeepleIcon } from './illustrations/GameIcons';
 
@@ -26,7 +26,7 @@ export function GameCard({ game, className }: { game: GameCardData; className?: 
   const a = accents[game.accent];
   const players = game.minPlayers === game.maxPlayers ? `${game.minPlayers}` : `${game.minPlayers}–${game.maxPlayers}`;
   return (
-    <motion.article
+    <m.article
       whileHover={{ y: -6, rotate: -1.2 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={cn('relative flex h-full flex-col overflow-hidden rounded-card border border-outline/40 p-5', a.bg, className)}
@@ -51,6 +51,6 @@ export function GameCard({ game, className }: { game: GameCardData; className?: 
           <dd>{game.playTimeMinutes} min</dd>
         </div>
       </dl>
-    </motion.article>
+    </m.article>
   );
 }
