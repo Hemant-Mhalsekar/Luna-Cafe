@@ -37,7 +37,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LinkButton to="/book" className="group hidden sm:inline-flex">
+          <LinkButton to="/book" className="group max-sm:hidden">
             <DieIcon className="transition-transform duration-500 group-hover:rotate-[200deg]" />
             Book a table
           </LinkButton>
