@@ -7,20 +7,20 @@ A portfolio project: the website of a fictional board game café. It opens as a 
 **Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
 
 <p>
-  <img src="docs/screenshots/home.png" alt="Home page: hero with a drawn latte and the tagline" width="49%">
-  <img src="docs/screenshots/home-games.png" alt="The board game reveal on the home page" width="49%">
-  <img src="docs/screenshots/games-quiz.png" alt="Game picker quiz showing three matches" width="49%">
-  <img src="docs/screenshots/book.png" alt="Booking form with live time slots" width="49%">
-  <img src="docs/screenshots/events.png" alt="Events with seats left and sign-up" width="49%">
-  <img src="docs/screenshots/admin.png" alt="Admin dashboard with today's tables" width="49%">
+  <img src="docs/screenshots/home.webp" alt="Home page: hero with a drawn latte and the tagline" width="49%">
+  <img src="docs/screenshots/home-games.webp" alt="The board game reveal on the home page" width="49%">
+  <img src="docs/screenshots/games-quiz.webp" alt="Game picker quiz showing three matches" width="49%">
+  <img src="docs/screenshots/book.webp" alt="Booking form with live time slots" width="49%">
+  <img src="docs/screenshots/events.webp" alt="Events with seats left and sign-up" width="49%">
+  <img src="docs/screenshots/admin.webp" alt="Admin dashboard with today's tables" width="49%">
 </p>
 <p>
-  <img src="docs/screenshots/mobile-home.png" alt="Home on a phone" width="32%">
-  <img src="docs/screenshots/mobile-menu.png" alt="Menu on a phone" width="32%">
-  <img src="docs/screenshots/mobile-book.png" alt="Booking on a phone" width="32%">
+  <img src="docs/screenshots/mobile-home.webp" alt="Home on a phone" width="32%">
+  <img src="docs/screenshots/mobile-menu.webp" alt="Menu on a phone" width="32%">
+  <img src="docs/screenshots/mobile-book.webp" alt="Booking on a phone" width="32%">
 </p>
 
-More: [game library](docs/screenshots/games-library.png) · [booking confirmed](docs/screenshots/book-confirmed.png) · [Moon Club card](docs/screenshots/moon-club.png)
+More: [game library](docs/screenshots/games-library.webp) · [booking confirmed](docs/screenshots/book-confirmed.webp) · [Moon Club card](docs/screenshots/moon-club.webp)
 
 ## Stack
 
@@ -76,9 +76,9 @@ What keeps it fast: every page except Home and the animation engine load on dema
 
 The free API sleeps when idle. The site waits up to 2.5 minutes for it with a "Waking up the café…" banner, retrying reads, and retrying writes only when the request clearly never reached the server (so nothing is saved twice).
 
-## Hero photo
+## Photos
 
-Until the photo is ready the hero shows a drawn latte. To switch: save the photo as `client/public/images/hero.webp` (about 1600 × 1600, under 200 KB) and fill in `HERO_PHOTO` in `client/src/lib/cafe.ts`.
+Food, drink and café photos were generated with Gemini for this fictional café (originals in `design/photos/`; the interior and storefront were retouched so the signs say Luna Café). The site serves compressed WebP copies from `client/public/images/`; menu items point at theirs through the `image` field, set by the seed. Game cards, icons, the map and the moon motifs are drawn in code. The hero photo is configured in `client/src/lib/cafe.ts` (`HERO_PHOTO`).
 
 ## Tests
 
