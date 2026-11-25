@@ -30,6 +30,7 @@ export const router = createBrowserRouter([
       { path: 'menu', lazy: () => import('./admin/MenuAdmin').then((m) => ({ Component: m.MenuAdmin })) },
       { path: 'events', lazy: () => import('./admin/EventsAdmin').then((m) => ({ Component: m.EventsAdmin })) },
       { path: 'messages', lazy: () => import('./admin/Messages').then((m) => ({ Component: m.Messages })) },
+      { path: 'account', lazy: () => import('./admin/Account').then((m) => ({ Component: m.Account })) },
     ],
   },
 ]);
