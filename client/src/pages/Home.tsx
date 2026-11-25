@@ -1,4 +1,3 @@
-import * as m from 'motion/react-m';
 import { Link } from 'react-router';
 import { LinkButton } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -34,11 +33,8 @@ export function Home() {
       {/* Hero: the calm café first */}
       <section aria-labelledby="hero-title" className="overflow-hidden">
         <div className="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
-          <m.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.2, 0, 0, 1] }}
-          >
+          {/* CSS animation, not Motion: the headline paints at once, without waiting for any JavaScript. */}
+          <div className="hero-rise">
             <Eyebrow className="text-forest">Specialty coffee · Panaji</Eyebrow>
             <h1 id="hero-title" className="text-[2.75rem] leading-[1.05] sm:text-6xl lg:text-7xl">
               Coffee first.
@@ -57,16 +53,11 @@ export function Home() {
                 See the menu
               </LinkButton>
             </div>
-          </m.div>
+          </div>
 
-          <m.div
-            className="relative mx-auto w-full max-w-md lg:max-w-none"
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.2, 0, 0, 1] }}
-          >
+          <div className="hero-fade relative mx-auto w-full max-w-md lg:max-w-none">
             <HeroImage />
-          </m.div>
+          </div>
         </div>
       </section>
 

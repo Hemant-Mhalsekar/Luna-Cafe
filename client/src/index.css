@@ -129,3 +129,16 @@
 }
 .latte-vein { animation-delay: 0.3s; }
 .latte-vein-group path { animation-delay: inherit; }
+
+/* Hero entrance. Transform only on the text (it stays visible, so it counts as painted straight away);
+   the illustration fades in. Pure CSS, so it doesn't wait for the animation library to load. */
+@keyframes hero-rise {
+  from { transform: translateY(14px); }
+  to { transform: none; }
+}
+@keyframes hero-fade {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.hero-rise { animation: hero-rise 0.7s cubic-bezier(0.2, 0, 0, 1) both; }
+.hero-fade { animation: hero-fade 0.9s cubic-bezier(0.2, 0, 0, 1) 0.15s both; }
