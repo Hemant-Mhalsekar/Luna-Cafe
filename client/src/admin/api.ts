@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApiError, api, retryWhileWaking, wakeRetryDelay } from '../lib/api';
+import { ApiError, api, retryWhileWaking, retryWriteWhileWaking, wakeRetryDelay } from '../lib/api';
 import type { Game, MenuItem } from '../lib/types';
 
 export type AdminGame = Game & { isAvailable: boolean };
@@ -67,6 +67,9 @@ export function useLogin() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: { email: string; password: string }) => api<{ admin: { email: string } }>('/auth/login', json('POST', body)),
+    // If the free server is asleep, keep trying for a couple of minutes instead of failing at once.
+    retry: retryWriteWhileWaking,
+    retryDelay: wakeRetryDelay,
     onSuccess: (r) => qc.setQueryData(['admin', 'me'], r.admin),
   });
 }
@@ -126,6 +129,14 @@ export function useAdminReservations(from: string, to: string, status: 'all' | '
     queryFn: () =>
       api<{ items: AdminReservation[] }>(`/admin/reservations?from=${from}&to=${to}&status=${status}`).then((r) => r.items),
     enabled: Boolean(from && to && from <= to),
+  });
+}
+
+export function useRecentReservations() {
+  return useQuery({
+    queryKey: ['admin', 'reservations', 'recent'],
+    queryFn: () => api<{ items: AdminReservation[] }>('/admin/reservations/recent?limit=8').then((r) => r.items),
+    refetchInterval: 60_000,
   });
 }
 

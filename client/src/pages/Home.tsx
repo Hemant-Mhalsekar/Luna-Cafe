@@ -7,7 +7,8 @@ import { Reveal } from '../components/Reveal';
 import { GameCard, type GameCardData } from '../components/GameCard';
 import { HeroImage } from '../components/HeroImage';
 import { ClockIcon, CupIcon, DieIcon, PinIcon } from '../components/illustrations/GameIcons';
-import { CAFE } from '../lib/cafe';
+import { CAFE, PHOTOS } from '../lib/cafe';
+import { Photo } from '../components/Photo';
 import { MiniMap } from '../components/MiniMap';
 import { LoyaltyCard } from '../components/LoyaltyCard';
 import { Overheard } from '../components/Overheard';
@@ -22,10 +23,16 @@ const popularGames: GameCardData[] = [
 ];
 
 const signatureDrinks = [
-  { name: 'Moonlight Latte', price: 220, note: 'Vanilla, double shot, a crescent of cinnamon.', tags: ['gluten-free'] },
-  { name: 'Honey Cinnamon Cappuccino', price: 210, note: 'Wild honey and our house cappuccino.', tags: ['gluten-free'] },
-  { name: 'Iced Vanilla Cloud', price: 240, note: 'Cold brew under soft vanilla sweet cream.', tags: ['gluten-free'] },
+  { name: 'Moonlight Latte', price: 220, note: 'Vanilla, double shot, a crescent of cinnamon.', tags: ['gluten-free'], image: '/images/menu/moonlight-latte.webp' },
+  { name: 'Honey Cinnamon Cappuccino', price: 210, note: 'Wild honey and our house cappuccino.', tags: ['gluten-free'], image: '/images/menu/honey-cinnamon-cappuccino.webp' },
+  { name: 'Iced Vanilla Cloud', price: 240, note: 'Cold brew under soft vanilla sweet cream.', tags: ['gluten-free'], image: '/images/menu/iced-vanilla-cloud.webp' },
 ];
+
+const visitSteps = [
+  { title: 'Book a table', text: 'Pick a time online (tables are held for 90 minutes) or just walk in. Big group? Send us a note.', icon: 'calendar' },
+  { title: 'Order at the bar', text: 'Coffee, tea, bakes and things to share. Order whenever you like; we bring it to your table.', icon: 'cup' },
+  { title: 'Pick a game', text: 'Grab one from the shelf, take the quiz, or ask us. We teach the rules, and the library is free with any order.', icon: 'die' },
+] as const;
 
 export function Home() {
   return (
@@ -132,9 +139,7 @@ export function Home() {
           {signatureDrinks.map((d, i) => (
             <Reveal key={d.name} delay={0.08 * i} className="h-full">
               <Card className="flex h-full flex-col">
-                <div className="grid aspect-[4/3] place-items-center rounded-2xl bg-sage-soft text-forest-dark">
-                  <CupIcon className="size-14" />
-                </div>
+                <Photo src={d.image} alt={d.name} width={512} height={384} className="aspect-[4/3] w-full rounded-2xl" />
                 <div className="mt-5 flex items-start justify-between gap-3">
                   <h3 className="text-xl">{d.name}</h3>
                   <span className="font-mono text-forest">₹{d.price}</span>
@@ -150,6 +155,68 @@ export function Home() {
           ))}
         </div>
         <TodaysSpecial />
+      </Section>
+
+      {/* A peek inside */}
+      <Section tone="cream" wave labelledBy="inside-title">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <Reveal>
+            <figure>
+              <Photo {...PHOTOS.interior} className="aspect-[16/9] w-full rounded-card shadow-soft" />
+              <figcaption className="mt-3 text-sm text-forest">Long tables for big games, small ones for two, and a sofa corner for the slow afternoons.</figcaption>
+            </figure>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Eyebrow className="text-forest">A peek inside</Eyebrow>
+            <h2 id="inside-title" className="text-4xl">
+              Big windows, green chairs, a lot of games
+            </h2>
+            <p className="mt-4 text-lg text-forest">
+              Sunlight in the morning, warm lamps at night. Plants everywhere, a coffee bar in the middle, and a shelf of more than a hundred games
+              along the back wall.
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <Photo {...PHOTOS.croissant} className="aspect-square w-full rounded-2xl" />
+              <Photo {...PHOTOS.focaccia} className="aspect-square w-full rounded-2xl" />
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* How a visit works */}
+      <Section tone="sage" wave labelledBy="how-title">
+        <Reveal className="max-w-2xl">
+          <Eyebrow>First time?</Eyebrow>
+          <h2 id="how-title" className="text-4xl">
+            How a visit works
+          </h2>
+        </Reveal>
+        <ol className="mt-10 grid gap-5 md:grid-cols-3">
+          {visitSteps.map((step, i) => (
+            <li key={step.title}>
+              <Reveal delay={0.08 * i} className="h-full">
+                <Card className="flex h-full flex-col">
+                  <div className="flex items-center gap-3">
+                    <span className="grid size-11 place-items-center rounded-full bg-forest-dark font-display text-lg font-semibold text-cream">{i + 1}</span>
+                    <span className="text-forest-dark">
+                      {step.icon === 'cup' ? <CupIcon className="size-7" /> : step.icon === 'die' ? <DieIcon className="size-7" /> : <ClockIcon className="size-7" />}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 text-2xl">{step.title}</h3>
+                  <p className="mt-2 text-forest">{step.text}</p>
+                </Card>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+        <Reveal className="mt-10 flex flex-wrap gap-3">
+          <LinkButton to="/book" size="lg">
+            Book a table
+          </LinkButton>
+          <LinkButton to="/about#faq" variant="secondary" size="lg">
+            Questions? Read the FAQ
+          </LinkButton>
+        </Reveal>
       </Section>
 
       {/* Moon Club loyalty card */}

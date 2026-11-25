@@ -1,6 +1,6 @@
 import { Event, Game, MenuItem, Table } from '../models/index.js';
 import { addDays, cafeNow, parseDate } from '../lib/cafe.js';
-import { games, menuItems, sampleEvents, tables } from './data.js';
+import { games, menuItems, retiredMenuSlugs, sampleEvents, tables } from './data.js';
 
 /** Upserts by number/slug, so running it again updates instead of duplicating. */
 export async function seedCatalog() {
@@ -11,8 +11,9 @@ export async function seedCatalog() {
     games.map((g) => ({ updateOne: { filter: { slug: g.slug }, update: { $set: g }, upsert: true } })),
   );
   await MenuItem.bulkWrite(
-    menuItems.map((m) => ({ updateOne: { filter: { slug: m.slug }, update: { $set: m }, upsert: true } })),
+    menuItems.map((m) => ({ updateOne: { filter: { slug: m.slug }, update: { $set: { image: null, ...m } }, upsert: true } })),
   );
+  await MenuItem.updateMany({ slug: { $in: retiredMenuSlugs } }, { $set: { isAvailable: false } });
   // Events keep their sign-ups; only the details and date are refreshed.
   const today = cafeNow().date;
   await Event.bulkWrite(

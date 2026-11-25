@@ -22,7 +22,7 @@ export function HeroImage() {
         alt={HERO_PHOTO.alt}
         fetchPriority="high"
         decoding="async"
-        className="size-full object-cover object-right"
+        className="size-full object-cover object-center"
       />
     </div>
   );

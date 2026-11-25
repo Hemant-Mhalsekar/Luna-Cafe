@@ -29,5 +29,19 @@ reservationSchema.index(
 );
 reservationSchema.index({ date: 1, slotId: 1, status: 1 });
 
+/**
+ * The café has one copy of each game, so a game can be reserved by one confirmed booking per date and
+ * slot. Bookings without a game are not affected.
+ */
+reservationSchema.index(
+  { gameId: 1, date: 1, slotId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { status: 'confirmed', gameId: { $type: 'objectId' } },
+    name: 'one_booking_per_game_slot',
+  },
+);
+reservationSchema.index({ createdAt: -1 });
+
 export type ReservationDoc = InferSchemaType<typeof reservationSchema>;
 export const Reservation = model('Reservation', reservationSchema);

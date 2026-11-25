@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import { limiter } from '../lib/rateLimit.js';
 import { z } from 'zod';
 import { ContactMessage } from '../models/index.js';
 
 export const contactRouter = Router();
 
-const limiter = rateLimit({ windowMs: 15 * 60_000, limit: 5, standardHeaders: 'draft-8', legacyHeaders: false });
+const contactLimiter = limiter({ minutes: 15, limit: 5, message: 'Too many messages from here. Please try again in a few minutes.' });
 
 const contactInput = z.object({
   name: z.string().trim().min(2, 'Please tell us your name.').max(80),
@@ -15,7 +15,7 @@ const contactInput = z.object({
   website: z.string().max(200).optional(),
 });
 
-contactRouter.post('/', limiter, async (req, res) => {
+contactRouter.post('/', contactLimiter, async (req, res) => {
   const { website, ...input } = contactInput.parse(req.body);
   if (!website) await ContactMessage.create(input);
   res.status(201).json({ ok: true });

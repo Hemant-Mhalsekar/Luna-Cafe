@@ -147,6 +147,18 @@ describe('admin reservations and messages', () => {
     expect((await book('b@example.com')).status).toBe(201);
   });
 
+  it('lists the latest bookings first, with when they were made', async () => {
+    const app = createApp();
+    for (const [i, slotId] of ['1300', '1430'].entries()) {
+      await request(app).post('/api/reservations').send({ name: `Guest ${i}`, email: `g${i}@example.com`, phone: '+91 98200 00000', date: openDay, slotId, partySize: 2 });
+    }
+    const agent = await signedIn();
+    const res = await agent.get('/api/admin/reservations/recent?limit=5');
+    expect(res.status).toBe(200);
+    expect(res.body.items.map((r: { name: string }) => r.name)).toEqual(['Guest 1', 'Guest 0']);
+    expect(res.body.items[0].createdAt).toBeTruthy();
+  });
+
   it('marks messages read and deletes them', async () => {
     const msg = await ContactMessage.create({ name: 'Ravi', email: 'r@example.com', message: 'Birthday booking please' });
     const agent = await signedIn();

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { bookingConfirmation, eventSignupConfirmation, longDate } from '../src/emails/templates.js';
+import { adminNewBooking, bookingConfirmation, cafeStamp, eventSignupConfirmation, longDate } from '../src/emails/templates.js';
 import { sendInBackground, setMailTransport, type Mail } from '../src/lib/mailer.js';
 import { resetEnvCache } from '../src/config/env.js';
 
@@ -117,4 +117,18 @@ describe('mailer', () => {
 
 it('formats long dates', () => {
   expect(longDate('2026-12-31')).toBe('Thursday 31 December 2026');
+});
+
+describe('staff alert email', () => {
+  it('says who booked which slot, table and game, and when', () => {
+    const m = adminNewBooking({ ...booking, phone: '+91 98200 00000', bookedAt: new Date('2026-11-24T08:35:00Z') }, SITE, 'staff@example.com');
+    expect(m.to).toEqual({ email: 'staff@example.com' });
+    expect(m.subject).toBe('New booking: Asha <b>Rao</b>, 4 on Wednesday 25 November 2026 at 19:00 (Catan)');
+    for (const part of ['Table: No. 5', 'Game: Catan', 'Phone: +91 98200 00000', 'Booked at: 24 Nov, 14:05']) expect(m.text).toContain(part);
+    expect(m.html).not.toContain('<b>Rao</b>');
+  });
+
+  it('formats booking times in café time', () => {
+    expect(cafeStamp(new Date('2026-11-24T20:00:00Z'))).toBe('25 Nov, 01:30');
+  });
 });

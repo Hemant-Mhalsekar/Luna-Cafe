@@ -134,3 +134,60 @@ ${button('See other events', `${siteUrl}/events`)}`,
     attachments: [{ name: 'luna-cafe-event.ics', content: Buffer.from(ics).toString('base64') }],
   };
 }
+
+/** "26 Nov, 14:05" in café time, for "booked at" lines. */
+export function cafeStamp(d: Date): string {
+  const local = new Date(d.getTime() + 330 * 60_000);
+  const hh = String(local.getUTCHours()).padStart(2, '0');
+  const mm = String(local.getUTCMinutes()).padStart(2, '0');
+  return `${local.getUTCDate()} ${MONTHS[local.getUTCMonth()]!.slice(0, 3)}, ${hh}:${mm}`;
+}
+
+export interface AdminBookingInput extends BookingEmailInput {
+  phone: string;
+  bookedAt: Date;
+}
+
+/** Staff alert: who booked which slot, table and game, and when they booked it. */
+export function adminNewBooking(b: AdminBookingInput, siteUrl: string, to: string): Mail {
+  const slot = findSlot(b.slotId);
+  const time = slot?.label ?? b.slotId;
+  const rows: [string, string][] = [
+    ['When', `${longDate(b.date)}, ${time}`],
+    ['Guest', b.name],
+    ['Party', `${b.partySize} ${b.partySize === 1 ? 'guest' : 'guests'}`],
+    ['Table', `No. ${b.tableNumber}`],
+    ['Game', b.gameName ?? 'None'],
+    ['Email', b.email],
+    ['Phone', b.phone],
+    ['Reference', b.referenceCode],
+    ['Booked at', cafeStamp(b.bookedAt)],
+  ];
+  const html = layout({
+    siteUrl,
+    preheader: `${b.name}, ${b.partySize} guests, ${longDate(b.date)} at ${time}`,
+    heading: `New booking: ${time}, ${longDate(b.date)}`,
+    body: `${detailsTable(rows)}
+<p style="margin:20px 0">${button('Open reservations', `${siteUrl}/admin/reservations`)}</p>`,
+  });
+  return {
+    to: { email: to },
+    subject: `New booking: ${b.name}, ${b.partySize} on ${longDate(b.date)} at ${time}${b.gameName ? ` (${b.gameName})` : ''}`,
+    html,
+    text: [`New booking`, '', ...rows.map(([k, v]) => `${k}: ${v}`), '', `${siteUrl}/admin/reservations`].join('\n'),
+  };
+}
+
+export function adminNewSignup(e: EventEmailInput & { taken: number; capacity: number }, siteUrl: string, to: string): Mail {
+  const rows: [string, string][] = [
+    ['Event', `${e.title}, ${longDate(e.date)} ${e.startTime}`],
+    ['Guest', `${e.name} (${e.email})`],
+    ['Seats taken', `${e.taken} of ${e.capacity}`],
+  ];
+  return {
+    to: { email: to },
+    subject: `New sign-up: ${e.title} (${e.taken}/${e.capacity})`,
+    html: layout({ siteUrl, preheader: `${e.name} signed up`, heading: `New sign-up: ${e.title}`, body: `${detailsTable(rows)}<p style="margin:20px 0">${button('Open events', `${siteUrl}/admin/events`)}</p>` }),
+    text: ['New event sign-up', '', ...rows.map(([k, v]) => `${k}: ${v}`)].join('\n'),
+  };
+}

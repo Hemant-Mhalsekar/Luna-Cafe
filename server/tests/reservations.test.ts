@@ -122,6 +122,46 @@ describe('createReservation', () => {
   });
 });
 
+describe('one copy of each game', () => {
+  const catanId = async () => String((await Game.findOne({ slug: 'catan' }).lean())!._id);
+
+  it('a game reserved at a time cannot be reserved again at that time', async () => {
+    const gameId = await catanId();
+    await createReservation(guest({ gameId }), NOW);
+    const err = await expectHttpError(createReservation(guest({ gameId, email: 'b@example.com' }), NOW), 409, 'GAME_TAKEN');
+    expect(err.message).toContain('Catan is already reserved at 19:00');
+    // Other times, and other games at the same time, are fine.
+    await createReservation(guest({ gameId, slotId: '1730', email: 'c@example.com' }), NOW);
+    await createReservation(guest({ email: 'd@example.com' }), NOW);
+  });
+
+  it('cancelling frees the game again', async () => {
+    const gameId = await catanId();
+    const { reservation } = await createReservation(guest({ gameId }), NOW);
+    await Reservation.updateOne({ _id: reservation._id }, { status: 'cancelled' });
+    await createReservation(guest({ gameId, email: 'again@example.com' }), NOW);
+  });
+
+  it('holds even when two people grab the same game at the same moment', async () => {
+    const gameId = await catanId();
+    const results = await Promise.allSettled(
+      Array.from({ length: 4 }, (_, i) => createReservation(guest({ gameId, email: `g${i}@example.com` }), NOW)),
+    );
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(
+      results.filter((r) => r.status === 'rejected' && r.reason instanceof HttpError && r.reason.code === 'GAME_TAKEN'),
+    ).toHaveLength(3);
+  });
+
+  it('availability lists the games already reserved at each time', async () => {
+    const gameId = await catanId();
+    await createReservation(guest({ gameId }), NOW);
+    const slots = await availability(DATE, 2, NOW);
+    expect(slots.find((s) => s.slotId === '1900')!.takenGameIds).toEqual([gameId]);
+    expect(slots.find((s) => s.slotId === '1730')!.takenGameIds).toEqual([]);
+  });
+});
+
 describe('availability', () => {
   it('marks past, full and free slots', async () => {
     await createReservation(guest({ date: '2026-11-24', slotId: '1300', partySize: 8 }), NOW);
@@ -155,7 +195,9 @@ describe('HTTP API', () => {
     expect(res.body.games.length).toBeGreaterThan(10);
   });
 
-  it('POST /api/reservations books, returns a reference code and emails a confirmation', async () => {
+  it('POST /api/reservations books, returns a reference code and emails the guest and staff', async () => {
+    process.env.ADMIN_NOTIFY_EMAIL = 'staff@example.com, owner@example.com';
+    resetEnvCache();
     const sent: Mail[] = [];
     setMailTransport(async (m) => {
       sent.push(m);
@@ -165,13 +207,17 @@ describe('HTTP API', () => {
       .post('/api/reservations')
       .send({ ...guest(), date: openDay, partySize: '4', gameId: String(catan!._id) });
     setMailTransport(null);
+    delete process.env.ADMIN_NOTIFY_EMAIL;
+    resetEnvCache();
     expect(res.status).toBe(201);
     expect(res.body.reservation).toMatchObject({ date: openDay, slotId: '1900', partySize: 4 });
     expect(res.body.reservation.referenceCode).toMatch(/^LUNA-/);
-    expect(sent).toHaveLength(1);
-    expect(sent[0]!.to.email).toBe('asha@example.com');
+    expect(sent.map((m) => m.to.email)).toEqual(['asha@example.com', 'staff@example.com', 'owner@example.com']);
     expect(sent[0]!.text).toContain(res.body.reservation.referenceCode);
     expect(sent[0]!.text).toContain('Catan');
+    expect(sent[1]!.subject).toMatch(/^New booking: Asha, 4 on .* at 19:00 \(Catan\)$/);
+    expect(sent[1]!.text).toContain('Phone: +91 98200 00000');
+    expect(sent[1]!.text).toContain('Booked at: ');
   });
 
   it('a failed booking sends no email', async () => {

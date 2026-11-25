@@ -144,27 +144,39 @@ interface SeedMenuItem {
   description: string;
   dietaryTags?: Dietary[];
   isSignature?: boolean;
+  /** Photo in client/public/images/menu (null = the site shows a drawn icon). */
+  image?: string | null;
 }
 
+const photo = (slug: string) => `/images/menu/${slug}.webp`;
+
+/** Items replaced by new ones: the seed hides them (kept in the database for old bookings and history). */
+export const retiredMenuSlugs = ['chamomile-moon-tea', 'cold-brew-tonic'];
+
 export const menuItems: SeedMenuItem[] = [
-  { name: 'Moonlight Latte', slug: 'moonlight-latte', category: 'coffee', price: 220, isSignature: true, description: 'Double espresso, steamed milk, a hint of vanilla and a crescent of cinnamon on top.', dietaryTags: ['gluten-free'] },
-  { name: 'Honey Cinnamon Cappuccino', slug: 'honey-cinnamon-cappuccino', category: 'coffee', price: 210, isSignature: true, description: 'Our house cappuccino with wild honey and a dusting of cinnamon.', dietaryTags: ['gluten-free'] },
+  { name: 'Moonlight Latte', slug: 'moonlight-latte', category: 'coffee', price: 220, isSignature: true, image: photo('moonlight-latte'), description: 'Double espresso, steamed milk, a hint of vanilla and a crescent of cinnamon on top.', dietaryTags: ['gluten-free'] },
+  { name: 'Honey Cinnamon Cappuccino', slug: 'honey-cinnamon-cappuccino', category: 'coffee', price: 210, isSignature: true, image: photo('honey-cinnamon-cappuccino'), description: 'Our house cappuccino with wild honey and a dusting of cinnamon.', dietaryTags: ['gluten-free'] },
   { name: 'Espresso', slug: 'espresso', category: 'coffee', price: 140, description: 'A short, chocolatey double shot of our house blend.', dietaryTags: ['vegan', 'gluten-free'] },
   { name: 'Flat White', slug: 'flat-white', category: 'coffee', price: 190, description: 'Ristretto with silky microfoam. Small, strong, smooth.', dietaryTags: ['gluten-free'] },
   { name: 'Cardamom Mocha', slug: 'cardamom-mocha', category: 'coffee', price: 230, description: 'Espresso, dark chocolate and green cardamom, finished with steamed milk.', dietaryTags: ['gluten-free'] },
+  { name: 'Maple Oat Cortado', slug: 'maple-oat-cortado', category: 'coffee', price: 210, description: 'Double ristretto with steamed oat milk and a spoon of maple. Small, sweet, strong.', dietaryTags: ['vegan', 'gluten-free'] },
   { name: 'Masala Chai', slug: 'masala-chai', category: 'tea', price: 120, description: 'Assam tea simmered with ginger, cardamom and clove.', dietaryTags: ['gluten-free'] },
   { name: 'Jasmine Green', slug: 'jasmine-green', category: 'tea', price: 150, description: 'Light green tea scented with jasmine blossoms.', dietaryTags: ['vegan', 'gluten-free'] },
-  { name: 'Chamomile Moon Tea', slug: 'chamomile-moon-tea', category: 'tea', price: 160, description: 'Chamomile, lemon balm and lavender. Made for late game nights.', dietaryTags: ['vegan', 'gluten-free'] },
-  { name: 'Iced Vanilla Cloud', slug: 'iced-vanilla-cloud', category: 'cold-drinks', price: 240, isSignature: true, description: 'Cold brew under a soft cloud of vanilla sweet cream.', dietaryTags: ['gluten-free'] },
-  { name: 'Cold Brew Tonic', slug: 'cold-brew-tonic', category: 'cold-drinks', price: 230, description: 'Eighteen-hour cold brew over tonic and orange peel.', dietaryTags: ['vegan', 'gluten-free'] },
+  { name: 'Chamomile Lavender Pot', slug: 'chamomile-lavender-pot', category: 'tea', price: 180, image: photo('chamomile-lavender-pot'), description: 'A glass pot of chamomile and lavender, honey on the side. Pours four cups: made for long, slow games.', dietaryTags: ['vegan', 'gluten-free'] },
+  { name: 'Ceremonial Matcha Latte', slug: 'ceremonial-matcha-latte', category: 'tea', price: 260, image: photo('ceremonial-matcha-latte'), description: 'Stone-ground ceremonial matcha, whisked to order and poured over cold milk. Ask for oat to make it vegan.', dietaryTags: ['gluten-free'] },
+  { name: 'Iced Vanilla Cloud', slug: 'iced-vanilla-cloud', category: 'cold-drinks', price: 240, isSignature: true, image: photo('iced-vanilla-cloud'), description: 'Cold brew under a soft cloud of vanilla sweet cream.', dietaryTags: ['gluten-free'] },
+  { name: 'Citrus Cold Brew Tonic', slug: 'citrus-cold-brew-tonic', category: 'cold-drinks', price: 240, image: photo('citrus-cold-brew-tonic'), description: 'Eighteen-hour cold brew floated over tonic, with a twist of orange. Bright, bitter, very refreshing.', dietaryTags: ['vegan', 'gluten-free'] },
   { name: 'Mango Lassi', slug: 'mango-lassi', category: 'cold-drinks', price: 180, description: 'Alphonso mango blended with yoghurt and a pinch of cardamom.', dietaryTags: ['gluten-free'] },
   { name: 'Sparkling Lemon Mint', slug: 'sparkling-lemon-mint', category: 'cold-drinks', price: 150, description: 'Fresh lemon, mint and soda. Bright and not too sweet.', dietaryTags: ['vegan', 'gluten-free'] },
   { name: 'Butter Croissant', slug: 'butter-croissant', category: 'bakes', price: 160, description: 'Flaky, golden and baked every morning.' },
   { name: 'Banana Walnut Bread', slug: 'banana-walnut-bread', category: 'bakes', price: 150, description: 'A thick, warm slice with toasted walnuts.' },
+  { name: 'Spiced Cardamom Croissant', slug: 'spiced-cardamom-croissant', category: 'bakes', price: 180, image: photo('spiced-cardamom-croissant'), description: 'Our butter croissant rolled with cardamom sugar. Warm, flaky and quietly spiced.' },
+  { name: 'Twice-Baked Almond Croissant', slug: 'twice-baked-almond-croissant', category: 'bakes', price: 220, image: photo('twice-baked-almond-croissant'), description: 'Filled with almond cream, topped with flaked almonds and baked a second time until golden.' },
   { name: 'Vegan Chocolate Brownie', slug: 'vegan-chocolate-brownie', category: 'bakes', price: 170, description: 'Fudgy dark chocolate brownie with sea salt.', dietaryTags: ['vegan'] },
   { name: 'Almond Orange Cake', slug: 'almond-orange-cake', category: 'bakes', price: 190, description: 'Moist almond-flour cake with candied orange.', dietaryTags: ['gluten-free'] },
   { name: 'Masala Fries', slug: 'masala-fries', category: 'snacks', price: 180, description: 'Crispy fries tossed in our house masala. Made for sharing over a game.', dietaryTags: ['vegan', 'gluten-free'] },
   { name: 'Paneer Tikka Sandwich', slug: 'paneer-tikka-sandwich', category: 'snacks', price: 240, description: 'Grilled paneer tikka, mint chutney and onions on sourdough.' },
+  { name: 'Warm Rosemary Focaccia Bites', slug: 'warm-rosemary-focaccia-bites', category: 'snacks', price: 220, image: photo('warm-rosemary-focaccia-bites'), description: 'Torn squares of olive-oil focaccia with rosemary and sea salt, served warm. Easy to share over a board.', dietaryTags: ['vegan'] },
   { name: 'Hummus & Pita', slug: 'hummus-and-pita', category: 'snacks', price: 220, description: 'Smooth hummus, olive oil and warm pita triangles.', dietaryTags: ['vegan'] },
   { name: 'Loaded Nachos', slug: 'loaded-nachos', category: 'snacks', price: 230, description: 'Corn chips, beans, cheese, salsa and jalapeños.', dietaryTags: ['gluten-free'] },
 ];

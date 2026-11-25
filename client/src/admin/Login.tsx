@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router';
 import { useLogin, useMe } from './api';
 import { Card } from '../components/ui/Card';
@@ -15,9 +15,21 @@ export function Login() {
   const login = useLogin();
   const [form, setForm] = useState({ email: '', password: '' });
 
+  // After a few seconds of waiting, explain that the free server is waking up.
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    if (!login.isPending) return;
+    const t = window.setTimeout(() => setSlow(true), 3000);
+    return () => {
+      window.clearTimeout(t);
+      setSlow(false);
+    };
+  }, [login.isPending]);
+
   if (me.data) return <Navigate to={next} replace />;
 
   const error = login.error instanceof ApiError ? login.error : null;
+
   const submit = (e: FormEvent) => {
     e.preventDefault();
     login.mutate(form, { onSuccess: () => navigate(next, { replace: true }) });
@@ -42,8 +54,13 @@ export function Login() {
             </p>
           )}
           <Button type="submit" size="lg" disabled={login.isPending}>
-            {login.isPending ? 'Signing in…' : 'Sign in'}
+            {login.isPending ? (slow ? 'Waking up the café…' : 'Signing in…') : 'Sign in'}
           </Button>
+          {login.isPending && slow && (
+            <p role="status" className="text-sm text-forest">
+              The free server sleeps when nobody is using it. This can take up to a minute; you don't need to click again.
+            </p>
+          )}
         </form>
       </Card>
     </div>

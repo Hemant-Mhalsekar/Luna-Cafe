@@ -1,22 +1,16 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import { limiter } from '../lib/rateLimit.js';
 import { z } from 'zod';
 import { Event } from '../models/index.js';
 import { HttpError } from '../lib/httpError.js';
 import { cafeNow } from '../lib/cafe.js';
 import { getEnv } from '../config/env.js';
 import { sendInBackground } from '../lib/mailer.js';
-import { eventSignupConfirmation } from '../emails/templates.js';
+import { adminNewSignup, eventSignupConfirmation } from '../emails/templates.js';
 
 export const eventsRouter = Router();
 
-const signupLimiter = rateLimit({
-  windowMs: 15 * 60_000,
-  limit: 10,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  skip: () => getEnv().NODE_ENV === 'test',
-});
+const signupLimiter = limiter({ minutes: 15, limit: 10, message: 'Too many sign-ups from here. Please try again in a few minutes.' });
 
 interface EventLean {
   _id: unknown;
@@ -70,9 +64,12 @@ eventsRouter.post('/:slug/signup', signupLimiter, async (req, res) => {
   ).lean<EventLean>();
 
   if (updated) {
-    sendInBackground(
-      eventSignupConfirmation({ name, email, title: updated.title, date: updated.date, startTime: updated.startTime }, getEnv().SITE_URL),
-    );
+    const env = getEnv();
+    const info = { name, email, title: updated.title, date: updated.date, startTime: updated.startTime };
+    sendInBackground(eventSignupConfirmation(info, env.SITE_URL));
+    for (const to of env.ADMIN_NOTIFY_EMAIL) {
+      sendInBackground(adminNewSignup({ ...info, taken: updated.signups.length, capacity: updated.capacity }, env.SITE_URL, to));
+    }
     res.status(201).json({ event: toPublic(updated) });
     return;
   }

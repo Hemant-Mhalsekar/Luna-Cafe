@@ -7,20 +7,20 @@ A portfolio project: the website of a fictional board game café. It opens as a 
 **Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
 
 <p>
-  <img src="docs/screenshots/home.png" alt="Home page: hero with a drawn latte and the tagline" width="49%">
-  <img src="docs/screenshots/home-games.png" alt="The board game reveal on the home page" width="49%">
-  <img src="docs/screenshots/games-quiz.png" alt="Game picker quiz showing three matches" width="49%">
-  <img src="docs/screenshots/book.png" alt="Booking form with live time slots" width="49%">
-  <img src="docs/screenshots/events.png" alt="Events with seats left and sign-up" width="49%">
-  <img src="docs/screenshots/admin.png" alt="Admin dashboard with today's tables" width="49%">
+  <img src="docs/screenshots/home.webp" alt="Home page: hero with a drawn latte and the tagline" width="49%">
+  <img src="docs/screenshots/home-games.webp" alt="The board game reveal on the home page" width="49%">
+  <img src="docs/screenshots/games-quiz.webp" alt="Game picker quiz showing three matches" width="49%">
+  <img src="docs/screenshots/book.webp" alt="Booking form with live time slots" width="49%">
+  <img src="docs/screenshots/events.webp" alt="Events with seats left and sign-up" width="49%">
+  <img src="docs/screenshots/admin.webp" alt="Admin dashboard with today's tables" width="49%">
 </p>
 <p>
-  <img src="docs/screenshots/mobile-home.png" alt="Home on a phone" width="32%">
-  <img src="docs/screenshots/mobile-menu.png" alt="Menu on a phone" width="32%">
-  <img src="docs/screenshots/mobile-book.png" alt="Booking on a phone" width="32%">
+  <img src="docs/screenshots/mobile-home.webp" alt="Home on a phone" width="32%">
+  <img src="docs/screenshots/mobile-menu.webp" alt="Menu on a phone" width="32%">
+  <img src="docs/screenshots/mobile-book.webp" alt="Booking on a phone" width="32%">
 </p>
 
-More: [game library](docs/screenshots/games-library.png) · [booking confirmed](docs/screenshots/book-confirmed.png) · [Moon Club card](docs/screenshots/moon-club.png)
+More: [game library](docs/screenshots/games-library.webp) · [booking confirmed](docs/screenshots/book-confirmed.webp) · [Moon Club card](docs/screenshots/moon-club.webp)
 
 ## Stack
 
@@ -48,13 +48,13 @@ design/   Stitch mockups and the original design-system notes (visual reference 
 
 ## Emails
 
-After a booking or an event sign-up the API sends a confirmation (reference code, date, time, table, game) with a calendar file attached, through Brevo's HTTP API (Render's free plan blocks SMTP). Sending happens in the background: a booking never waits for it, and a failed email never fails a booking. The emails say clearly that Luna Café is a fictional portfolio café. Templates: `server/src/emails/`.
+After a booking or an event sign-up the API sends a confirmation (reference code, date, time, table, game) with a calendar file attached, and staff in `ADMIN_NOTIFY_EMAIL` get an alert (who, which slot, table, game, phone, and when it was booked). All of it goes through Brevo's HTTP API (Render's free plan blocks SMTP). Sending happens in the background: a booking never waits for it, and a failed email never fails a booking. The emails say clearly that Luna Café is a fictional portfolio café. Templates: `server/src/emails/`.
 
 ## Admin
 
 The staff area lives at `/admin` (not linked from the site, and `robots.txt` asks search engines to skip it). Sign in with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `server/.env`; the account is created by `npm --prefix server run seed`.
 
-- **Today:** bookings and guests today, bookings this week, unread messages, today's tables
+- **Today:** bookings and guests today, bookings this week, unread messages, today's tables, and the latest bookings with when each was made
 - **Reservations:** filter by date range and status, cancel (frees the table immediately)
 - **Games, Menu, Events:** add, edit, hide (untick "Available") or delete
 - **Messages:** contact-form messages, mark read/unread, delete
@@ -76,9 +76,9 @@ What keeps it fast: every page except Home and the animation engine load on dema
 
 The free API sleeps when idle. The site waits up to 2.5 minutes for it with a "Waking up the café…" banner, retrying reads, and retrying writes only when the request clearly never reached the server (so nothing is saved twice).
 
-## Hero photo
+## Photos
 
-Until the photo is ready the hero shows a drawn latte. To switch: save the photo as `client/public/images/hero.webp` (about 1600 × 1600, under 200 KB) and fill in `HERO_PHOTO` in `client/src/lib/cafe.ts`.
+Food, drink and café photos were generated with Gemini for this fictional café (originals in `design/photos/`; the interior and storefront were retouched so the signs say Luna Café). The site serves compressed WebP copies from `client/public/images/`; menu items point at theirs through the `image` field, set by the seed. Game cards, icons, the map and the moon motifs are drawn in code. The hero photo is configured in `client/src/lib/cafe.ts` (`HERO_PHOTO`).
 
 ## Tests
 
@@ -122,7 +122,7 @@ The API runs on Render (free), the site on Vercel, the data on MongoDB Atlas. Ve
 - Dashboard → New → Blueprint → choose this repo. It reads `render.yaml` (service `luna-cafe`, root `server`, branch `main`).
 - Or create a Web Service by hand: root directory `server`, build `npm ci --include=dev && npm run build`, start `npm start`, health check `/api/health`, and add `NODE_ENV=production`, `NODE_VERSION=22`, `MONGODB_URI`, `CLIENT_ORIGIN` and a random `JWT_SECRET`.
 - Fill in `MONGODB_URI` (same as `server/.env`) and `CLIENT_ORIGIN` (your Vercel address, e.g. `https://luna-cafe.vercel.app`). `JWT_SECRET` is generated for you.
-- Optional, booking emails: add `BREVO_API_KEY` (a key from Brevo → Settings → SMTP & API, one per project), `MAIL_FROM_ADDRESS` (a sender verified in Brevo) and, if you like, `MAIL_REPLY_TO`. Without them the API works the same and only logs that it would have sent an email.
+- Optional, booking emails: add `BREVO_API_KEY` (a key from Brevo → Settings → SMTP & API, one per project), `MAIL_FROM_ADDRESS` (a sender verified in Brevo) and, if you like, `MAIL_REPLY_TO` and `ADMIN_NOTIFY_EMAIL` (staff alerts for every new booking and event sign-up; comma-separated). Without them the API works the same and only logs that it would have sent an email.
 - When it is live, open `https://luna-cafe.onrender.com/api/health`. It should say `"db":"connected"`.
 - The free plan sleeps after 15 minutes without traffic and takes about a minute to wake. The site shows a "Waking up the café…" note meanwhile. No keep-alive ping on purpose: the free hours are shared with other projects in the same Render workspace.
 

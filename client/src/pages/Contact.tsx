@@ -7,7 +7,8 @@ import { MiniMap } from '../components/MiniMap';
 import { ClockIcon, PinIcon } from '../components/illustrations/GameIcons';
 import { useSendMessage } from '../lib/queries';
 import { ApiError } from '../lib/api';
-import { CAFE } from '../lib/cafe';
+import { CAFE, PHOTOS } from '../lib/cafe';
+import { Photo } from '../components/Photo';
 
 const EMPTY = { name: '', email: '', message: '', website: '' };
 
@@ -97,6 +98,7 @@ export function Contact() {
               </a>
             </p>
           </Card>
+          <Photo {...PHOTOS.storefront} className="aspect-[4/3] w-full rounded-card shadow-soft" />
           <MiniMap />
         </div>
       </div>
