@@ -103,7 +103,7 @@ function SignupForm({ event, onDone }: { event: PublicEvent; onDone: () => void 
         <p className="text-lg">
           You're on the list, {form.name.split(' ')[0]}! See you on {formatDate(event.date)} at {event.startTime}.
         </p>
-        <p className="mt-2 text-forest">Your first drink is on us. Just give your name at the counter.</p>
+        <p className="mt-2 text-forest">Your first drink is on us. Just give your name at the counter. We've emailed the details to {form.email}.</p>
         <Button className="mt-6" onClick={onDone}>
           Lovely, thanks
         </Button>

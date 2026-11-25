@@ -57,6 +57,7 @@ export function Book() {
       <Confirmation
         reservation={confirmation}
         gameName={games.data?.find((g) => g._id === confirmation.gameId)?.name}
+        email={contact.email}
         onAnother={() => {
           setConfirmation(null);
           setSlotId('');
@@ -230,7 +231,7 @@ function PartySize({ value, onChange }: { value: number; onChange: (n: number) =
   );
 }
 
-function Confirmation({ reservation, gameName, onAnother }: { reservation: ReservationConfirmation; gameName?: string; onAnother: () => void }) {
+function Confirmation({ reservation, gameName, email, onAnother }: { reservation: ReservationConfirmation; gameName?: string; email?: string; onAnother: () => void }) {
   const time = `${reservation.slotId.slice(0, 2)}:${reservation.slotId.slice(2)}`;
   return (
     <div className="container-page flex justify-center py-16 sm:py-24">
@@ -240,6 +241,7 @@ function Confirmation({ reservation, gameName, onAnother }: { reservation: Reser
         </div>
         <h1 className="mt-5 text-4xl">Table reserved!</h1>
         <p className="mt-2 text-forest">See you soon, {reservation.name.split(' ')[0]}. Keep this code handy.</p>
+        {email && <p className="mt-1 text-sm text-forest">A confirmation with a calendar invite is on its way to {email}.</p>}
         <p className="mt-6 inline-block rounded-2xl bg-cream px-6 py-3 font-mono text-2xl tracking-wider" aria-label={`Reference code ${reservation.referenceCode.split('').join(' ')}`}>
           {reservation.referenceCode}
         </p>
