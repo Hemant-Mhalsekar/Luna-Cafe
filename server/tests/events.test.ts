@@ -7,6 +7,7 @@ import { createApp } from '../src/app.js';
 import { Event } from '../src/models/index.js';
 import { seedCatalog } from '../src/seed/catalog.js';
 import { addDays, cafeNow, isClosedDay } from '../src/lib/cafe.js';
+import { setMailTransport, type Mail } from '../src/lib/mailer.js';
 
 let mongo: MongoMemoryServer;
 
@@ -47,12 +48,20 @@ describe('public events', () => {
     expect(res.body.events[0]).not.toHaveProperty('signups');
   });
 
-  it('signs up once per email (case-insensitive)', async () => {
+  it('signs up once per email (case-insensitive) and emails only the first time', async () => {
+    const sent: Mail[] = [];
+    setMailTransport(async (m) => {
+      sent.push(m);
+    });
     const app = createApp();
     expect((await signup(app, 'small-night', 'Sam@Example.com')).status).toBe(201);
     const again = await signup(app, 'small-night', 'sam@example.com');
+    setMailTransport(null);
     expect(again.status).toBe(409);
     expect(again.body.error.code).toBe('ALREADY_SIGNED_UP');
+    expect(sent).toHaveLength(1);
+    expect(sent[0]!.to.email).toBe('sam@example.com');
+    expect(sent[0]!.subject).toContain('Small Night');
   });
 
   it('never overfills, even when people sign up at the same moment', async () => {

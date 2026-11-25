@@ -8,6 +8,7 @@ import { ContactMessage, Game, Reservation, Table } from '../src/models/index.js
 import { seedCatalog } from '../src/seed/catalog.js';
 import { availability, createReservation, type ReservationInput } from '../src/services/reservations.js';
 import { HttpError } from '../src/lib/httpError.js';
+import { setMailTransport, type Mail } from '../src/lib/mailer.js';
 import { addDays, cafeNow, isClosedDay } from '../src/lib/cafe.js';
 
 // Tuesday 24 Nov 2026, 10:30 café time.
@@ -154,13 +155,34 @@ describe('HTTP API', () => {
     expect(res.body.games.length).toBeGreaterThan(10);
   });
 
-  it('POST /api/reservations books and returns a reference code', async () => {
+  it('POST /api/reservations books, returns a reference code and emails a confirmation', async () => {
+    const sent: Mail[] = [];
+    setMailTransport(async (m) => {
+      sent.push(m);
+    });
+    const catan = await Game.findOne({ slug: 'catan' }).lean();
     const res = await request(createApp())
       .post('/api/reservations')
-      .send({ ...guest(), date: openDay, partySize: '4' });
+      .send({ ...guest(), date: openDay, partySize: '4', gameId: String(catan!._id) });
+    setMailTransport(null);
     expect(res.status).toBe(201);
     expect(res.body.reservation).toMatchObject({ date: openDay, slotId: '1900', partySize: 4 });
     expect(res.body.reservation.referenceCode).toMatch(/^LUNA-/);
+    expect(sent).toHaveLength(1);
+    expect(sent[0]!.to.email).toBe('asha@example.com');
+    expect(sent[0]!.text).toContain(res.body.reservation.referenceCode);
+    expect(sent[0]!.text).toContain('Catan');
+  });
+
+  it('a failed booking sends no email', async () => {
+    const sent: Mail[] = [];
+    setMailTransport(async (m) => {
+      sent.push(m);
+    });
+    const res = await request(createApp()).post('/api/reservations').send({ ...guest(), email: 'nope', date: openDay });
+    setMailTransport(null);
+    expect(res.status).toBe(400);
+    expect(sent).toHaveLength(0);
   });
 
   it('POST /api/reservations returns field errors for bad input', async () => {

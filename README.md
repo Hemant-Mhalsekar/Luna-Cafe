@@ -46,6 +46,10 @@ design/   Stitch mockups and the original design-system notes (visual reference 
 4. Start the API: `npm run dev:server` (http://localhost:4000/api/health)
 5. Start the site in a second tab: `npm run dev:client` (http://localhost:5173)
 
+## Emails
+
+After a booking or an event sign-up the API sends a confirmation (reference code, date, time, table, game) with a calendar file attached, through Brevo's HTTP API (Render's free plan blocks SMTP). Sending happens in the background: a booking never waits for it, and a failed email never fails a booking. The emails say clearly that Luna Café is a fictional portfolio café. Templates: `server/src/emails/`.
+
 ## Admin
 
 The staff area lives at `/admin` (not linked from the site, and `robots.txt` asks search engines to skip it). Sign in with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `server/.env`; the account is created by `npm --prefix server run seed`.
@@ -118,6 +122,7 @@ The API runs on Render (free), the site on Vercel, the data on MongoDB Atlas. Ve
 - Dashboard → New → Blueprint → choose this repo. It reads `render.yaml` (service `luna-cafe`, root `server`, branch `main`).
 - Or create a Web Service by hand: root directory `server`, build `npm ci --include=dev && npm run build`, start `npm start`, health check `/api/health`, and add `NODE_ENV=production`, `NODE_VERSION=22`, `MONGODB_URI`, `CLIENT_ORIGIN` and a random `JWT_SECRET`.
 - Fill in `MONGODB_URI` (same as `server/.env`) and `CLIENT_ORIGIN` (your Vercel address, e.g. `https://luna-cafe.vercel.app`). `JWT_SECRET` is generated for you.
+- Optional, booking emails: add `BREVO_API_KEY` (a key from Brevo → Settings → SMTP & API, one per project), `MAIL_FROM_ADDRESS` (a sender verified in Brevo) and, if you like, `MAIL_REPLY_TO`. Without them the API works the same and only logs that it would have sent an email.
 - When it is live, open `https://luna-cafe.onrender.com/api/health`. It should say `"db":"connected"`.
 - The free plan sleeps after 15 minutes without traffic and takes about a minute to wake. The site shows a "Waking up the café…" note meanwhile. No keep-alive ping on purpose: the free hours are shared with other projects in the same Render workspace.
 

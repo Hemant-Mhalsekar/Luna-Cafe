@@ -16,6 +16,12 @@ const schema = z
     TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).optional(),
     JWT_SECRET: z.string().optional(),
     ADMIN_EMAIL: z.string().optional(),
+    // Email (Brevo HTTP API; Render's free plan blocks SMTP). Without both, emails are only logged.
+    BREVO_API_KEY: z.string().optional(),
+    MAIL_FROM_ADDRESS: z.email().optional(),
+    MAIL_FROM_NAME: z.string().default('Luna Café'),
+    MAIL_REPLY_TO: z.email().optional(),
+    SITE_URL: z.url().default('https://lunaacafe.vercel.app'),
     ADMIN_PASSWORD: z.string().optional(),
   })
   .superRefine((env, ctx) => {
