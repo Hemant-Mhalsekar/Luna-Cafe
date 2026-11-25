@@ -51,7 +51,8 @@ export default defineConfig({
         {
           command: 'npm --prefix ../server run seed && npm --prefix ../server start',
           url: 'http://localhost:4000/api/health',
-          reuseExistingServer: !CI,
+          // Never reuse an API that is already running: it could be your dev server on the live database.
+          reuseExistingServer: false,
           timeout: 120_000,
         },
         {
