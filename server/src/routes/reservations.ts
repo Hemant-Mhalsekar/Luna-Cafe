@@ -3,6 +3,10 @@ import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { availability, createReservation, reservationInput } from '../services/reservations.js';
 import { MAX_PARTY_SIZE, SLOTS } from '../lib/cafe.js';
+import { Game } from '../models/index.js';
+import { getEnv } from '../config/env.js';
+import { sendInBackground } from '../lib/mailer.js';
+import { bookingConfirmation } from '../emails/templates.js';
 
 export const reservationsRouter = Router();
 
@@ -25,6 +29,22 @@ reservationsRouter.get('/availability', async (req, res) => {
 reservationsRouter.post('/', bookingLimiter, async (req, res) => {
   const input = reservationInput.parse(req.body);
   const { reservation, table } = await createReservation(input);
+  const game = reservation.gameId ? await Game.findById(reservation.gameId).select('name').lean() : null;
+  sendInBackground(
+    bookingConfirmation(
+      {
+        name: reservation.name,
+        email: reservation.email,
+        referenceCode: reservation.referenceCode,
+        date: reservation.date,
+        slotId: reservation.slotId,
+        partySize: reservation.partySize,
+        tableNumber: table.number,
+        gameName: game?.name ?? null,
+      },
+      getEnv().SITE_URL,
+    ),
+  );
   res.status(201).json({
     reservation: {
       referenceCode: reservation.referenceCode,

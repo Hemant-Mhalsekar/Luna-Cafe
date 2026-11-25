@@ -5,6 +5,8 @@ import { Event } from '../models/index.js';
 import { HttpError } from '../lib/httpError.js';
 import { cafeNow } from '../lib/cafe.js';
 import { getEnv } from '../config/env.js';
+import { sendInBackground } from '../lib/mailer.js';
+import { eventSignupConfirmation } from '../emails/templates.js';
 
 export const eventsRouter = Router();
 
@@ -68,6 +70,9 @@ eventsRouter.post('/:slug/signup', signupLimiter, async (req, res) => {
   ).lean<EventLean>();
 
   if (updated) {
+    sendInBackground(
+      eventSignupConfirmation({ name, email, title: updated.title, date: updated.date, startTime: updated.startTime }, getEnv().SITE_URL),
+    );
     res.status(201).json({ event: toPublic(updated) });
     return;
   }
