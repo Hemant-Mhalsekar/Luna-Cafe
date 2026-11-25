@@ -2,11 +2,12 @@
   "name": "luna-cafe",
   "private": true,
   "scripts": {
-    "install:all": "npm --prefix server install && npm --prefix client install",
+    "install:all": "npm --prefix server install && npm --prefix client install && npm --prefix e2e install",
     "dev:server": "npm --prefix server run dev",
     "dev:client": "npm --prefix client run dev",
     "test": "npm --prefix server test",
     "build": "npm --prefix server run build && npm --prefix client run build",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "e2e": "npm --prefix server run build && npm --prefix client run build && npm --prefix e2e test"
   }
 }
