@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "setup": "playwright install chromium"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

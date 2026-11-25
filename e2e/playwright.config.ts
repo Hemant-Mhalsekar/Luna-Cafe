@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -9,6 +10,23 @@ import { defineConfig, devices } from '@playwright/test';
  *   npm --prefix server run build && npm --prefix client run build
  */
 const CI = Boolean(process.env.CI);
+
+// Locally, settings come from e2e/.env (copy e2e/.env.example). They are passed to the API it starts,
+// and win over server/.env, so the tests never touch your real data.
+if (existsSync('.env')) process.loadEnvFile('.env');
+
+if (!CI && !process.env.E2E_NO_SERVERS) {
+  const uri = process.env.MONGODB_URI ?? '';
+  const db = uri.match(/^mongodb(?:\+srv)?:\/\/[^/]+\/([^?]*)/)?.[1] ?? '';
+  if (!uri || !process.env.ADMIN_PASSWORD) {
+    throw new Error('Set MONGODB_URI and ADMIN_PASSWORD in e2e/.env first (see e2e/.env.example).');
+  }
+  if (!db || db === 'luna-cafe') {
+    throw new Error(
+      `e2e/.env MONGODB_URI points at database "${db || '(none)'}". Use a throwaway one such as /luna-cafe-e2e: the tests add bookings and messages.`,
+    );
+  }
+}
 
 export default defineConfig({
   testDir: './tests',
