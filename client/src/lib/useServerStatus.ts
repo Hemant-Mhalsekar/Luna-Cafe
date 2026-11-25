@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from './api';
+import { api, retryWhileWaking, wakeRetryDelay } from './api';
 
 export type ServerStatus = 'ok' | 'waking' | 'down';
 
 /** How long a health check may take before we tell the visitor the server is starting. */
 const SLOW_AFTER_MS = 2500;
-/** Render's free plan can take about a minute to start; keep trying for roughly two. */
-const MAX_ATTEMPTS = 24;
-const RETRY_EVERY_MS = 5000;
 
 /**
  * Pings /api/health once per visit. The free API server sleeps when nobody uses it,
@@ -18,8 +15,8 @@ export function useServerStatus(): ServerStatus {
   const query = useQuery({
     queryKey: ['health'],
     queryFn: ({ signal }) => api<{ status: string; db: string }>('/health', { signal }),
-    retry: MAX_ATTEMPTS,
-    retryDelay: RETRY_EVERY_MS,
+    retry: retryWhileWaking,
+    retryDelay: wakeRetryDelay,
     staleTime: Infinity,
   });
 

@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from './api';
+import { api, retryWhileWaking, retryWriteWhileWaking, wakeRetryDelay } from './api';
 import type { Game, MenuItem, PublicEvent, ReservationConfirmation, ReservationRequest, SlotAvailability } from './types';
 
 // The free API may be waking up, so data queries retry patiently instead of failing fast.
-const patient = { retry: 8, retryDelay: 5000 } as const;
+const patient = { retry: retryWhileWaking, retryDelay: wakeRetryDelay } as const;
+const patientWrite = { retry: retryWriteWhileWaking, retryDelay: wakeRetryDelay } as const;
 
 export function useGames() {
   return useQuery({
@@ -39,6 +40,7 @@ export function useAvailability(date: string, partySize: number) {
 export function useCreateReservation() {
   const queryClient = useQueryClient();
   return useMutation({
+    ...patientWrite,
     // Whether it worked or the time was just taken, the free/full picture has changed.
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['availability'] }),
     mutationFn: (body: ReservationRequest) =>
@@ -50,6 +52,7 @@ export function useCreateReservation() {
 
 export function useSendMessage() {
   return useMutation({
+    ...patientWrite,
     mutationFn: (body: { name: string; email: string; message: string; website?: string }) =>
       api<{ ok: true }>('/contact', { method: 'POST', body: JSON.stringify(body) }),
   });
@@ -76,6 +79,7 @@ export function useEvents() {
 export function useEventSignup() {
   const queryClient = useQueryClient();
   return useMutation({
+    ...patientWrite,
     mutationFn: ({ slug, ...body }: { slug: string; name: string; email: string }) =>
       api<{ event: PublicEvent }>(`/events/${slug}/signup`, { method: 'POST', body: JSON.stringify(body) }).then((r) => r.event),
     // Seats left changed either way (signed up, or someone else took the last seat).

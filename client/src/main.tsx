@@ -8,9 +8,12 @@ import '@fontsource-variable/dm-sans';
 import '@fontsource/fragment-mono/400.css';
 import './index.css';
 import { router } from './router';
+import { retryWhileWaking, wakeRetryDelay } from './lib/api';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60_000, retry: 1, refetchOnWindowFocus: false } },
+  defaultOptions: {
+    queries: { staleTime: 60_000, retry: retryWhileWaking, retryDelay: wakeRetryDelay, refetchOnWindowFocus: false },
+  },
 });
 
 createRoot(document.getElementById('root')!).render(
