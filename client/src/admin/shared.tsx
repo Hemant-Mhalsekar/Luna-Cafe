@@ -6,7 +6,7 @@ import { Modal } from '../components/ui/Modal';
 import { Tag } from '../components/ui/Tag';
 import { formatDate } from '../lib/cafe';
 import { cn } from '../lib/cn';
-import { errorMessage, fieldErrors, td, th } from './utils';
+import { bookedAt, errorMessage, fieldErrors, td, th } from './utils';
 import { useAdminDelete, useAdminList, useAdminSave, useCancelReservation, type AdminReservation, type Resource } from './api';
 
 export function AdminHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: ReactNode }) {
@@ -102,6 +102,7 @@ export function ReservationTable({ query, emptyText, showDate = true }: { query:
                 <th className={th}>Table</th>
                 <th className={th}>Game</th>
                 <th className={th}>Code</th>
+                <th className={th}>Booked</th>
                 <th className={th}>
                   <span className="sr-only">Actions</span>
                 </th>
@@ -126,7 +127,8 @@ export function ReservationTable({ query, emptyText, showDate = true }: { query:
                     <td className={td}>{r.partySize}</td>
                     <td className={td}>{r.tableId ? `No. ${r.tableId.number}` : '–'}</td>
                     <td className={td}>{r.gameId?.name ?? '–'}</td>
-                    <td className={cn(td, 'font-mono text-sm')}>{r.referenceCode}</td>
+                    <td className={cn(td, 'whitespace-nowrap font-mono text-sm')}>{r.referenceCode}</td>
+                    <td className={cn(td, 'whitespace-nowrap text-sm text-forest')}>{bookedAt(r.createdAt)}</td>
                     <td className={cn(td, 'text-right')}>
                       {cancelled ? (
                         <Tag className="bg-cream-deep text-muted">Cancelled</Tag>

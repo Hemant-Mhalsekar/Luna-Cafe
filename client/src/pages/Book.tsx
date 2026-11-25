@@ -43,6 +43,9 @@ export function Book() {
   const suggestions = error?.code === 'SLOT_FULL' ? ((error.details as { suggestions?: SlotSuggestion[] })?.suggestions ?? []) : [];
   const closed = isClosedDay(date);
   const selectedGame = games.data?.find((g) => g.slug === gameSlug);
+  // One copy of each game: show which ones are already reserved at the chosen time.
+  const takenGames = new Set(chosenSlot?.takenGameIds ?? []);
+  const gameTaken = Boolean(selectedGame && takenGames.has(selectedGame._id));
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -137,13 +140,22 @@ export function Book() {
               <Field label="Email" type="email" autoComplete="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} error={fieldError('email')} required />
               <Field label="Phone" type="tel" autoComplete="tel" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} error={fieldError('phone')} hint="Only used if we need to reach you about this booking." required />
             </div>
-            <SelectField label="Reserve a game (optional)" value={gameSlug} onChange={(e) => setGameSlug(e.target.value)} hint="We'll have it waiting on your table.">
+            <SelectField
+              label="Reserve a game (optional)"
+              value={gameSlug}
+              onChange={(e) => setGameSlug(e.target.value)}
+              hint={chosenSlot ? `We'll have it waiting on your table. Games marked "taken" are already reserved at ${chosenSlot.label}.` : "We'll have it waiting on your table."}
+              error={gameTaken ? `${selectedGame!.name} is already reserved at ${chosenSlot!.label}. Pick another game or another time.` : undefined}
+            >
               <option value="">No game, just coffee</option>
-              {games.data?.map((g) => (
-                <option key={g._id} value={g.slug}>
-                  {g.name} ({g.minPlayers}–{g.maxPlayers} players)
-                </option>
-              ))}
+              {games.data?.map((g) => {
+                const taken = takenGames.has(g._id);
+                return (
+                  <option key={g._id} value={g.slug} disabled={taken && g.slug !== gameSlug}>
+                    {g.name} ({g.minPlayers}–{g.maxPlayers} players){taken ? ' · taken at this time' : ''}
+                  </option>
+                );
+              })}
             </SelectField>
           </Card>
         </div>
@@ -159,7 +171,7 @@ export function Book() {
               <dt className="font-semibold">Guests</dt>
               <dd>{partySize}</dd>
               <dt className="font-semibold">Game</dt>
-              <dd>{selectedGame?.name ?? 'None'}</dd>
+              <dd className={gameTaken ? 'text-error' : undefined}>{selectedGame ? `${selectedGame.name}${gameTaken ? ' (taken at this time)' : ''}` : 'None'}</dd>
             </dl>
 
             {error && error.code !== 'VALIDATION' && (
@@ -194,7 +206,7 @@ export function Book() {
               </p>
             )}
 
-            <Button type="submit" size="lg" className="group w-full" disabled={!chosenSlot || closed || booking.isPending}>
+            <Button type="submit" size="lg" className="group w-full" disabled={!chosenSlot || closed || gameTaken || booking.isPending}>
               <DieIcon className={cn('transition-transform duration-500 group-hover:rotate-[200deg]', booking.isPending && 'motion-safe:animate-spin')} />
               {booking.isPending ? 'Booking…' : 'Book this table'}
             </Button>

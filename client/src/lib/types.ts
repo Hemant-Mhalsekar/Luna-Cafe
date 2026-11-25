@@ -41,6 +41,8 @@ export interface SlotAvailability {
   slotId: string;
   label: string;
   status: SlotStatus;
+  /** Games already reserved at this time (the café has one copy of each). */
+  takenGameIds?: string[];
 }
 
 export interface ReservationRequest {
