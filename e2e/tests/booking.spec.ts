@@ -61,3 +61,23 @@ test('a fully booked time shows as full and cannot be picked', async ({ page, re
   await expect(late).toContainText('Full');
   await expect(late.locator('input')).toBeDisabled();
 });
+
+test('a game reserved at a time shows as taken for that time', async ({ page, request, isMobile }) => {
+  const date = openDayAhead(isMobile ? 7 : 6);
+  const games = (await (await request.get('/api/games')).json()).games as { _id: string; slug: string; name: string }[];
+  const azul = games.find((g) => g.slug === 'azul')!;
+  const first = await request.post('/api/reservations', {
+    data: { name: 'Game Lover', email: 'games@example.com', phone: '+91 98200 22222', date, slotId: '1600', partySize: 2, gameId: azul._id },
+  });
+  expect([201, 409]).toContain(first.status()); // 409 if a previous run already holds it
+
+  await page.goto('/book?game=azul');
+  await page.getByLabel('Date').fill(date);
+  await page.locator('label', { has: page.locator('input[value="1600"]') }).click();
+  await expect(page.getByText('Azul is already reserved at 16:00')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Book this table' })).toBeDisabled();
+  // Another time is fine.
+  await page.locator('label', { has: page.locator('input[value="1730"]') }).click();
+  await expect(page.getByText('Azul is already reserved')).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Book this table' })).toBeEnabled();
+});
