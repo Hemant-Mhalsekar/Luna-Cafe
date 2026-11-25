@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { useSpecial } from '../lib/queries';
 import { CATEGORY_LABEL } from '../lib/types';
 import { MenuIcon } from './illustrations/MenuIcons';
+import { Photo } from './Photo';
 
 /** Banner with today's special from the API. Renders nothing until it loads, so the page never waits on it. */
 export function TodaysSpecial() {
@@ -10,9 +11,13 @@ export function TodaysSpecial() {
   if (!item) return null;
   return (
     <div className="mt-8 flex flex-col gap-5 rounded-card bg-forest-dark p-6 text-cream sm:flex-row sm:items-center">
-      <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-cream/10">
-        <MenuIcon category={item.category} className="size-9" />
-      </span>
+      {item.image ? (
+        <Photo src={item.image} alt="" width={112} height={112} className="size-24 shrink-0 rounded-2xl sm:size-28" />
+      ) : (
+        <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-cream/10">
+          <MenuIcon category={item.category} className="size-9" />
+        </span>
+      )}
       <div className="flex-1">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-cream/75">Today's special · {CATEGORY_LABEL[item.category]}</p>
         <p className="mt-1 font-display text-2xl font-semibold">

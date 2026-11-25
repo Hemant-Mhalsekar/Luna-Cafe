@@ -7,6 +7,7 @@ import { Tag } from '../components/ui/Tag';
 import { Modal } from '../components/ui/Modal';
 import { LinkButton } from '../components/ui/Button';
 import { MenuIcon } from '../components/illustrations/MenuIcons';
+import { Photo } from '../components/Photo';
 import { useMenu } from '../lib/queries';
 import { cn } from '../lib/cn';
 import { CATEGORY_LABEL, DIETARY_LABEL, type DietaryTag, type MenuCategory, type MenuItem } from '../lib/types';
@@ -98,9 +99,13 @@ export function Menu() {
                     onClick={() => setSelected(item)}
                     className="group flex h-full w-full gap-5 rounded-card border border-outline/60 bg-card p-5 text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
                   >
-                    <span className="grid size-20 shrink-0 place-items-center rounded-2xl bg-sage-soft text-forest-dark sm:size-24">
-                      <MenuIcon category={item.category} className="size-10 sm:size-12" />
-                    </span>
+                    {item.image ? (
+                      <Photo src={item.image} alt="" width={96} height={96} className="size-20 shrink-0 rounded-2xl sm:size-24" />
+                    ) : (
+                      <span className="grid size-20 shrink-0 place-items-center rounded-2xl bg-sage-soft text-forest-dark sm:size-24">
+                        <MenuIcon category={item.category} className="size-10 sm:size-12" />
+                      </span>
+                    )}
                     <span className="flex min-w-0 flex-1 flex-col">
                       <span className="flex items-start justify-between gap-3">
                         <span className="font-display text-xl font-semibold leading-tight">{item.name}</span>
@@ -125,9 +130,13 @@ export function Menu() {
       <Modal open={selected !== null} onClose={() => setSelected(null)} title={selected?.name ?? ''}>
         {selected && (
           <div>
-            <div className="grid aspect-[16/9] place-items-center rounded-2xl bg-sage-soft text-forest-dark">
-              <MenuIcon category={selected.category} className="size-20" />
-            </div>
+            {selected.image ? (
+              <Photo src={selected.image} alt={selected.name} width={512} height={288} priority className="aspect-[16/9] w-full rounded-2xl" />
+            ) : (
+              <div className="grid aspect-[16/9] place-items-center rounded-2xl bg-sage-soft text-forest-dark">
+                <MenuIcon category={selected.category} className="size-20" />
+              </div>
+            )}
             <div className="mt-5 flex items-center justify-between gap-3">
               <span className="font-mono text-lg text-forest">₹{selected.price}</span>
               <div className="flex flex-wrap gap-2">
