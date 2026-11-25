@@ -58,6 +58,18 @@ adminRouter.get('/reservations', async (req, res) => {
   res.json({ from, to, items });
 });
 
+/** Latest bookings first: who booked what, and when they booked it. */
+adminRouter.get('/reservations/recent', async (req, res) => {
+  const limit = z.coerce.number().int().min(1).max(50).default(10).parse(req.query.limit);
+  const items = await Reservation.find()
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate('tableId', 'number capacity')
+    .populate('gameId', 'name')
+    .lean();
+  res.json({ items });
+});
+
 adminRouter.patch('/reservations/:id/cancel', async (req, res) => {
   const r = await Reservation.findOneAndUpdate(
     { _id: idParam(req.params.id), status: 'confirmed' },

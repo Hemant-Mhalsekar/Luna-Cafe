@@ -1,22 +1,15 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import { limiter } from '../lib/rateLimit.js';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { Admin } from '../models/index.js';
 import { AUTH_COOKIE, authCookieOptions, signAdminToken } from '../lib/auth.js';
 import { HttpError } from '../lib/httpError.js';
 import { requireAdmin } from '../middleware/requireAdmin.js';
-import { getEnv } from '../config/env.js';
 
 export const authRouter = Router();
 
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60_000,
-  limit: 10,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  skip: () => getEnv().NODE_ENV === 'test',
-});
+const loginLimiter = limiter({ minutes: 15, limit: 10, message: 'Too many sign-in attempts. Please wait 15 minutes and try again.' });
 
 const loginInput = z.object({
   email: z.string().trim().toLowerCase().min(1, 'Please enter your email.').max(120),
@@ -46,13 +39,7 @@ authRouter.get('/me', requireAdmin, async (req, res) => {
   res.json({ admin: { email: admin!.email } });
 });
 
-const passwordLimiter = rateLimit({
-  windowMs: 15 * 60_000,
-  limit: 5,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  skip: () => getEnv().NODE_ENV === 'test',
-});
+const passwordLimiter = limiter({ minutes: 15, limit: 5, message: 'Too many attempts. Please wait 15 minutes and try again.' });
 
 const passwordInput = z
   .object({

@@ -21,6 +21,12 @@ const schema = z
     MAIL_FROM_ADDRESS: z.email().optional(),
     MAIL_FROM_NAME: z.string().default('Luna Café'),
     MAIL_REPLY_TO: z.email().optional(),
+    // Staff alerts for new bookings and event sign-ups (comma-separated for several people).
+    ADMIN_NOTIFY_EMAIL: z
+      .string()
+      .optional()
+      .transform((v) => (v ?? '').split(',').map((e) => e.trim()).filter(Boolean))
+      .pipe(z.array(z.email('ADMIN_NOTIFY_EMAIL must be email addresses, separated by commas.'))),
     SITE_URL: z.url().default('https://lunaacafe.vercel.app'),
     ADMIN_PASSWORD: z.string().optional(),
   })

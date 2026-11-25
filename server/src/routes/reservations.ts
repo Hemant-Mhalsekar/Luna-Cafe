@@ -1,16 +1,15 @@
 import { Router } from 'express';
-import rateLimit from 'express-rate-limit';
+import { limiter } from '../lib/rateLimit.js';
 import { z } from 'zod';
 import { availability, createReservation, reservationInput } from '../services/reservations.js';
 import { MAX_PARTY_SIZE, SLOTS } from '../lib/cafe.js';
-import { Game } from '../models/index.js';
 import { getEnv } from '../config/env.js';
 import { sendInBackground } from '../lib/mailer.js';
-import { bookingConfirmation } from '../emails/templates.js';
+import { adminNewBooking, bookingConfirmation } from '../emails/templates.js';
 
 export const reservationsRouter = Router();
 
-const bookingLimiter = rateLimit({ windowMs: 15 * 60_000, limit: 20, standardHeaders: 'draft-8', legacyHeaders: false });
+const bookingLimiter = limiter({ minutes: 15, limit: 20, message: 'Too many booking attempts. Please try again in a few minutes.' });
 
 const availabilityQuery = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Please pick a date.'),
@@ -28,23 +27,22 @@ reservationsRouter.get('/availability', async (req, res) => {
 
 reservationsRouter.post('/', bookingLimiter, async (req, res) => {
   const input = reservationInput.parse(req.body);
-  const { reservation, table } = await createReservation(input);
-  const game = reservation.gameId ? await Game.findById(reservation.gameId).select('name').lean() : null;
-  sendInBackground(
-    bookingConfirmation(
-      {
-        name: reservation.name,
-        email: reservation.email,
-        referenceCode: reservation.referenceCode,
-        date: reservation.date,
-        slotId: reservation.slotId,
-        partySize: reservation.partySize,
-        tableNumber: table.number,
-        gameName: game?.name ?? null,
-      },
-      getEnv().SITE_URL,
-    ),
-  );
+  const { reservation, table, gameName } = await createReservation(input);
+  const env = getEnv();
+  const details = {
+    name: reservation.name,
+    email: reservation.email,
+    referenceCode: reservation.referenceCode,
+    date: reservation.date,
+    slotId: reservation.slotId,
+    partySize: reservation.partySize,
+    tableNumber: table.number,
+    gameName,
+  };
+  sendInBackground(bookingConfirmation(details, env.SITE_URL));
+  for (const to of env.ADMIN_NOTIFY_EMAIL) {
+    sendInBackground(adminNewBooking({ ...details, phone: reservation.phone, bookedAt: reservation.createdAt }, env.SITE_URL, to));
+  }
   res.status(201).json({
     reservation: {
       referenceCode: reservation.referenceCode,
