@@ -25,15 +25,21 @@ export function signAdminToken(adminId: string): string {
   return jwt.sign({}, secret(), { subject: adminId, expiresIn: `${SESSION_HOURS}h`, algorithm: 'HS256' });
 }
 
-/** Returns the admin id, or null if the token is missing, expired or forged. */
-export function verifyAdminToken(token: string | undefined): string | null {
+/** Returns the admin id and issue time (seconds), or null if the token is missing, expired or forged. */
+export function verifyAdminToken(token: string | undefined): { adminId: string; issuedAt: number } | null {
   if (!token) return null;
   try {
     const payload = jwt.verify(token, secret(), { algorithms: ['HS256'] });
-    return typeof payload === 'object' && payload.sub ? payload.sub : null;
+    if (typeof payload !== 'object' || !payload.sub || typeof payload.iat !== 'number') return null;
+    return { adminId: payload.sub, issuedAt: payload.iat };
   } catch {
     return null;
   }
+}
+
+/** A session is stale if it was issued before the password last changed (JWT times are whole seconds). */
+export function issuedBeforePasswordChange(issuedAt: number, passwordChangedAt: Date | null | undefined): boolean {
+  return Boolean(passwordChangedAt) && issuedAt < Math.floor(passwordChangedAt!.getTime() / 1000);
 }
 
 export function authCookieOptions(): CookieOptions {

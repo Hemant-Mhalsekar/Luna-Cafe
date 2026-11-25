@@ -6,6 +6,22 @@ A portfolio project: the website of a fictional board game café. It opens as a 
 
 **Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
 
+<p>
+  <img src="docs/screenshots/home.png" alt="Home page: hero with a drawn latte and the tagline" width="49%">
+  <img src="docs/screenshots/home-games.png" alt="The board game reveal on the home page" width="49%">
+  <img src="docs/screenshots/games-quiz.png" alt="Game picker quiz showing three matches" width="49%">
+  <img src="docs/screenshots/book.png" alt="Booking form with live time slots" width="49%">
+  <img src="docs/screenshots/events.png" alt="Events with seats left and sign-up" width="49%">
+  <img src="docs/screenshots/admin.png" alt="Admin dashboard with today's tables" width="49%">
+</p>
+<p>
+  <img src="docs/screenshots/mobile-home.png" alt="Home on a phone" width="32%">
+  <img src="docs/screenshots/mobile-menu.png" alt="Menu on a phone" width="32%">
+  <img src="docs/screenshots/mobile-book.png" alt="Booking on a phone" width="32%">
+</p>
+
+More: [game library](docs/screenshots/games-library.png) · [booking confirmed](docs/screenshots/book-confirmed.png) · [Moon Club card](docs/screenshots/moon-club.png)
+
 ## Stack
 
 - **Client:** Vite, React 19, TypeScript, Tailwind CSS v4, Motion, React Router, TanStack Query
@@ -17,6 +33,7 @@ A portfolio project: the website of a fictional board game café. It opens as a 
 ```
 client/   React app
 server/   Express API
+e2e/      Playwright end-to-end tests
 docs/     spec
 design/   Stitch mockups and the original design-system notes (visual reference only)
 ```
@@ -37,6 +54,7 @@ The staff area lives at `/admin` (not linked from the site, and `robots.txt` ask
 - **Reservations:** filter by date range and status, cancel (frees the table immediately)
 - **Games, Menu, Events:** add, edit, hide (untick "Available") or delete
 - **Messages:** contact-form messages, mark read/unread, delete
+- **Account:** change the admin password (at least 12 characters; signs out every other session)
 
 Security: rate limits key on the visitor's real IP (Express trusts two proxy hops in production: Vercel's rewrite and Render's proxy; override with `TRUST_PROXY_HOPS`), bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie (Secure in production), login rate limit, same error for unknown email and wrong password, and admin POSTs must be JSON (blocks cross-site form posts).
 
@@ -60,9 +78,11 @@ Until the photo is ready the hero shows a drawn latte. To switch: save the photo
 
 ## Tests
 
-`npm test` runs the server tests; `npm --prefix client test` runs the client unit tests (game quiz scoring). They start a throwaway in-memory MongoDB (the first run downloads it, so allow a minute), so they never touch your Atlas data.
+- `npm test`: server tests (Vitest + Supertest against a throwaway in-memory MongoDB; the first run downloads it). They cover café hours and slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under simultaneous requests (unique database index), cancellation freeing a slot, nearest free times, event sign-ups that never overfill, admin auth (cookie flags, CSRF guard, password change ending other sessions), the proxy/IP setup behind Vercel and Render, and API validation errors.
+- `npm --prefix client test`: client unit tests (quiz scoring, moon phases, cold-start retry rules).
+- `npm run e2e`: Playwright end-to-end tests on the built app with a real API and MongoDB, on desktop and a phone-sized screen: book a table with a game and cancel it as staff, a full slot can't be picked, the quiz, filters surviving a reload, a contact message reaching the admin inbox, and admin pages needing a session. Needs `MONGODB_URI` pointing at a throwaway database plus `ADMIN_EMAIL` / `ADMIN_PASSWORD`; it seeds that database first.
 
-What they cover: event sign-ups that never overfill (even when people sign up at the same moment), café hours and time slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under concurrent requests (enforced by a unique database index), cancellation freeing a slot, nearest-free-slot suggestions, and API validation errors.
+CI (GitHub Actions) runs all three on every push and pull request; the end-to-end job uses a MongoDB service container and uploads the Playwright report if anything fails.
 
 ## API
 
@@ -81,6 +101,7 @@ What they cover: event sign-ups that never overfill (even when people sign up at
 | POST | `/api/events/:slug/signup` | `{ name, email }`; 409 when full or already signed up |
 | POST | `/api/auth/login` · `/api/auth/logout` | admin session cookie |
 | GET | `/api/auth/me` | current admin |
+| POST | `/api/auth/password` | `{ currentPassword, newPassword }` (admin) |
 | * | `/api/admin/games`, `/menu`, `/events` | list, create, `PATCH /:id`, `DELETE /:id` (admin) |
 | GET | `/api/admin/summary`, `/api/admin/reservations?from&to&status`, `/api/admin/messages` | admin |
 | PATCH | `/api/admin/reservations/:id/cancel`, `/api/admin/messages/:id` | admin |

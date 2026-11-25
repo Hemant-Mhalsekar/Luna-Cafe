@@ -13,6 +13,7 @@ const LINKS = [
   { to: '/admin/menu', label: 'Menu' },
   { to: '/admin/events', label: 'Events' },
   { to: '/admin/messages', label: 'Messages' },
+  { to: '/admin/account', label: 'Account' },
 ];
 
 /** Admin shell: checks the session, then shows a sidebar (top bar on phones) and the page. */

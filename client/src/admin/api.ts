@@ -171,3 +171,9 @@ export function useDeleteMessage() {
 export function isSessionExpired(err: unknown): boolean {
   return err instanceof ApiError && err.status === 401;
 }
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: (body: { currentPassword: string; newPassword: string }) => api<{ ok: true }>('/auth/password', json('POST', body)),
+  });
+}

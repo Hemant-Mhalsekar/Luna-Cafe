@@ -156,3 +156,36 @@ describe('admin reservations and messages', () => {
     expect((await agent.delete(`/api/admin/messages/${msg._id}`)).status).toBe(204);
   });
 });
+
+describe('change password', () => {
+  it('needs the current password and a strong, different new one', async () => {
+    const agent = await signedIn();
+    const wrong = await agent.post('/api/auth/password').send({ currentPassword: 'nope', newPassword: 'a brand new passphrase' });
+    expect(wrong.status).toBe(400);
+    expect(wrong.body.error.fields).toHaveProperty('currentPassword');
+    const short = await agent.post('/api/auth/password').send({ currentPassword: PASSWORD, newPassword: 'short' });
+    expect(short.body.error.fields).toHaveProperty('newPassword');
+    const same = await agent.post('/api/auth/password').send({ currentPassword: PASSWORD, newPassword: PASSWORD });
+    expect(same.body.error.fields).toHaveProperty('newPassword');
+  });
+
+  it('changes it, keeps this session, ends the others, and the new password works', async () => {
+    const mine = await signedIn();
+    const other = await signedIn();
+    // JWT issue times are whole seconds: make sure the change happens in a later second.
+    await new Promise((r) => setTimeout(r, 1100));
+    const res = await mine.post('/api/auth/password').send({ currentPassword: PASSWORD, newPassword: 'a brand new passphrase' });
+    expect(res.status).toBe(200);
+    expect((await mine.get('/api/auth/me')).status).toBe(200);
+    expect((await other.get('/api/auth/me')).status).toBe(401);
+
+    const app = createApp();
+    expect((await request(app).post('/api/auth/login').send({ email: EMAIL, password: PASSWORD })).status).toBe(401);
+    expect((await request(app).post('/api/auth/login').send({ email: EMAIL, password: 'a brand new passphrase' })).status).toBe(200);
+  });
+
+  it('requires a session', async () => {
+    const res = await request(createApp()).post('/api/auth/password').send({ currentPassword: 'x', newPassword: 'y'.repeat(12) });
+    expect(res.status).toBe(401);
+  });
+});
