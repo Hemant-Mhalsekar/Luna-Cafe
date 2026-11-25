@@ -43,16 +43,26 @@ async function tablesFor(partySize: number): Promise<TableLite[]> {
 
 /** Map of "date|slotId" -> set of table ids that already hold a confirmed booking. */
 async function takenTables(dates: string[]): Promise<Map<string, Set<string>>> {
+  return (await taken(dates)).tables;
+}
+
+/** Tables and games already held by confirmed bookings, keyed by "date|slotId". */
+async function taken(dates: string[]) {
   const rows = await Reservation.find({ date: { $in: dates }, status: 'confirmed' })
-    .select('date slotId tableId')
+    .select('date slotId tableId gameId')
     .lean();
-  const map = new Map<string, Set<string>>();
+  const tables = new Map<string, Set<string>>();
+  const games = new Map<string, Set<string>>();
   for (const r of rows) {
     const key = `${r.date}|${r.slotId}`;
-    if (!map.has(key)) map.set(key, new Set());
-    map.get(key)!.add(String(r.tableId));
+    if (!tables.has(key)) tables.set(key, new Set());
+    tables.get(key)!.add(String(r.tableId));
+    if (r.gameId) {
+      if (!games.has(key)) games.set(key, new Set());
+      games.get(key)!.add(String(r.gameId));
+    }
   }
-  return map;
+  return { tables, games };
 }
 
 function hasFreeTable(tables: TableLite[], taken: Set<string> | undefined): boolean {
@@ -62,13 +72,15 @@ function hasFreeTable(tables: TableLite[], taken: Set<string> | undefined): bool
 /** Every slot on a date with its status for a given party size. */
 export async function availability(date: string, partySize: number, now: Date = new Date()) {
   if (!parseDate(date)) throw new HttpError(400, 'INVALID_DATE', 'Please pick a valid date.');
-  const [tables, taken] = await Promise.all([tablesFor(partySize), takenTables([date])]);
+  const [tables, held] = await Promise.all([tablesFor(partySize), taken([date])]);
   return SLOTS.map((slot) => {
+    const key = `${date}|${slot.id}`;
     const check = checkSlot(date, slot.id, now);
     let status: SlotStatus;
     if (!check.ok) status = check.code === 'CLOSED' ? 'closed' : 'past';
-    else status = hasFreeTable(tables, taken.get(`${date}|${slot.id}`)) ? 'free' : 'full';
-    return { slotId: slot.id, label: slot.label, status };
+    else status = hasFreeTable(tables, held.tables.get(key)) ? 'free' : 'full';
+    // Games already reserved at this time, so the form can grey them out.
+    return { slotId: slot.id, label: slot.label, status, takenGameIds: [...(held.games.get(key) ?? [])] };
   });
 }
 
@@ -105,6 +117,10 @@ export async function nearestFreeSlots(
   return result;
 }
 
+function gameTaken(gameName: string, time: string) {
+  return new HttpError(409, 'GAME_TAKEN', `${gameName} is already reserved at ${time}. Pick another game, or another time.`);
+}
+
 function isDuplicateKey(err: unknown): err is { code: number; keyPattern?: Record<string, unknown> } {
   return typeof err === 'object' && err !== null && (err as { code?: unknown }).code === 11000;
 }
@@ -118,9 +134,13 @@ export async function createReservation(input: ReservationInput, now: Date = new
   const check = checkSlot(input.date, input.slotId, now);
   if (!check.ok) throw new HttpError(400, check.code, check.message);
 
+  let gameName: string | null = null;
   if (input.gameId) {
-    const game = await Game.exists({ _id: input.gameId, isAvailable: true });
+    const game = await Game.findOne({ _id: input.gameId, isAvailable: true }).select('name').lean();
     if (!game) throw new HttpError(400, 'UNKNOWN_GAME', 'That game is not available right now.');
+    gameName = game.name;
+    const clash = await Reservation.exists({ gameId: input.gameId, date: input.date, slotId: input.slotId, status: 'confirmed' });
+    if (clash) throw gameTaken(gameName, check.slot.label);
   }
 
   const tables = await tablesFor(input.partySize);
@@ -140,10 +160,11 @@ export async function createReservation(input: ReservationInput, now: Date = new
           referenceCode: newReferenceCode(),
           status: 'confirmed',
         });
-        return { reservation: doc.toObject(), table: { number: table.number, capacity: table.capacity } };
+        return { reservation: doc.toObject(), table: { number: table.number, capacity: table.capacity }, gameName };
       } catch (err) {
         if (!isDuplicateKey(err)) throw err;
         if (err.keyPattern && 'referenceCode' in err.keyPattern) continue; // rare code clash: new code
+        if (err.keyPattern && 'gameId' in err.keyPattern) throw gameTaken(gameName ?? 'That game', check.slot.label); // taken a moment ago
         break; // someone just took this table: try the next one
       }
     }
