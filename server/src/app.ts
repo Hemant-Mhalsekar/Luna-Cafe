@@ -17,8 +17,11 @@ export function createApp() {
   const env = getEnv();
   const app = express();
 
-  // Behind Render's proxy (and Vercel's rewrite) so rate limits see the real client IP.
-  app.set('trust proxy', 1);
+  // Rate limits key on the visitor's IP. In production a request passes Vercel's /api rewrite (which
+  // sets X-Forwarded-For to the visitor) and then Render's proxy (which appends Vercel's address), so
+  // two hops are trusted. With one, every request looked like it came from a different Vercel server
+  // and the limits never added up.
+  app.set('trust proxy', env.TRUST_PROXY_HOPS ?? (env.NODE_ENV === 'production' ? 2 : 1));
   app.disable('x-powered-by');
 
   app.use(helmet());

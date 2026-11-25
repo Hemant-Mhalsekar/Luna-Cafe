@@ -12,6 +12,8 @@ const schema = z
       })
       .regex(/^mongodb(\+srv)?:\/\//, 'MONGODB_URI must start with mongodb:// or mongodb+srv://'),
     CLIENT_ORIGIN: z.string().default('http://localhost:5173'),
+    // How many proxies sit in front of the app. Production: Vercel's /api rewrite, then Render's proxy.
+    TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).optional(),
     JWT_SECRET: z.string().optional(),
     ADMIN_EMAIL: z.string().optional(),
     ADMIN_PASSWORD: z.string().optional(),

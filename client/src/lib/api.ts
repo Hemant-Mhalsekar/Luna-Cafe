@@ -32,3 +32,32 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   }
   return body as T;
 }
+
+/**
+ * Render's free plan sleeps when idle and takes about a minute to wake. While it does, requests fail
+ * with a network error or a 502/503/504 from the proxy. These are worth waiting for; real errors
+ * (4xx, 500) are not.
+ */
+export function isWakingUp(err: unknown): boolean {
+  return err instanceof ApiError && (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504);
+}
+
+const WAKE_RETRY_MS = 5000;
+const WAKE_MAX_ATTEMPTS = 30; // 30 × 5 s = 2.5 minutes, longer than a cold start
+
+/** Retry policy for reads: keep trying while the API wakes up, otherwise retry once. */
+export function retryWhileWaking(failureCount: number, err: unknown): boolean {
+  if (isWakingUp(err)) return failureCount < WAKE_MAX_ATTEMPTS;
+  if (err instanceof ApiError && err.status >= 400 && err.status < 500) return false;
+  return failureCount < 1;
+}
+
+/**
+ * Retry policy for writes (bookings, sign-ups, messages). Only when the request clearly never reached
+ * the app (network error, or Render's 502/503 "loading" answer), so nothing is saved twice.
+ */
+export function retryWriteWhileWaking(failureCount: number, err: unknown): boolean {
+  return err instanceof ApiError && (err.status === 0 || err.status === 502 || err.status === 503) && failureCount < WAKE_MAX_ATTEMPTS;
+}
+
+export const wakeRetryDelay = () => WAKE_RETRY_MS;

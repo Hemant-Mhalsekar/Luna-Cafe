@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApiError, api } from '../lib/api';
+import { ApiError, api, retryWhileWaking, wakeRetryDelay } from '../lib/api';
 import type { Game, MenuItem } from '../lib/types';
 
 export type AdminGame = Game & { isAvailable: boolean };
@@ -57,9 +57,8 @@ export function useMe() {
   return useQuery({
     queryKey: ['admin', 'me'],
     queryFn: () => api<{ admin: { email: string } }>('/auth/me').then((r) => r.admin),
-    // A 401 means "not signed in", not a failure worth retrying.
-    retry: (count, err) => !(err instanceof ApiError && err.status === 401) && count < 6,
-    retryDelay: 4000,
+    retry: retryWhileWaking, // a 401 just means "not signed in": no retry
+    retryDelay: wakeRetryDelay,
     staleTime: 5 * 60_000,
   });
 }

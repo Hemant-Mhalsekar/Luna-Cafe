@@ -4,7 +4,7 @@
 
 A portfolio project: the website of a fictional board game café. It opens as a calm specialty coffee shop, and the board game side is revealed as you scroll.
 
-**Status:** all features built (public pages, booking, game quiz, events, Moon Club card, admin). Deploy config ready. See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
+**Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
 
 ## Stack
 
@@ -38,7 +38,21 @@ The staff area lives at `/admin` (not linked from the site, and `robots.txt` ask
 - **Games, Menu, Events:** add, edit, hide (untick "Available") or delete
 - **Messages:** contact-form messages, mark read/unread, delete
 
-Security: bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie (Secure in production), login rate limit, same error for unknown email and wrong password, and admin POSTs must be JSON (blocks cross-site form posts).
+Security: rate limits key on the visitor's real IP (Express trusts two proxy hops in production: Vercel's rewrite and Render's proxy; override with `TRUST_PROXY_HOPS`), bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie (Secure in production), login rate limit, same error for unknown email and wrong password, and admin POSTs must be JSON (blocks cross-site form posts).
+
+## Performance and accessibility
+
+Lighthouse (production build, Vercel headers, Brotli; mobile uses Lighthouse's slow-4G throttling):
+
+| Page | Mobile perf | Desktop perf | Accessibility | Best practices | SEO |
+|---|---|---|---|---|---|
+| Home | 88–90 | 98 | 100 | 100 | 100 |
+| Games | 91 | 97 | 100 | 100 | 100 |
+| Menu, Book, Events, About, Contact | 92–95 | — | 100 | 100 | 100 |
+
+What keeps it fast: every page except Home and the animation engine load on demand; the hero headline uses a CSS entrance so it paints without waiting for JavaScript; fonts are self-hosted; built assets are cached for a year. No layout shift (CLS 0).
+
+The free API sleeps when idle. The site waits up to 2.5 minutes for it with a "Waking up the café…" banner, retrying reads, and retrying writes only when the request clearly never reached the server (so nothing is saved twice).
 
 ## Hero photo
 
