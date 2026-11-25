@@ -45,3 +45,45 @@ authRouter.get('/me', requireAdmin, async (req, res) => {
   const admin = await Admin.findById(req.adminId).lean();
   res.json({ admin: { email: admin!.email } });
 });
+
+const passwordLimiter = rateLimit({
+  windowMs: 15 * 60_000,
+  limit: 5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  skip: () => getEnv().NODE_ENV === 'test',
+});
+
+const passwordInput = z
+  .object({
+    currentPassword: z.string().min(1, 'Please enter your current password.').max(200),
+    newPassword: z
+      .string()
+      .min(12, 'Use at least 12 characters.')
+      .max(200)
+      .refine((p) => p.trim() === p, 'No spaces at the start or end.'),
+  })
+  .refine((v) => v.newPassword !== v.currentPassword, {
+    path: ['newPassword'],
+    message: 'Choose a password different from the current one.',
+  });
+
+/**
+ * Changes the admin password. Every other session ends (tokens issued before the change are refused);
+ * this browser gets a fresh cookie so it stays signed in.
+ */
+authRouter.post('/password', requireAdmin, passwordLimiter, async (req, res) => {
+  const { currentPassword, newPassword } = passwordInput.parse(req.body);
+  const admin = await Admin.findById(req.adminId).select('+passwordHash');
+  if (!admin) throw new HttpError(401, 'UNAUTHENTICATED', 'Please sign in again.');
+  if (!(await bcrypt.compare(currentPassword, admin.passwordHash))) {
+    throw new HttpError(400, 'VALIDATION', 'Please check the highlighted fields.', undefined, {
+      currentPassword: 'That is not your current password.',
+    });
+  }
+  admin.passwordHash = await bcrypt.hash(newPassword, 12);
+  admin.passwordChangedAt = new Date();
+  await admin.save();
+  res.cookie(AUTH_COOKIE, signAdminToken(String(admin._id)), authCookieOptions());
+  res.json({ ok: true });
+});

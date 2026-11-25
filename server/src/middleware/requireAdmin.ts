@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
 import { Admin } from '../models/index.js';
-import { AUTH_COOKIE, verifyAdminToken } from '../lib/auth.js';
+import { AUTH_COOKIE, issuedBeforePasswordChange, verifyAdminToken } from '../lib/auth.js';
 import { HttpError } from '../lib/httpError.js';
 
 declare module 'express-serve-static-core' {
@@ -18,10 +18,11 @@ export const requireAdmin: RequestHandler = async (req, _res, next) => {
   if (req.method === 'POST' && !req.is('application/json')) {
     throw new HttpError(415, 'JSON_REQUIRED', 'Requests must be sent as JSON.');
   }
-  const adminId = verifyAdminToken(req.cookies?.[AUTH_COOKIE]);
-  if (!adminId || !(await Admin.exists({ _id: adminId }))) {
+  const session = verifyAdminToken(req.cookies?.[AUTH_COOKIE]);
+  const admin = session ? await Admin.findById(session.adminId).select('passwordChangedAt').lean() : null;
+  if (!session || !admin || issuedBeforePasswordChange(session.issuedAt, admin.passwordChangedAt)) {
     throw new HttpError(401, 'UNAUTHENTICATED', 'Please sign in again.');
   }
-  req.adminId = adminId;
+  req.adminId = session.adminId;
   next();
 };

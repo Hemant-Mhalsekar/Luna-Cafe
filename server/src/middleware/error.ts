@@ -18,7 +18,7 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
   if (err instanceof HttpError) {
-    res.status(err.status).json({ error: { code: err.code, message: err.message, details: err.details } });
+    res.status(err.status).json({ error: { code: err.code, message: err.message, details: err.details, fields: err.fields } });
     return;
   }
   if (err instanceof mongoose.Error.ValidationError) {
