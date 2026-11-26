@@ -12,7 +12,7 @@ export function Footer() {
           <div className="twinkle-host">
             <div className="flex items-center gap-2.5">
               <MoonMark className="[&_circle:first-child]:text-cream/15" />
-              <span className="font-display text-2xl font-semibold">Luna Café</span>
+              <span className="font-display text-2xl font-semibold">Lunaa Café</span>
             </div>
             <p className="mt-3 max-w-xs text-cream/85">{CAFE.tagline}</p>
           </div>

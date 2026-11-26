@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* Luna Café design tokens (spec v2). Contrast ratios are noted where they matter. */
+/* Lunaa Café design tokens (spec v2). Contrast ratios are noted where they matter. */
 @theme {
   --color-cream: #f6efdf;
   --color-cream-deep: #e9e2d2;

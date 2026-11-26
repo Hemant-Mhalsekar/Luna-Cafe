@@ -1,4 +1,4 @@
-# Render Blueprint for the Luna Café API.
+# Render Blueprint for the Lunaa Café API.
 # Render dashboard → New → Blueprint → pick this repo. Secrets marked sync: false are asked for once.
 services:
   - type: web

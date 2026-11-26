@@ -21,7 +21,7 @@ describe('booking confirmation email', () => {
   it('has the code, date, time, table and game in both HTML and text', () => {
     const m = bookingConfirmation(booking, SITE);
     expect(m.to).toEqual({ email: 'asha@example.com', name: 'Asha <b>Rao</b>' });
-    expect(m.subject).toBe('Your table at Luna Café: Wednesday 25 November 2026, 19:00 (LUNA-7KQ4M)');
+    expect(m.subject).toBe('Your table at Lunaa Café: Wednesday 25 November 2026, 19:00 (LUNA-7KQ4M)');
     for (const body of [m.html, m.text]) {
       for (const part of ['LUNA-7KQ4M', 'Wednesday 25 November 2026', '19:00 – 20:30', 'No. 5', 'Catan', 'portfolio demo']) {
         expect(body).toContain(part);
@@ -109,7 +109,7 @@ describe('mailer', () => {
     expect(url).toBe('https://api.brevo.com/v3/smtp/email');
     expect((init!.headers as Record<string, string>)['api-key']).toBe('test-key');
     const body = JSON.parse(String(init!.body));
-    expect(body.sender).toEqual({ email: 'hello@example.com', name: 'Luna Café' });
+    expect(body.sender).toEqual({ email: 'hello@example.com', name: 'Lunaa Café' });
     expect(body.to).toEqual([{ email: 'asha@example.com', name: 'Asha <b>Rao</b>' }]);
     expect(body.attachment[0].name).toBe('luna-cafe-booking.ics');
   });

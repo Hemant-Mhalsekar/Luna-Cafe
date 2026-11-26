@@ -86,7 +86,7 @@ export function GamesAdmin() {
           <TextAreaField label="Rules summary" value={f.rulesSummary} onChange={(ev) => set({ rulesSummary: ev.target.value })} error={e.rulesSummary} maxLength={1200} />
           <div className="flex flex-wrap gap-6">
             <Checkbox label="Available on the shelf" checked={f.isAvailable} onChange={(isAvailable) => set({ isAvailable })} />
-            <Checkbox label="Luna original (invented game)" checked={f.isInvented} onChange={(isInvented) => set({ isInvented })} />
+            <Checkbox label="Lunaa original (invented game)" checked={f.isInvented} onChange={(isInvented) => set({ isInvented })} />
           </div>
         </>
       )}

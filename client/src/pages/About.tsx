@@ -25,13 +25,13 @@ export function About() {
   return (
     <>
       <PageHeader eyebrow="About" title="A café that happens to have a lot of games">
-        <p>Luna Café started with one shelf of games and a very good espresso machine. People stayed longer than planned. So we added more shelves.</p>
+        <p>Lunaa Café started with one shelf of games and a very good espresso machine. People stayed longer than planned. So we added more shelves.</p>
       </PageHeader>
 
       <div className="container-page grid gap-10 pb-16 lg:grid-cols-2">
         <Reveal className="space-y-4 text-lg text-forest-dark">
           <p>
-            Mira opened Luna in a quiet lane in Panaji in 2021, wanting a place that felt like a friend's living room: sunny in the morning,
+            Mira opened Lunaa in a quiet lane in Panaji in 2021, wanting a place that felt like a friend's living room: sunny in the morning,
             cosy at night. Friends brought their board games along, and the games never went home.
           </p>
           <p>

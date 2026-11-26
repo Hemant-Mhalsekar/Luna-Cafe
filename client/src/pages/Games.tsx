@@ -207,7 +207,7 @@ function GameDetails({ game }: { game: Game }) {
         <Tag>{players} players</Tag>
         <Tag>{game.playTimeMinutes} min</Tag>
         <Tag>{DIFFICULTY_LABEL[game.difficulty]}</Tag>
-        {game.isInvented && <Tag tone="lavender">Luna original</Tag>}
+        {game.isInvented && <Tag tone="lavender">Lunaa original</Tag>}
       </div>
       <p className="mt-5 text-lg text-forest-dark">{game.description}</p>
       <h3 className="mt-6 text-lg">How to play</h3>

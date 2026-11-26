@@ -100,7 +100,7 @@ export const games: SeedGame[] = [
     description: 'The classic crossword tile game.',
     rulesSummary: 'Place letter tiles to form words that connect to the board. Score letter values plus bonus squares. Draw back to seven tiles. Highest score when tiles run out wins.',
   },
-  // Luna originals (invented for this project)
+  // Lunaa originals (invented for this project)
   {
     name: 'Moonlight Mischief', slug: 'moonlight-mischief', type: 'party', minPlayers: 3, maxPlayers: 8, playTimeMinutes: 25, difficulty: 1,
     moods: ['silly'], accent: 'lavender', isInvented: true,

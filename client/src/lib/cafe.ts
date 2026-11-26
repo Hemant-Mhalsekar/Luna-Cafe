@@ -1,9 +1,9 @@
 // Café facts shown across the site. Keep in sync with server/src/lib/cafe.ts.
 export const CAFE = {
-  name: 'Luna Café',
+  name: 'Lunaa Café',
   tagline: 'Coffee first. Then game on?',
   address: ['14 Crescent Lane', 'Moonbeam Quarter, Panaji, Goa'],
-  email: 'hello@lunacafe.example',
+  email: 'hello@lunaacafe.example',
   phone: '+91 98765 43210',
   hours: [
     { days: 'Tuesday – Sunday', time: '10:00 – 22:00' },
@@ -33,8 +33,8 @@ export const HERO_PHOTO: { src: string; width: number; height: number; alt: stri
 
 /** Photos used around the site (in client/public/images). */
 export const PHOTOS = {
-  interior: { src: '/images/interior.webp', width: 512, height: 286, alt: 'Inside Luna Café: long wooden tables, green chairs, plants and a busy coffee bar' },
-  storefront: { src: '/images/storefront.webp', width: 324, height: 382, alt: 'The Luna Café front window at dusk, with friends at an outside table' },
+  interior: { src: '/images/interior.webp', width: 512, height: 286, alt: 'Inside Lunaa Café: long wooden tables, green chairs, plants and a busy coffee bar' },
+  storefront: { src: '/images/storefront.webp', width: 324, height: 382, alt: 'The Lunaa Café front window at dusk, with friends at an outside table' },
   croissant: { src: '/images/menu/twice-baked-almond-croissant.webp', width: 512, height: 512, alt: 'A twice-baked almond croissant on a plate' },
   focaccia: { src: '/images/menu/warm-rosemary-focaccia-bites.webp', width: 512, height: 512, alt: 'Warm rosemary focaccia bites in a bowl' },
   matcha: { src: '/images/menu/ceremonial-matcha-latte.webp', width: 512, height: 512, alt: 'A layered iced matcha latte' },

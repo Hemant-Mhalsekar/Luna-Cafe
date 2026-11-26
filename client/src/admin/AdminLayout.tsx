@@ -53,7 +53,7 @@ export function AdminLayout() {
 
   return (
     <div className="min-h-dvh bg-cream lg:grid lg:grid-cols-[15rem_1fr]">
-      <title>Admin · Luna Café</title>
+      <title>Admin · Lunaa Café</title>
       <meta name="robots" content="noindex, nofollow" />
       <a href="#admin-main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-forest-dark focus:px-5 focus:py-3 focus:text-cream">
         Skip to content
@@ -63,7 +63,7 @@ export function AdminLayout() {
         <div className="flex items-center justify-between px-5 py-4 lg:py-6">
           <Link to="/admin" className="twinkle-host flex items-center gap-2.5 rounded-xl">
             <MoonMark className="[&_circle:first-child]:text-cream/15" />
-            <span className="font-display text-xl font-semibold">Luna admin</span>
+            <span className="font-display text-xl font-semibold">Lunaa admin</span>
           </Link>
           <button
             type="button"
