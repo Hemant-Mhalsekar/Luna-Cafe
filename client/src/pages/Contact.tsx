@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import * as m from 'motion/react-m';
 import { Reveal } from '../components/Reveal';
+import { Enter } from '../components/fx/Enter';
 import { Parallax } from '../components/fx/Parallax';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -38,7 +39,7 @@ export function Contact() {
       </PageHeader>
 
       <div className="container-page grid gap-8 pb-20 lg:grid-cols-[1fr_26rem]">
-        <Reveal variant="left">
+        <Enter variant="left" delay={0.3}>
         <Card>
           {send.isSuccess ? (
             <m.div role="status" className="py-8 text-center" initial={{ scale: 0.7, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 220, damping: 14 }}>
@@ -78,10 +79,10 @@ export function Contact() {
             </form>
           )}
         </Card>
-        </Reveal>
+        </Enter>
 
         <div className="flex flex-col gap-5">
-          <Reveal variant="right" delay={0.1}>
+          <Enter variant="right" delay={0.45}>
           <Card className="flex flex-col gap-4">
             <h2 className="text-2xl">Visit</h2>
             <div className="flex gap-3">
@@ -113,7 +114,7 @@ export function Contact() {
               </a>
             </p>
           </Card>
-          </Reveal>
+          </Enter>
           <Reveal variant="tilt" delay={0.2}>
             <Parallax speed={0.1} zoom className="aspect-[4/3] w-full rounded-card shadow-soft">
               <Photo {...PHOTOS.storefront} className="size-full" />

@@ -20,8 +20,10 @@ export function Magnetic({ children, strength = 0.35, className }: { children: R
     y.set(0);
   };
   return (
-    <m.span ref={ref} onPointerMove={move} onPointerLeave={leave} style={{ x, y }} className={cn('inline-block', className)}>
-      {children}
-    </m.span>
+    <span ref={ref} onPointerMove={move} onPointerLeave={leave} className={cn('inline-block', className)}>
+      <m.span style={{ x, y }} className="inline-block">
+        {children}
+      </m.span>
+    </span>
   );
 }

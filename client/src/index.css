@@ -162,23 +162,24 @@ details[open]::details-content { height: auto; }
   margin-bottom: -0.12em;
   vertical-align: top;
 }
+/* Letters stay inline (not inline-block) so screen readers and search engines read whole words;
+   they rise using a relative offset instead of a transform. */
 .split-char {
-  display: inline-block;
-  animation: char-in 0.85s cubic-bezier(0.2, 0.9, 0.1, 1.15) both;
+  position: relative;
+  animation: char-in 0.75s cubic-bezier(0.2, 0.9, 0.1, 1.15) both;
   animation-delay: var(--d, 0ms);
-  transform-origin: 0 100%;
 }
 @keyframes char-in {
-  from { transform: translateY(105%) rotate(12deg); }
-  to { transform: none; }
+  from { top: 1.15em; }
+  to { top: 0; }
 }
 .split:hover .split-char {
   animation: char-wave 0.6s ease-in-out;
   animation-delay: calc(var(--d, 0ms) * 0.4);
 }
 @keyframes char-wave {
-  0%, 100% { transform: none; }
-  40% { transform: translateY(-14%) rotate(-4deg); }
+  0%, 100% { top: 0; }
+  40% { top: -0.14em; }
 }
 
 /* Floating pieces bob gently on their own. */
@@ -316,3 +317,18 @@ dialog.modal-pop[open]::backdrop { backdrop-filter: blur(6px); }
   animation: sheen 6s ease-in-out infinite;
 }
 .scramble-overlay::after { content: attr(data-text); }
+
+/* <Enter>: CSS entrances for content near the top of a page (no JavaScript needed). */
+.enter { animation: 0.9s cubic-bezier(0.2, 0.9, 0.2, 1.05) both; }
+.enter-up { animation-name: enter-up; }
+.enter-left { animation-name: enter-left; }
+.enter-right { animation-name: enter-right; }
+.enter-flip { animation-name: enter-flip; }
+.enter-zoom { animation-name: enter-zoom; }
+.enter-deal { animation-name: enter-deal; }
+@keyframes enter-up { from { opacity: 0; transform: translateY(40px) scale(0.97); } }
+@keyframes enter-left { from { opacity: 0; transform: translateX(-70px) rotate(-2deg); } }
+@keyframes enter-right { from { opacity: 0; transform: translateX(70px) rotate(2deg); } }
+@keyframes enter-flip { from { opacity: 0; transform: perspective(900px) rotateX(-60deg) translateY(30px); } }
+@keyframes enter-zoom { from { opacity: 0; transform: scale(0.85); } }
+@keyframes enter-deal { from { opacity: 0; transform: translateY(60px) rotate(var(--r, -4deg)) scale(0.9); } }

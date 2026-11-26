@@ -6,7 +6,7 @@ import { Tag } from '../components/ui/Tag';
 import { Button } from '../components/ui/Button';
 import { Field } from '../components/ui/Field';
 import { Modal } from '../components/ui/Modal';
-import { Reveal } from '../components/Reveal';
+import { Enter } from '../components/fx/Enter';
 import { LoadError, SkeletonGrid } from '../components/QueryState';
 import { ClockIcon, MeepleIcon } from '../components/illustrations/GameIcons';
 import { useEventSignup, useEvents } from '../lib/queries';
@@ -47,7 +47,7 @@ export function Events() {
               const full = e.spotsLeft === 0;
               return (
                 <li key={e._id}>
-                  <Reveal delay={0.1 * i} variant={i % 2 ? 'right' : 'left'} className="h-full">
+                  <Enter delay={0.3 + 0.12 * i} variant={i % 2 ? 'right' : 'left'} className="h-full">
                     <Card className="group flex h-full gap-5 transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-lift">
                       <m.div
                         initial={{ rotateY: 180, scale: 0.5 }}
@@ -92,7 +92,7 @@ export function Events() {
                         )}
                       </div>
                     </Card>
-                  </Reveal>
+                  </Enter>
                 </li>
               );
             })}

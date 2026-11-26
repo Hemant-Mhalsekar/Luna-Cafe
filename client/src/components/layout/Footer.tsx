@@ -9,7 +9,7 @@ export function Footer() {
     <footer className="mt-auto">
       <Wave className="-mb-px text-forest-dark" />
       <div className="overflow-hidden bg-forest-dark text-cream">
-        <Marquee items={['Coffee first', 'Then game on?', 'Book a table', 'Lunaa Café']} className="border-b border-cream/15 text-cream/25" />
+        <Marquee items={['Coffee first', 'Then game on?', 'Book a table', 'Lunaa Café']} className="border-b border-cream/15 text-sage" />
         <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           <div className="twinkle-host">
             <div className="flex items-center gap-2.5">

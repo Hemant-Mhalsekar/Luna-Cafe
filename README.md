@@ -6,13 +6,17 @@ A portfolio project: the website of a fictional board game café. It opens as a 
 
 **Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
 
+<p align="center">
+  <img src="docs/screenshots/demo.gif" alt="Short demo: the hero letters rise and the moon rises on scroll, the page-change transition, the game quiz rolling dice and dealing matches, and confetti when a table is booked" width="80%">
+</p>
+
 <p>
-  <img src="docs/screenshots/home.webp" alt="Home page: hero with a drawn latte and the tagline" width="49%">
+  <img src="docs/screenshots/home.webp" alt="Home page: hero photo of a latte, the tagline and floating game pieces" width="49%">
   <img src="docs/screenshots/home-games.webp" alt="The board game reveal on the home page" width="49%">
-  <img src="docs/screenshots/games-quiz.webp" alt="Game picker quiz showing three matches" width="49%">
-  <img src="docs/screenshots/book.webp" alt="Booking form with live time slots" width="49%">
+  <img src="docs/screenshots/menu.webp" alt="Menu with photo cards for coffee" width="49%">
+  <img src="docs/screenshots/games-quiz.webp" alt="Game picker quiz showing three matches, the first marked Best match" width="49%">
+  <img src="docs/screenshots/book-confetti.webp" alt="Booking confirmed with a confetti burst of paper, dice and stars" width="49%">
   <img src="docs/screenshots/events.webp" alt="Events with seats left and sign-up" width="49%">
-  <img src="docs/screenshots/admin.webp" alt="Admin dashboard with today's tables" width="49%">
 </p>
 <p>
   <img src="docs/screenshots/mobile-home.webp" alt="Home on a phone" width="32%">
@@ -20,7 +24,9 @@ A portfolio project: the website of a fictional board game café. It opens as a 
   <img src="docs/screenshots/mobile-book.webp" alt="Booking on a phone" width="32%">
 </p>
 
-More: [game library](docs/screenshots/games-library.webp) · [booking confirmed](docs/screenshots/book-confirmed.webp) · [Moon Club card](docs/screenshots/moon-club.webp)
+More: [about](docs/screenshots/about.webp) · [game library](docs/screenshots/games-library.webp) · [booking form](docs/screenshots/book.webp) · [booking confirmed](docs/screenshots/book-confirmed.webp) · [Moon Club card](docs/screenshots/moon-club.webp) · [admin](docs/screenshots/admin.webp)
+
+**Case study:** how it was built and the problems along the way, in [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md).
 
 ## Stack
 
@@ -34,7 +40,7 @@ More: [game library](docs/screenshots/games-library.webp) · [booking confirmed]
 client/   React app
 server/   Express API
 e2e/      Playwright end-to-end tests
-docs/     spec
+docs/     spec, case study, screenshots
 design/   Stitch mockups and the original design-system notes (visual reference only)
 ```
 
@@ -62,17 +68,40 @@ The staff area lives at `/admin` (not linked from the site, and `robots.txt` ask
 
 Security: rate limits key on the visitor's real IP (Express trusts two proxy hops in production: Vercel's rewrite and Render's proxy; override with `TRUST_PROXY_HOPS`), bcrypt-hashed password, 8-hour JWT in an httpOnly, SameSite=Lax cookie (Secure in production), login rate limit, same error for unknown email and wrong password, and admin POSTs must be JSON (blocks cross-site form posts).
 
+## Animations
+
+Built with Motion plus plain CSS, in `client/src/components/fx/`:
+
+- **Home hero:** the headline's letters rise out of a mask one by one, board-game pieces drift behind it (each at its own depth, moving with scroll and leaning away from the mouse), and as you scroll a golden moon rises behind the cup while the text drifts off. Two text ribbons cross at the bottom.
+- **Every page:** split-letter titles with floating pieces, sections that slide, flip, zoom or un-blur into view, 3D tilt with a soft glare on cards, magnetic buttons, a moon-ring cursor (mouse only), a scroll progress bar with a little moon, a header that tucks away while you scroll down, a sliding nav highlight, and a moon-iris transition between pages.
+- **Moments:** the game quiz rolls two real 3D dice before dealing out the matches like cards; a booking ends with confetti (paper, dice and stars), a flipping ticket and a reference code that rolls like a slot machine; the Moon Club card tilts, has a flip side, bursts on each stamp and celebrates a full cycle. Event sign-ups and contact messages get confetti too.
+
+Kept honest: everything respects the system's *reduce motion* setting; content near the top of a page uses CSS entrances, so it plays as soon as the HTML paints instead of waiting for JavaScript; the confetti code is only downloaded when something is celebrated; the cursor and tilt never run on touch screens.
+
+## SEO and sharing
+
+- **Pre-rendered pages:** `npm run build` renders Home, Games, Menu, Events, About, Contact and Book to real HTML (`client/scripts/prerender.mjs`, using the same React components via `src/entry-server.tsx`). Crawlers and link previews see the full content without running JavaScript; the browser then attaches to that HTML (hydration) instead of starting from a blank page. On Vercel the build also fetches the live menu, games and events and bakes them in (the browser refreshes them straight after loading). Local and CI builds skip that, so tests never see live data.
+- **Per-page tags:** title, description, canonical URL, Open Graph and Twitter card for every page, from one list in `client/src/lib/seo.ts` (also used to update the tags when you move between pages).
+- **Share image:** `client/public/og.jpg` (1200×630).
+- **Structured data:** `CafeOrCoffeeShop` (address, hours, menu, reservations) on every page and an `Event` for each upcoming event on `/events`, for rich results in Google. (The café is fictional; this shows the technique.)
+- **Crawling:** `sitemap.xml` is generated at build time, `robots.txt` points to it and keeps `/admin` out, and every address without a page of its own (admin, unknown links) is served with `noindex`.
+- Plus a web app manifest and app icons.
+
 ## Performance and accessibility
 
-Lighthouse (production build, Vercel headers, Brotli; mobile uses Lighthouse's slow-4G throttling):
+Lighthouse 12, production build behind a local copy of the Vercel setup (same rewrites and headers, Brotli). Mobile uses Lighthouse's slow-4G throttling and moves a few points between runs, so ranges are from two runs:
 
 | Page | Mobile perf | Desktop perf | Accessibility | Best practices | SEO |
 |---|---|---|---|---|---|
-| Home | 88–90 | 98 | 100 | 100 | 100 |
-| Games | 91 | 97 | 100 | 100 | 100 |
-| Menu, Book, Events, About, Contact | 92–95 | — | 100 | 100 | 100 |
+| Home | 87–98 | 96 | 100 | 100 | 100 |
+| Games | 95–96 | 99–100 | 100 | 100 | 100 |
+| Menu | 88–96 | 97–100 | 100 | 100 | 100 |
+| Events | 91–94 | 99 | 100 | 100 | 100 |
+| About | 98 | 98–99 | 100 | 100 | 100 |
+| Contact | 90–96 | 99 | 100 | 100 | 100 |
+| Book | 84–87 | 98 | 100 | 100 | 100 |
 
-What keeps it fast: every page except Home and the animation engine load on demand; the hero headline uses a CSS entrance so it paints without waiting for JavaScript; fonts are self-hosted; built assets are cached for a year. No layout shift (CLS 0).
+What keeps it fast: pages arrive as pre-rendered HTML; every page except Home and the animation engine load on demand; headlines and above-the-fold content animate with CSS, so they paint without waiting for JavaScript; the first menu photos load with high priority and the rest lazily; fonts are self-hosted; built assets are cached for a year. Layout shift stays near zero (CLS ≤ 0.02).
 
 The free API sleeps when idle. The site waits up to 2.5 minutes for it with a "Waking up the café…" banner, retrying reads, and retrying writes only when the request clearly never reached the server (so nothing is saved twice).
 
@@ -83,7 +112,7 @@ Food, drink and café photos were generated with Gemini for this fictional café
 ## Tests
 
 - `npm test`: server tests (Vitest + Supertest against a throwaway in-memory MongoDB; the first run downloads it). They cover café hours and slots in café time (Asia/Kolkata), smallest-table assignment, double booking blocked under simultaneous requests (unique database index), cancellation freeing a slot, nearest free times, event sign-ups that never overfill, admin auth (cookie flags, CSRF guard, password change ending other sessions), the proxy/IP setup behind Vercel and Render, and API validation errors.
-- `npm --prefix client test`: client unit tests (quiz scoring, moon phases, cold-start retry rules).
+- `npm --prefix client test`: client unit tests (quiz scoring, moon phases, cold-start retry rules, page tags).
 - `npm run e2e`: Playwright end-to-end tests on the built app with a real API and MongoDB, on desktop and a phone-sized screen: book a table with a game and cancel it as staff, a full slot can't be picked, the quiz, filters surviving a reload, a contact message reaching the admin inbox, and admin pages needing a session. First time: `npm --prefix e2e install && npm --prefix e2e run setup` (downloads the test browser), then copy `e2e/.env.example` to `e2e/.env` and point `MONGODB_URI` at a throwaway database (e.g. `/luna-cafe-e2e`). The tests refuse to run against `luna-cafe`, and they seed the test database first.
 
 CI (GitHub Actions) runs all three on every push and pull request; the end-to-end job uses a MongoDB service container and uploads the Playwright report if anything fails.
@@ -129,7 +158,8 @@ The API runs on Render (free), the site on Vercel, the data on MongoDB Atlas. Ve
 **3. Site on Vercel**
 - Vercel → Add New → Project → import `Luna-Cafe`. Set **Root Directory** to `client`. Everything else comes from `client/vercel.json` (Vite, `npm ci`, `npm run build`, output `dist`, Node 22). No environment variables are needed.
 - `client/vercel.json` forwards `/api/*` to `https://luna-cafe.onrender.com`. If Render gave your service a different address (it adds a suffix when the name is taken), change that one line and push.
-- Deep links (`/games`, `/admin/…`) fall back to the app; `/assets/*` is cached for a year (file names change on every build).
+- `/games`, `/menu`, `/events`, `/about`, `/contact` and `/book` are served their pre-rendered HTML; every other address (`/admin/…`, unknown links) gets the app shell (`app.html`, marked `noindex`). `/assets/*` is cached for a year (file names change on every build).
+- The build pre-renders the pages and, on Vercel, bakes in the live menu, games and events. If the API is asleep and doesn't wake within about a minute, the build still succeeds and those pages simply load their data in the browser. Redeploy (or push) to refresh the baked-in data; the browser always fetches fresh data anyway.
 - Security headers: a strict Content-Security-Policy (only this site's own scripts, styles, fonts and API), `nosniff`, `frame-ancestors 'none'`, HSTS, a tight Permissions-Policy, and `noindex` on `/admin`.
 - Production branch: `main`. Every pull request also gets its own preview URL.
 

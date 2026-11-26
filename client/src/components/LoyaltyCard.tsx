@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import * as m from 'motion/react-m';
 import { AnimatePresence } from 'motion/react';
 import { Button } from './ui/Button';
@@ -27,18 +27,44 @@ function saveStamps(n: number) {
   }
 }
 
+// A tiny store over localStorage (kept in memory too, so the card still works when storage is blocked).
+let current: number | null = null;
+const listeners = new Set<() => void>();
+function currentStamps() {
+  if (current === null) current = readStamps();
+  return current;
+}
+function setCurrent(n: number) {
+  current = n;
+  saveStamps(n);
+  listeners.forEach((l) => l());
+}
+function subscribe(listener: () => void) {
+  const onStorage = (e: StorageEvent) => {
+    if (e.key !== STORAGE_KEY) return;
+    current = readStamps();
+    listener();
+  };
+  listeners.add(listener);
+  window.addEventListener('storage', onStorage);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener('storage', onStorage);
+  };
+}
+
 /**
  * The Moon Club card: each drink fills in the next phase of the moon; a full cycle earns a free drink.
  * UI only (no accounts): stamps live in this browser's localStorage.
  */
 export function LoyaltyCard() {
-  const [stamps, setStamps] = useState(readStamps);
+  // The pre-rendered page shows an empty card; the browser then shows this device's saved stamps.
+  const stamps = useSyncExternalStore(subscribe, currentStamps, () => 0);
   const [flipped, setFlipped] = useState(false);
   const complete = stamps >= STAMPS;
 
   const update = (n: number) => {
-    setStamps(n);
-    saveStamps(n);
+    setCurrent(n);
     if (n === STAMPS) void import('../lib/confetti').then((c) => c.celebrate());
   };
 
