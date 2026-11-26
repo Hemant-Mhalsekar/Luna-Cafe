@@ -46,7 +46,7 @@ export function bookingConfirmation(b: BookingEmailInput, siteUrl: string): Mail
     siteUrl,
     preheader: `${b.referenceCode} · ${longDate(b.date)} at ${time}`,
     heading: `Table reserved, ${firstName(b.name)}!`,
-    body: `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#4A6B4F">Your table at Luna Café is booked. Show this code at the counter when you arrive:</p>
+    body: `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#4A6B4F">Your table at Lunaa Café is booked. Show this code at the counter when you arrive:</p>
 <p style="margin:0 0 16px"><span style="display:inline-block;background:#F6EFDF;border-radius:12px;padding:10px 16px;font-family:'Fragment Mono',Menlo,Consolas,monospace;font-size:22px;letter-spacing:2px;color:#294632">${escapeHtml(b.referenceCode)}</span></p>
 ${detailsTable(rows)}
 <p style="margin:18px 0 20px;font-size:14px;line-height:1.6;color:#4A6B4F">Tables are held for 90 minutes. Running late or need to change something? Just reply to this email or <a href="${escapeHtml(siteUrl)}/contact" style="color:#294632">send us a note</a>. The calendar file attached adds it to your calendar.</p>
@@ -69,7 +69,7 @@ ${button('See the menu', `${siteUrl}/menu`)}`,
         date: b.date,
         startMinutes: slot.startMinutes,
         durationMinutes: SLOT_LENGTH_MINUTES,
-        title: `Luna Café table for ${b.partySize}`,
+        title: `Lunaa Café table for ${b.partySize}`,
         description: `Reference ${b.referenceCode}. Table ${b.tableNumber}.${b.gameName ? ` Game: ${b.gameName}.` : ''}`,
         location: ADDRESS,
       })
@@ -77,7 +77,7 @@ ${button('See the menu', `${siteUrl}/menu`)}`,
 
   return {
     to: { email: b.email, name: b.name },
-    subject: `Your table at Luna Café: ${longDate(b.date)}, ${time} (${b.referenceCode})`,
+    subject: `Your table at Lunaa Café: ${longDate(b.date)}, ${time} (${b.referenceCode})`,
     html,
     text,
     attachments: ics ? [{ name: 'luna-cafe-booking.ics', content: Buffer.from(ics).toString('base64') }] : undefined,
@@ -122,7 +122,7 @@ ${button('See other events', `${siteUrl}/events`)}`,
     date: e.date,
     startMinutes: h * 60 + m,
     durationMinutes: 180,
-    title: `${e.title} at Luna Café`,
+    title: `${e.title} at Lunaa Café`,
     description: 'Your first drink is on us.',
     location: ADDRESS,
   });

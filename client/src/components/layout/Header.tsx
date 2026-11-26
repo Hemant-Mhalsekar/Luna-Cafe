@@ -24,7 +24,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-outline/50 bg-cream/95 supports-[backdrop-filter]:bg-cream/90">
       <div className="container-page flex h-18 items-center justify-between gap-4">
-        <Link to="/" aria-label="Luna Café home" className="rounded-xl">
+        <Link to="/" aria-label="Lunaa Café home" className="rounded-xl">
           <Logo />
         </Link>
 

@@ -2,7 +2,7 @@
 export function MiniMap() {
   return (
     <div className="overflow-hidden rounded-card border border-outline/60 bg-sage-soft shadow-soft">
-      <svg viewBox="0 0 480 320" role="img" aria-label="Map: Luna Café on Crescent Lane, near the river promenade" className="block h-auto w-full">
+      <svg viewBox="0 0 480 320" role="img" aria-label="Map: Lunaa Café on Crescent Lane, near the river promenade" className="block h-auto w-full">
         <rect width="480" height="320" fill="#E4ECDC" />
         <path d="M0 250c80-20 160-10 240 10s160 20 240-5v65H0Z" fill="#C9DCE6" />
         <g stroke="#FFFDF8" strokeWidth="18" strokeLinecap="round" fill="none">
@@ -23,7 +23,7 @@ export function MiniMap() {
           <path d="M5-13a12 12 0 1 0 6 21A13.5 13.5 0 0 1 5-13Z" fill="#F6EFDF" />
           <path d="M-9 24 0 38 9 24" fill="#294632" />
         </g>
-        <text x="274" y="166" fontFamily="Fredoka, sans-serif" fontSize="18" fontWeight="600" fill="#294632">Luna Café</text>
+        <text x="274" y="166" fontFamily="Fredoka, sans-serif" fontSize="18" fontWeight="600" fill="#294632">Lunaa Café</text>
       </svg>
     </div>
   );

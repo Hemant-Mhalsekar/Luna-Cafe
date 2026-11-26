@@ -16,7 +16,7 @@ export function icsEvent(opts: { uid: string; date: string; startMinutes: number
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Luna Cafe//Bookings//EN',
+    'PRODID:-//Lunaa Cafe//Bookings//EN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     `UID:${opts.uid}`,

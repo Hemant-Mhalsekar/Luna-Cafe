@@ -78,7 +78,7 @@ export function GameQuiz({ games, onSelect }: { games: Game[]; onSelect: (g: Gam
             ) : (
               <>
                 <h3 ref={headingRef} tabIndex={-1} className="text-2xl focus:outline-none">
-                  Your Luna table matches
+                  Your Lunaa table matches
                 </h3>
                 {picks.length === 0 ? (
                   <p className="mt-3 text-cream/85">The shelf is loading. Try again in a moment.</p>

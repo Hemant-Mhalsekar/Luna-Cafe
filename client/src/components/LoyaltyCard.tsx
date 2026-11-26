@@ -42,7 +42,7 @@ export function LoyaltyCard() {
     <div className="twinkle-host rounded-[2rem] bg-forest-dark p-6 text-cream shadow-lift sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-cream/75">Luna Café</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-cream/75">Lunaa Café</p>
           <p className="mt-1 font-display text-3xl font-semibold">Moon Club card</p>
         </div>
         <svg viewBox="0 0 24 24" className="size-8 text-cream" aria-hidden="true">

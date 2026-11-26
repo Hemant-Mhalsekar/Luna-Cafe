@@ -19,7 +19,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <span className={cn('twinkle-host inline-flex items-center gap-2.5', className)}>
       <MoonMark />
-      <span className="whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-forest-dark">Luna Café</span>
+      <span className="whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-forest-dark">Lunaa Café</span>
     </span>
   );
 }

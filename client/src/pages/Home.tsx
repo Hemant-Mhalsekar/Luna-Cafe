@@ -241,7 +241,7 @@ export function Home() {
       {/* Overheard */}
       <Section tone="sage" wave labelledBy="overheard-title">
         <Reveal>
-          <Eyebrow>Overheard at Luna</Eyebrow>
+          <Eyebrow>Overheard at Lunaa</Eyebrow>
           <h2 id="overheard-title" className="text-4xl">
             What the tables are saying
           </h2>

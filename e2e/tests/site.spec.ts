@@ -7,7 +7,7 @@ test('the game quiz suggests three games that seat the group', async ({ page }) 
   await quiz.getByRole('button', { name: /3 or 4/ }).click();
   await quiz.getByRole('button', { name: /About an hour/ }).click();
   await quiz.getByRole('button', { name: /Brainy/ }).click();
-  await expect(quiz.getByRole('heading', { name: 'Your Luna table matches' })).toBeVisible();
+  await expect(quiz.getByRole('heading', { name: 'Your Lunaa table matches' })).toBeVisible();
   await expect(quiz.getByRole('listitem')).toHaveCount(3);
   await expect(quiz.getByRole('link', { name: /Book a table for/ })).toBeVisible();
 });

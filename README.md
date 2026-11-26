@@ -1,4 +1,4 @@
-# Luna Café
+# Lunaa Café
 
 > Coffee first. Then game on?
 
@@ -48,7 +48,7 @@ design/   Stitch mockups and the original design-system notes (visual reference 
 
 ## Emails
 
-After a booking or an event sign-up the API sends a confirmation (reference code, date, time, table, game) with a calendar file attached, and staff in `ADMIN_NOTIFY_EMAIL` get an alert (who, which slot, table, game, phone, and when it was booked). All of it goes through Brevo's HTTP API (Render's free plan blocks SMTP). Sending happens in the background: a booking never waits for it, and a failed email never fails a booking. The emails say clearly that Luna Café is a fictional portfolio café. Templates: `server/src/emails/`.
+After a booking or an event sign-up the API sends a confirmation (reference code, date, time, table, game) with a calendar file attached, and staff in `ADMIN_NOTIFY_EMAIL` get an alert (who, which slot, table, game, phone, and when it was booked). All of it goes through Brevo's HTTP API (Render's free plan blocks SMTP). Sending happens in the background: a booking never waits for it, and a failed email never fails a booking. The emails say clearly that Lunaa Café is a fictional portfolio café. Templates: `server/src/emails/`.
 
 ## Admin
 
@@ -78,7 +78,7 @@ The free API sleeps when idle. The site waits up to 2.5 minutes for it with a "W
 
 ## Photos
 
-Food, drink and café photos were generated with Gemini for this fictional café (originals in `design/photos/`; the interior and storefront were retouched so the signs say Luna Café). The site serves compressed WebP copies from `client/public/images/`; menu items point at theirs through the `image` field, set by the seed. Game cards, icons, the map and the moon motifs are drawn in code. The hero photo is configured in `client/src/lib/cafe.ts` (`HERO_PHOTO`).
+Food, drink and café photos were generated with Gemini for this fictional café (originals in `design/photos/`; the interior and storefront were retouched so the signs say Lunaa Café). The site serves compressed WebP copies from `client/public/images/`; menu items point at theirs through the `image` field, set by the seed. Game cards, icons, the map and the moon motifs are drawn in code. The hero photo is configured in `client/src/lib/cafe.ts` (`HERO_PHOTO`).
 
 ## Tests
 

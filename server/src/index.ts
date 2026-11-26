@@ -10,7 +10,7 @@ async function main() {
   console.log('Connected to MongoDB');
 
   const server = createApp().listen(env.PORT, () => {
-    console.log(`Luna Café API on http://localhost:${env.PORT}`);
+    console.log(`Lunaa Café API on http://localhost:${env.PORT}`);
   });
 
   const shutdown = async () => {

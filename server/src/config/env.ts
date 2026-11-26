@@ -19,7 +19,7 @@ const schema = z
     // Email (Brevo HTTP API; Render's free plan blocks SMTP). Without both, emails are only logged.
     BREVO_API_KEY: z.string().optional(),
     MAIL_FROM_ADDRESS: z.email().optional(),
-    MAIL_FROM_NAME: z.string().default('Luna Café'),
+    MAIL_FROM_NAME: z.string().default('Lunaa Café'),
     MAIL_REPLY_TO: z.email().optional(),
     // Staff alerts for new bookings and event sign-ups (comma-separated for several people).
     ADMIN_NOTIFY_EMAIL: z

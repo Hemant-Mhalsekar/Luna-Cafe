@@ -36,7 +36,7 @@ export function GameCard({ game, className }: { game: GameCardData; className?: 
           <DieIcon className="size-4" />
           {game.type}
         </span>
-        {game.isInvented && <span className={cn('text-xs font-semibold', a.ink)}>Luna original</span>}
+        {game.isInvented && <span className={cn('text-xs font-semibold', a.ink)}>Lunaa original</span>}
       </div>
       <h3 className={cn('mt-8 text-2xl leading-tight', a.ink)}>{game.name}</h3>
       <dl className={cn('mt-auto flex gap-4 pt-6 text-sm font-medium', a.ink)}>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Checks a deployed Luna Café site end to end, through the same address visitors use.
+ * Checks a deployed Lunaa Café site end to end, through the same address visitors use.
  * Usage: node scripts/smoke-test.mjs https://your-site.vercel.app
  *
  * The API on Render's free plan may be asleep, so the health check waits up to two minutes.
@@ -32,7 +32,7 @@ console.log(`\nLuna Café smoke test: ${base}\n`);
 console.log('Site (Vercel)');
 const home = await get('/');
 check(home.res.status === 200, 'home page loads', `status ${home.res.status}`);
-check(typeof home.body === 'string' && home.body.includes('Luna Café'), 'home page has the café name');
+check(typeof home.body === 'string' && home.body.includes('Lunaa Café'), 'home page has the café name');
 const deep = await get('/games');
 check(deep.res.status === 200 && String(deep.body).includes('<div id="root">'), 'deep links fall back to the app (/games)');
 const admin = await get('/admin');

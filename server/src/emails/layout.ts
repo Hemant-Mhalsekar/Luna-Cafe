@@ -27,13 +27,13 @@ export function layout({ preheader, heading, body, siteUrl }: { preheader: strin
 <div style="display:none;max-height:0;overflow:hidden">${escapeHtml(preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream}"><tr><td align="center" style="padding:28px 14px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">
-<tr><td style="padding:0 6px 16px;font-size:22px;font-weight:700;color:${C.dark}">&#9790; Luna Café</td></tr>
+<tr><td style="padding:0 6px 16px;font-size:22px;font-weight:700;color:${C.dark}">&#9790; Lunaa Café</td></tr>
 <tr><td style="background:${C.card};border:1px solid ${C.line};border-radius:20px;padding:28px">
 <h1 style="margin:0 0 10px;font-size:26px;line-height:1.2;color:${C.dark}">${escapeHtml(heading)}</h1>
 ${body}
 </td></tr>
 <tr><td style="padding:16px 6px;font-size:12px;line-height:1.5;color:${C.forest}">
-Luna Café is a fictional café and <a href="${escapeHtml(siteUrl)}" style="color:${C.forest}">${escapeHtml(siteUrl.replace(/^https?:\/\//, ''))}</a> is a portfolio demo, so nobody is actually expecting you. Thanks for trying it! You got this email because this address was entered on the site.
+Lunaa Café is a fictional café and <a href="${escapeHtml(siteUrl)}" style="color:${C.forest}">${escapeHtml(siteUrl.replace(/^https?:\/\//, ''))}</a> is a portfolio demo, so nobody is actually expecting you. Thanks for trying it! You got this email because this address was entered on the site.
 </td></tr>
 </table></td></tr></table></body></html>`;
 }

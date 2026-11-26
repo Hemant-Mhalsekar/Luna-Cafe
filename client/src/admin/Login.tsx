@@ -37,13 +37,13 @@ export function Login() {
 
   return (
     <div className="grid min-h-dvh place-items-center bg-cream px-5 py-12">
-      <title>Sign in · Luna admin</title>
+      <title>Sign in · Lunaa admin</title>
       <meta name="robots" content="noindex, nofollow" />
       <Card className="w-full max-w-sm">
         <div className="twinkle-host flex flex-col items-center text-center">
           <MoonMark className="size-12" />
           <h1 className="mt-4 text-3xl">Staff sign in</h1>
-          <p className="mt-1 text-forest">Luna Café admin</p>
+          <p className="mt-1 text-forest">Lunaa Café admin</p>
         </div>
         <form onSubmit={submit} noValidate className="mt-8 flex flex-col gap-5">
           <Field label="Email" type="email" autoComplete="username" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} error={error?.fields?.email} required autoFocus />
