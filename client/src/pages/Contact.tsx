@@ -1,5 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { PageHeader } from '../components/PageHeader';
+import * as m from 'motion/react-m';
+import { Reveal } from '../components/Reveal';
+import { Parallax } from '../components/fx/Parallax';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Field, TextAreaField } from '../components/ui/Field';
@@ -20,7 +23,12 @@ export function Contact() {
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    send.mutate(form, { onSuccess: () => setForm(EMPTY) });
+    send.mutate(form, {
+      onSuccess: () => {
+        setForm(EMPTY);
+        void import('../lib/confetti').then((c) => c.burst({ y: 0.4 }));
+      },
+    });
   };
 
   return (
@@ -30,15 +38,20 @@ export function Contact() {
       </PageHeader>
 
       <div className="container-page grid gap-8 pb-20 lg:grid-cols-[1fr_26rem]">
+        <Reveal variant="left">
         <Card>
           {send.isSuccess ? (
-            <div role="status" className="py-8 text-center">
+            <m.div role="status" className="py-8 text-center" initial={{ scale: 0.7, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 220, damping: 14 }}>
+              <m.svg viewBox="0 0 48 48" className="mx-auto mb-4 size-16 text-cta" aria-hidden="true" initial={{ y: 20, rotate: -30 }} animate={{ y: 0, rotate: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 10, delay: 0.15 }}>
+                <path d="M6 22 42 6 30 42l-7-14-17-6Z" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
+                <path d="m23 28 19-22" fill="none" stroke="currentColor" strokeWidth="3" />
+              </m.svg>
               <h2 className="text-3xl">Thanks, message received!</h2>
               <p className="mt-2 text-forest">We'll get back to you within a day. Probably with a game suggestion.</p>
               <Button variant="secondary" className="mt-6" onClick={() => send.reset()}>
                 Send another
               </Button>
-            </div>
+            </m.div>
           ) : (
             <form onSubmit={submit} noValidate className="flex flex-col gap-6">
               <h2 className="text-2xl">Send us a note</h2>
@@ -65,8 +78,10 @@ export function Contact() {
             </form>
           )}
         </Card>
+        </Reveal>
 
         <div className="flex flex-col gap-5">
+          <Reveal variant="right" delay={0.1}>
           <Card className="flex flex-col gap-4">
             <h2 className="text-2xl">Visit</h2>
             <div className="flex gap-3">
@@ -98,8 +113,15 @@ export function Contact() {
               </a>
             </p>
           </Card>
-          <Photo {...PHOTOS.storefront} className="aspect-[4/3] w-full rounded-card shadow-soft" />
-          <MiniMap />
+          </Reveal>
+          <Reveal variant="tilt" delay={0.2}>
+            <Parallax speed={0.1} zoom className="aspect-[4/3] w-full rounded-card shadow-soft">
+              <Photo {...PHOTOS.storefront} className="size-full" />
+            </Parallax>
+          </Reveal>
+          <Reveal variant="zoom" delay={0.3}>
+            <MiniMap />
+          </Reveal>
         </div>
       </div>
     </>

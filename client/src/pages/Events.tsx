@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import * as m from 'motion/react-m';
 import { PageHeader } from '../components/PageHeader';
 import { Card } from '../components/ui/Card';
 import { Tag } from '../components/ui/Tag';
@@ -46,12 +47,20 @@ export function Events() {
               const full = e.spotsLeft === 0;
               return (
                 <li key={e._id}>
-                  <Reveal delay={0.06 * i} className="h-full">
-                    <Card className="flex h-full gap-5">
-                      <div className="flex size-20 shrink-0 flex-col items-center justify-center rounded-2xl bg-forest-dark text-cream" aria-hidden="true">
+                  <Reveal delay={0.1 * i} variant={i % 2 ? 'right' : 'left'} className="h-full">
+                    <Card className="group flex h-full gap-5 transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+                      <m.div
+                        initial={{ rotateY: 180, scale: 0.5 }}
+                        whileInView={{ rotateY: 0, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ type: 'spring', stiffness: 160, damping: 14, delay: 0.25 + 0.1 * i }}
+                        style={{ transformPerspective: 600 }}
+                        className="flex size-20 shrink-0 flex-col items-center justify-center rounded-2xl bg-forest-dark text-cream transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
+                        aria-hidden="true"
+                      >
                         <span className="font-display text-3xl font-semibold leading-none">{p.day}</span>
                         <span className="mt-1 text-sm font-semibold uppercase tracking-wider">{p.month}</span>
-                      </div>
+                      </m.div>
                       <div className="flex min-w-0 flex-1 flex-col">
                         <Tag tone={e.type === 'tournament' ? 'terracotta' : 'lavender'} className="self-start">
                           {e.type === 'tournament' ? 'Tournament' : 'Game night'}
@@ -64,6 +73,12 @@ export function Events() {
                           </span>
                           <span className="flex items-center gap-1.5">
                             <MeepleIcon className="size-4" /> {seatsText(e)}
+                            {!full && e.spotsLeft <= 5 && (
+                              <span className="relative ml-1 flex size-2.5" aria-hidden="true">
+                                <span className="absolute inline-flex size-full animate-ping rounded-full bg-cta opacity-75" />
+                                <span className="relative inline-flex size-2.5 rounded-full bg-cta" />
+                              </span>
+                            )}
                           </span>
                         </div>
                         {full ? (
@@ -99,7 +114,7 @@ function SignupForm({ event, onDone }: { event: PublicEvent; onDone: () => void 
 
   if (signup.isSuccess) {
     return (
-      <div role="status">
+      <m.div role="status" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 16 }}>
         <p className="text-lg">
           You're on the list, {form.name.split(' ')[0]}! See you on {formatDate(event.date)} at {event.startTime}.
         </p>
@@ -107,13 +122,13 @@ function SignupForm({ event, onDone }: { event: PublicEvent; onDone: () => void 
         <Button className="mt-6" onClick={onDone}>
           Lovely, thanks
         </Button>
-      </div>
+      </m.div>
     );
   }
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    signup.mutate({ slug: event.slug, ...form });
+    signup.mutate({ slug: event.slug, ...form }, { onSuccess: () => void import('../lib/confetti').then((c) => c.celebrate()) });
   };
 
   return (

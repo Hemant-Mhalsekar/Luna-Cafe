@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
+import { Die3D } from './fx/Dice';
 import * as m from 'motion/react-m';
 import { Button, LinkButton } from './ui/Button';
 import { GameCard } from './GameCard';
@@ -17,10 +18,22 @@ export function GameQuiz({ games, onSelect }: { games: Game[]; onSelect: (g: Gam
   const [step, setStep] = useState<Step>(0);
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({});
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const reduce = useReducedMotion();
+  // After the last answer the dice roll for a moment before the matches are dealt out.
+  const [rolling, setRolling] = useState(false);
+  useEffect(() => {
+    if (!rolling) return;
+    const t = setTimeout(() => {
+      setRolling(false);
+      requestAnimationFrame(() => headingRef.current?.focus());
+    }, 1600);
+    return () => clearTimeout(t);
+  }, [rolling]);
 
   const go = (next: Step, patch: Partial<QuizAnswers> = {}) => {
     setAnswers((a) => ({ ...a, ...patch }));
     setStep(next);
+    if (next === 3 && !reduce) setRolling(true);
     // Move focus to the new question so keyboard and screen reader users follow along.
     requestAnimationFrame(() => headingRef.current?.focus());
   };
@@ -41,13 +54,21 @@ export function GameQuiz({ games, onSelect }: { games: Game[]; onSelect: (g: Gam
       <div className="mt-8 min-h-56" aria-live="polite">
         <AnimatePresence mode="wait" initial={false}>
           <m.div
-            key={step}
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -24 }}
-            transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+            key={rolling ? 'roll' : step}
+            initial={{ opacity: 0, x: 60, rotate: 2 }}
+            animate={{ opacity: 1, x: 0, rotate: 0 }}
+            exit={{ opacity: 0, x: -60, rotate: -2 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 26 }}
           >
-            {step < 3 ? (
+            {rolling ? (
+              <div className="flex flex-col items-center gap-6 py-6 text-center">
+                <div className="flex gap-6">
+                  <Die3D seed={Number(answers.players ?? 1)} />
+                  <Die3D seed={(answers.mood?.length ?? 2) + 1} delay={0.12} spins={4} />
+                </div>
+                <p className="font-display text-2xl">Rolling for your table…</p>
+              </div>
+            ) : step < 3 ? (
               <>
                 <p className="text-sm font-semibold uppercase tracking-[0.14em] text-cream/75">
                   Question {step + 1} of 3
@@ -55,7 +76,7 @@ export function GameQuiz({ games, onSelect }: { games: Game[]; onSelect: (g: Gam
                 <h3 ref={headingRef} tabIndex={-1} className="mt-2 text-2xl focus:outline-none">
                   {QUESTIONS[step]}
                 </h3>
-                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="quiz-choices mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {step === 0 &&
                     PLAYER_CHOICES.map((c) => (
                       <Choice key={c.value} label={c.label} selected={answers.players === c.value} onClick={() => go(1, { players: c.value })} />
@@ -84,12 +105,29 @@ export function GameQuiz({ games, onSelect }: { games: Game[]; onSelect: (g: Gam
                   <p className="mt-3 text-cream/85">The shelf is loading. Try again in a moment.</p>
                 ) : (
                   <ul className="mt-5 grid gap-4 md:grid-cols-3">
-                    {picks.map((g) => (
-                      <li key={g._id}>
+                    {picks.map((g, i) => (
+                      <m.li
+                        key={g._id}
+                        initial={{ rotateY: 180, y: -80, rotate: (i - 1) * 12, opacity: 0, scale: 0.7 }}
+                        animate={{ rotateY: 0, y: 0, rotate: 0, opacity: 1, scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 140, damping: 14, delay: 0.1 + i * 0.18 }}
+                        style={{ transformPerspective: 900 }}
+                        className="relative"
+                      >
+                        {i === 0 && (
+                          <m.span
+                            className="absolute -top-3 left-4 z-20 inline-block rounded-full bg-cta px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lift"
+                            initial={{ scale: 0, rotate: -20 }}
+                            animate={{ scale: 1, rotate: -6 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 10, delay: 0.8 }}
+                          >
+                            Best match
+                          </m.span>
+                        )}
                         <button type="button" onClick={() => onSelect(g)} className="block h-full w-full rounded-card text-left text-forest-dark" aria-label={`${g.name}: see details`}>
                           <GameCard game={g} />
                         </button>
-                      </li>
+                      </m.li>
                     ))}
                   </ul>
                 )}

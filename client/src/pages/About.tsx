@@ -7,6 +7,9 @@ import { cn } from '../lib/cn';
 import { MoonPhases } from '../components/illustrations/MoonPhases';
 import { Photo } from '../components/Photo';
 import { PHOTOS } from '../lib/cafe';
+import { Parallax } from '../components/fx/Parallax';
+import { Tilt } from '../components/fx/Tilt';
+import { Marquee } from '../components/fx/Marquee';
 
 const VALUES = [
   { title: 'Calm first', text: 'Soft light, good chairs, no blaring music. A café you can actually think in.' },
@@ -29,7 +32,7 @@ export function About() {
       </PageHeader>
 
       <div className="container-page grid gap-10 pb-16 lg:grid-cols-2">
-        <Reveal className="space-y-4 text-lg text-forest-dark">
+        <Reveal variant="left" className="space-y-4 text-lg text-forest-dark">
           <p>
             Mira opened Lunaa in a quiet lane in Panaji in 2021, wanting a place that felt like a friend's living room: sunny in the morning,
             cosy at night. Friends brought their board games along, and the games never went home.
@@ -39,34 +42,47 @@ export function About() {
             first thing we care about. The games are what keep you here.
           </p>
         </Reveal>
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} variant="flip">
+          <Tilt className="h-full rounded-card">
           <Card className="flex h-full flex-col justify-center bg-forest-dark text-cream">
             <p className="font-display text-3xl leading-snug">“Coffee first. Then game on?”</p>
             <p className="mt-4 text-cream/85">What we ask every table, every day.</p>
             <MoonPhases className="mt-6 text-cream" />
           </Card>
+          </Tilt>
         </Reveal>
       </div>
 
       <div className="container-page grid gap-5 pb-16 sm:grid-cols-[2fr_1fr]">
-        <Reveal>
-          <Photo {...PHOTOS.interior} className="aspect-[16/9] h-full w-full rounded-card shadow-soft" />
+        <Reveal variant="zoom">
+          <Parallax speed={0.1} zoom className="aspect-[16/9] h-full w-full rounded-card shadow-soft">
+            <Photo {...PHOTOS.interior} className="size-full" />
+          </Parallax>
         </Reveal>
-        <Reveal delay={0.1}>
-          <Photo {...PHOTOS.storefront} className="aspect-[4/5] h-full w-full rounded-card shadow-soft sm:aspect-auto" />
+        <Reveal delay={0.15} variant="tilt">
+          <Parallax speed={0.14} zoom className="aspect-[4/5] h-full w-full rounded-card shadow-soft sm:aspect-auto">
+            <Photo {...PHOTOS.storefront} className="size-full" />
+          </Parallax>
         </Reveal>
       </div>
 
+      <Marquee items={['Calm first', 'Everyone plays', 'Made with care', 'Coffee first', 'Then game on?']} className="-rotate-1 bg-forest-dark text-cream" />
+
       <Section tone="sage" wave labelledBy="values-title">
-        <Eyebrow>What we care about</Eyebrow>
-        <h2 id="values-title" className="text-4xl">
-          Our values
-        </h2>
+        <Reveal variant="blur">
+          <Eyebrow>What we care about</Eyebrow>
+          <h2 id="values-title" className="text-4xl">
+            Our values
+          </h2>
+        </Reveal>
         <ul className="mt-8 grid gap-5 md:grid-cols-3">
           {VALUES.map((v, i) => (
             <li key={v.title}>
-              <Reveal delay={0.08 * i} className="h-full">
-                <Card className="h-full">
+              <Reveal delay={0.15 * i} variant="flip" className="h-full">
+                <Card className="group h-full transition-transform duration-300 hover:-translate-y-2 hover:-rotate-1">
+                  <span className="mb-4 block font-display text-5xl font-semibold text-sage transition-transform duration-500 group-hover:scale-125 group-hover:text-cta" aria-hidden="true">
+                    0{i + 1}
+                  </span>
                   <h3 className="text-2xl">{v.title}</h3>
                   <p className="mt-2 text-forest">{v.text}</p>
                 </Card>
@@ -77,22 +93,26 @@ export function About() {
       </Section>
 
       <Section tone="cream" wave labelledBy="team-title">
-        <Eyebrow className="text-forest">The people</Eyebrow>
-        <h2 id="team-title" className="text-4xl">
-          Meet the team
-        </h2>
+        <Reveal variant="left">
+          <Eyebrow className="text-forest">The people</Eyebrow>
+          <h2 id="team-title" className="text-4xl">
+            Meet the team
+          </h2>
+        </Reveal>
         <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TEAM.map((p, i) => (
             <li key={p.name}>
-              <Reveal delay={0.06 * i} className="h-full">
-                <Card className="h-full text-center">
-                  <span className={cn('mx-auto grid size-20 place-items-center rounded-full font-display text-2xl font-semibold', p.tone)} aria-hidden="true">
+              <Reveal delay={0.1 * i} variant="tilt" className="h-full">
+                <Tilt className="h-full rounded-card">
+                <Card className="group h-full text-center">
+                  <span className={cn('mx-auto grid size-20 place-items-center rounded-full font-display text-2xl font-semibold transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110', p.tone)} aria-hidden="true">
                     {p.name.split(' ').map((w) => w[0]).join('')}
                   </span>
                   <h3 className="mt-4 text-xl">{p.name}</h3>
                   <p className="text-sm font-semibold text-forest">{p.role}</p>
                   <p className="mt-2 text-forest">{p.bio}</p>
                 </Card>
+                </Tilt>
               </Reveal>
             </li>
           ))}
@@ -107,21 +127,25 @@ export function About() {
         </div>
       </Section>
       <Section tone="sage" wave labelledBy="faq-title" id="faq">
-        <Eyebrow>Good to know</Eyebrow>
-        <h2 id="faq-title" className="text-4xl">
-          Questions we get a lot
-        </h2>
+        <Reveal variant="blur">
+          <Eyebrow>Good to know</Eyebrow>
+          <h2 id="faq-title" className="text-4xl">
+            Questions we get a lot
+          </h2>
+        </Reveal>
         <div className="mt-8 grid gap-3 lg:grid-cols-2">
-          {FAQ.map((f) => (
-            <details key={f.q} className="group rounded-card border border-outline/60 bg-card p-5 shadow-soft open:pb-6">
+          {FAQ.map((f, i) => (
+            <Reveal key={f.q} delay={0.05 * i} variant={i % 2 ? 'right' : 'left'}>
+            <details className="group rounded-card border border-outline/60 bg-card p-5 shadow-soft transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-lift open:pb-6">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-xl font-semibold [&::-webkit-details-marker]:hidden">
                 {f.q}
-                <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-sage-soft text-lg transition-transform group-open:rotate-45">
+                <span aria-hidden="true" className="grid size-8 shrink-0 place-items-center rounded-full bg-sage-soft text-lg transition-transform duration-300 group-open:rotate-[225deg] group-open:bg-cta group-open:text-white group-hover:scale-110">
                   +
                 </span>
               </summary>
               <p className="mt-3 text-forest">{f.a}</p>
             </details>
+            </Reveal>
           ))}
         </div>
       </Section>

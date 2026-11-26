@@ -6,6 +6,8 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { ServerWakeBanner } from './ServerWakeBanner';
 import { PageLoader } from './PageLoader';
+import { Cursor } from '../fx/Cursor';
+import { MoonMark } from '../illustrations/Logo';
 
 const loadMotionFeatures = () => import('../../lib/motionFeatures').then((mod) => mod.default);
 
@@ -29,14 +31,35 @@ export function Layout() {
           <ServerWakeBanner />
           <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
             <Suspense fallback={<PageLoader />}>
-              {/* Gentle fade-up on every page change. */}
-              <m.div key={pathname} initial={pathname === landingPath ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: [0.2, 0, 0, 1] }}>
+              {/* Every page change: the new page slides up out of a soft blur. */}
+              <m.div
+                key={pathname}
+                initial={pathname === landingPath ? false : { opacity: 0, y: 40, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.6, delay: 0.25, ease: [0.2, 0, 0, 1] }}
+              >
                 <Outlet />
               </m.div>
             </Suspense>
           </main>
           <Footer />
         </div>
+        {/* Page change curtain: a forest-green moon iris closes over the old page and opens on the new one. */}
+        {pathname !== landingPath && (
+          <m.div
+            key={`curtain-${pathname}`}
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-0 z-[80] grid place-items-center bg-forest-dark"
+            initial={{ clipPath: 'circle(150% at 50% 50%)' }}
+            animate={{ clipPath: 'circle(0% at 50% 50%)' }}
+            transition={{ duration: 0.8, ease: [0.7, 0, 0.2, 1] }}
+          >
+            <m.span initial={{ scale: 1.4, rotate: -30 }} animate={{ scale: 0.4, rotate: 40 }} transition={{ duration: 0.7, ease: [0.7, 0, 0.2, 1] }}>
+              <MoonMark className="size-24 [&_circle:first-child]:text-forest-dark" />
+            </m.span>
+          </m.div>
+        )}
+        <Cursor />
         <ScrollRestoration />
       </MotionConfig>
     </LazyMotion>

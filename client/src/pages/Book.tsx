@@ -9,6 +9,9 @@ import { useAvailability, useCreateReservation, useGames } from '../lib/queries'
 import { ApiError } from '../lib/api';
 import { BOOKING, addDays, cafeToday, formatDate, isClosedDay } from '../lib/cafe';
 import { cn } from '../lib/cn';
+import * as m from 'motion/react-m';
+import { Scramble } from '../components/fx/Scramble';
+import { SplitText as SplitTextInline } from '../components/fx/SplitText';
 import type { ReservationConfirmation, SlotSuggestion } from '../lib/types';
 
 function firstOpenDay(from: string): string {
@@ -51,7 +54,13 @@ export function Book() {
     e.preventDefault();
     booking.mutate(
       { ...contact, date, slotId: chosenSlot?.slotId ?? '', partySize, gameId: selectedGame?._id ?? null },
-      { onSuccess: (r) => setConfirmation(r) },
+      {
+        onSuccess: (r) => {
+          setConfirmation(r);
+          window.scrollTo({ top: 0 });
+          void import('../lib/confetti').then((c) => c.celebrate());
+        },
+      },
     );
   };
 
@@ -77,7 +86,7 @@ export function Book() {
       </PageHeader>
 
       <form onSubmit={submit} noValidate className="container-page grid gap-8 pb-20 lg:grid-cols-[1fr_22rem]">
-        <div className="flex flex-col gap-8">
+        <div className="stagger-in flex flex-col gap-8">
           <Card className="flex flex-col gap-6">
             <h2 className="text-2xl">1. When and how many</h2>
             <div className="grid gap-6 sm:grid-cols-2">
@@ -107,10 +116,10 @@ export function Book() {
                       <label
                         key={s.slotId}
                         className={cn(
-                          'relative flex min-h-16 cursor-pointer flex-col items-center justify-center rounded-2xl border px-3 py-3 text-center transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-forest-dark',
+                          'relative flex min-h-16 cursor-pointer flex-col items-center justify-center rounded-2xl border px-3 py-3 text-center transition-[color,background-color,border-color,transform] duration-200 active:scale-95 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-forest-dark',
                           !free && 'cursor-not-allowed border-outline/60 bg-cream-deep/60 text-muted',
-                          free && chosenSlot?.slotId === s.slotId && 'border-forest-dark bg-forest-dark text-cream',
-                          free && chosenSlot?.slotId !== s.slotId && 'border-outline-strong/50 bg-card hover:border-forest-dark',
+                          free && chosenSlot?.slotId === s.slotId && 'slot-pop scale-105 border-forest-dark bg-forest-dark text-cream shadow-lift',
+                          free && chosenSlot?.slotId !== s.slotId && 'border-outline-strong/50 bg-card hover:-translate-y-1 hover:border-forest-dark',
                         )}
                       >
                         <input
@@ -160,7 +169,7 @@ export function Book() {
           </Card>
         </div>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <aside className="slide-in-right lg:sticky lg:top-24 lg:self-start">
           <Card className="flex flex-col gap-4 bg-sage-soft">
             <h2 className="text-2xl">Your booking</h2>
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
@@ -245,41 +254,71 @@ function PartySize({ value, onChange }: { value: number; onChange: (n: number) =
 
 function Confirmation({ reservation, gameName, email, onAnother }: { reservation: ReservationConfirmation; gameName?: string; email?: string; onAnother: () => void }) {
   const time = `${reservation.slotId.slice(0, 2)}:${reservation.slotId.slice(2)}`;
+  const rows: [string, string][] = [
+    ['Date', formatDate(reservation.date)],
+    ['Time', `${time} (90 min)`],
+    ['Guests', String(reservation.partySize)],
+    ['Table', `No. ${reservation.tableNumber}`],
+    ...(gameName ? ([['Game', gameName]] as [string, string][]) : []),
+  ];
   return (
     <div className="container-page flex justify-center py-16 sm:py-24">
-      <Card className="w-full max-w-lg text-center">
-        <div className="twinkle-host mx-auto grid size-16 place-items-center rounded-full bg-sage-soft text-forest-dark">
-          <DieIcon className="size-8" />
-        </div>
-        <h1 className="mt-5 text-4xl">Table reserved!</h1>
-        <p className="mt-2 text-forest">See you soon, {reservation.name.split(' ')[0]}. Keep this code handy.</p>
-        {email && <p className="mt-1 text-sm text-forest">A confirmation with a calendar invite is on its way to {email}.</p>}
-        <p className="mt-6 inline-block rounded-2xl bg-cream px-6 py-3 font-mono text-2xl tracking-wider" aria-label={`Reference code ${reservation.referenceCode.split('').join(' ')}`}>
-          {reservation.referenceCode}
-        </p>
-        <dl className="mx-auto mt-6 grid max-w-xs grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-left">
-          <dt className="font-semibold">Date</dt>
-          <dd>{formatDate(reservation.date)}</dd>
-          <dt className="font-semibold">Time</dt>
-          <dd>{time} (90 min)</dd>
-          <dt className="font-semibold">Guests</dt>
-          <dd>{reservation.partySize}</dd>
-          <dt className="font-semibold">Table</dt>
-          <dd>No. {reservation.tableNumber}</dd>
-          {gameName && (
-            <>
-              <dt className="font-semibold">Game</dt>
-              <dd>{gameName}</dd>
-            </>
-          )}
-        </dl>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button variant="secondary" onClick={onAnother}>
-            Book another table
-          </Button>
-          <LinkButton to="/games">Browse the games</LinkButton>
-        </div>
-      </Card>
+      {/* The ticket flips in, the die tumbles onto it, the code rolls like a slot machine. */}
+      <m.div
+        className="w-full max-w-lg"
+        initial={{ rotateX: 80, y: 120, opacity: 0, scale: 0.8 }}
+        animate={{ rotateX: 0, y: 0, opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 14 }}
+        style={{ transformPerspective: 1000 }}
+      >
+        <Card className="relative overflow-hidden text-center">
+          <span aria-hidden="true" className="absolute -left-4 top-1/2 size-8 rounded-full bg-cream" />
+          <span aria-hidden="true" className="absolute -right-4 top-1/2 size-8 rounded-full bg-cream" />
+          <m.div
+            className="twinkle-host mx-auto grid size-16 place-items-center rounded-full bg-sage-soft text-forest-dark"
+            initial={{ y: -260, rotate: -720, scale: 2 }}
+            animate={{ y: 0, rotate: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 90, damping: 10, delay: 0.35 }}
+          >
+            <DieIcon className="size-8" />
+          </m.div>
+          <h1 className="mt-5 text-4xl">
+            <SplitTextInline text="Table reserved!" />
+          </h1>
+          <p className="page-intro mt-2 text-forest">See you soon, {reservation.name.split(' ')[0]}. Keep this code handy.</p>
+          {email && <p className="page-intro mt-1 text-sm text-forest">A confirmation with a calendar invite is on its way to {email}.</p>}
+          <m.p
+            className="mt-6 inline-block rounded-2xl bg-cream px-6 py-3 font-mono text-2xl tracking-wider"
+            aria-label={`Reference code ${reservation.referenceCode.split('').join(' ')}`}
+            initial={{ scale: 0.6 }}
+            animate={{ scale: [0.6, 1.15, 1] }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <Scramble text={reservation.referenceCode} duration={1500} />
+          </m.p>
+          <dl className="mx-auto mt-6 grid max-w-xs grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-left">
+            {rows.map(([k, v], i) => (
+              <div key={k} className="contents">
+                <m.dt className="font-semibold" initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: 'spring', delay: 0.9 + i * 0.12 }}>
+                  {k}
+                </m.dt>
+                <m.dd initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: 'spring', delay: 0.9 + i * 0.12 }}>
+                  {v}
+                </m.dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button variant="secondary" onClick={onAnother}>
+              Book another table
+            </Button>
+            <LinkButton to="/games">Browse the games</LinkButton>
+            <Button variant="ghost" onClick={() => void import('../lib/confetti').then((c) => c.celebrate())}>
+              Celebrate again
+            </Button>
+          </div>
+        </Card>
+      </m.div>
     </div>
   );
 }

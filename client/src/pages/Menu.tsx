@@ -8,6 +8,8 @@ import { Modal } from '../components/ui/Modal';
 import { LinkButton } from '../components/ui/Button';
 import { MenuIcon } from '../components/illustrations/MenuIcons';
 import { Photo } from '../components/Photo';
+import * as m from 'motion/react-m';
+import { Tilt } from '../components/fx/Tilt';
 import { useMenu } from '../lib/queries';
 import { cn } from '../lib/cn';
 import { CATEGORY_LABEL, DIETARY_LABEL, type DietaryTag, type MenuCategory, type MenuItem } from '../lib/types';
@@ -96,10 +98,17 @@ export function Menu() {
             <p className="rounded-card bg-card p-6 text-forest">Nothing here matches those filters yet. Try another category.</p>
           )}
           {featured.length > 0 && (
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((item) => (
-                <li key={item._id}>
+            <ul key={`f-${category}-${dietary.join()}`} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {featured.map((item, i) => (
+                <m.li
+                  key={item._id}
+                  initial={{ opacity: 0, y: 60, rotate: i % 2 ? 4 : -4, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 20, delay: i * 0.08 }}
+                >
+                  <Tilt className="h-full rounded-card">
                   <button
+                    data-cursor="Taste"
                     type="button"
                     onClick={() => setSelected(item)}
                     className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-outline/60 bg-card text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
@@ -125,7 +134,8 @@ export function Menu() {
                       </span>
                     </span>
                   </button>
-                </li>
+                  </Tilt>
+                </m.li>
               ))}
             </ul>
           )}
@@ -138,15 +148,21 @@ export function Menu() {
                   More {CATEGORY_LABEL[category].toLowerCase()}
                 </h2>
               )}
-              <ul className="grid gap-3 md:grid-cols-2">
-                {others.map((item) => (
-                  <li key={item._id}>
+              <ul key={`o-${category}-${dietary.join()}`} className="grid gap-3 md:grid-cols-2">
+                {others.map((item, i) => (
+                  <m.li
+                    key={item._id}
+                    initial={{ opacity: 0, x: i % 2 ? 60 : -60 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 220, damping: 24, delay: 0.1 + i * 0.05 }}
+                  >
                     <button
                       type="button"
                       onClick={() => setSelected(item)}
-                      className="flex h-full w-full items-center gap-4 rounded-2xl border border-outline/60 bg-card px-4 py-3.5 text-left transition-colors hover:border-forest-dark"
+                      className="group flex h-full w-full items-center gap-4 rounded-2xl border border-outline/60 bg-card px-4 py-3.5 text-left transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-forest-dark hover:shadow-lift"
                     >
-                      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-sage-soft text-forest-dark">
+                      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-sage-soft text-forest-dark transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110 group-hover:bg-sage">
                         <MenuIcon category={item.category} className="size-7" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -165,7 +181,7 @@ export function Menu() {
                         )}
                       </span>
                     </button>
-                  </li>
+                  </m.li>
                 ))}
               </ul>
             </section>

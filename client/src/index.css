@@ -142,3 +142,177 @@
 }
 .hero-rise { animation: hero-rise 0.7s cubic-bezier(0.2, 0, 0, 1) both; }
 .hero-fade { animation: hero-fade 0.9s cubic-bezier(0.2, 0, 0, 1) 0.15s both; }
+
+/* ───────────── Animations (feat/animations) ───────────── */
+
+/* Smooth open/close for FAQ <details> where the browser supports it. */
+:root { interpolate-size: allow-keywords; }
+details::details-content {
+  height: 0;
+  overflow: clip;
+  transition: height 0.45s cubic-bezier(0.2, 0, 0, 1), content-visibility 0.45s allow-discrete;
+}
+details[open]::details-content { height: auto; }
+
+/* SplitText: letters rise out of a mask, one after another. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  vertical-align: top;
+}
+.split-char {
+  display: inline-block;
+  animation: char-in 0.85s cubic-bezier(0.2, 0.9, 0.1, 1.15) both;
+  animation-delay: var(--d, 0ms);
+  transform-origin: 0 100%;
+}
+@keyframes char-in {
+  from { transform: translateY(105%) rotate(12deg); }
+  to { transform: none; }
+}
+.split:hover .split-char {
+  animation: char-wave 0.6s ease-in-out;
+  animation-delay: calc(var(--d, 0ms) * 0.4);
+}
+@keyframes char-wave {
+  0%, 100% { transform: none; }
+  40% { transform: translateY(-14%) rotate(-4deg); }
+}
+
+/* Floating pieces bob gently on their own. */
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(8deg); }
+}
+.float-bob { animation: float-bob 6s ease-in-out infinite; }
+
+/* Marquee ribbon. */
+@keyframes marquee { to { transform: translateX(-100%); } }
+.marquee-track { animation: marquee 28s linear infinite; }
+.marquee-reverse { animation-direction: reverse; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Primary buttons: a shine sweeps across on hover. */
+.btn-shine { position: relative; overflow: hidden; isolation: isolate; }
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.2, 0, 0, 1);
+}
+.btn-shine:hover::after { transform: translateX(120%); }
+
+/* Hero moon glow pulse. */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 60px 10px rgb(233 185 73 / 0.35); }
+  50% { box-shadow: 0 0 110px 30px rgb(233 185 73 / 0.55); }
+}
+.moon-glow { animation: glow 5s ease-in-out infinite; }
+
+/* Hero blob slowly morphs. */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 58% 42% 46% 54% / 52% 44% 56% 48%; }
+  33% { border-radius: 44% 56% 60% 40% / 46% 58% 42% 54%; }
+  66% { border-radius: 52% 48% 38% 62% / 60% 40% 60% 40%; }
+}
+.hero-blob-morph { animation: blob-morph 14s ease-in-out infinite; }
+
+/* 3D dice for the quiz roll. */
+.dice-scene { perspective: 700px; }
+.dice {
+  position: relative;
+  width: var(--s, 72px);
+  height: var(--s, 72px);
+  transform-style: preserve-3d;
+}
+.dice-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  padding: 14%;
+  border-radius: 22%;
+  background: var(--color-card);
+  border: 2px solid var(--color-outline);
+  box-shadow: inset 0 0 12px rgb(41 70 50 / 0.12);
+}
+.dice-face i { width: 62%; aspect-ratio: 1; margin: auto; border-radius: 50%; background: var(--color-forest-dark); }
+.dice-face:nth-child(1) { transform: translateZ(calc(var(--s, 72px) / 2)); }
+.dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(calc(var(--s, 72px) / 2)); }
+.dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(calc(var(--s, 72px) / 2)); }
+.dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(calc(var(--s, 72px) / 2)); }
+.dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(calc(var(--s, 72px) / 2)); }
+.dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(calc(var(--s, 72px) / 2)); }
+
+/* Moon Club card flip. */
+.flip-scene { perspective: 1400px; }
+.flip-inner { display: grid; transform-style: preserve-3d; transition: transform 0.9s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.flip-inner > * { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-inner > .flip-back { transform: rotateY(180deg); }
+.flip-inner.is-flipped { transform: rotateY(180deg); }
+
+/* Underline that draws in under nav and footer links. */
+.link-draw { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size 0.35s cubic-bezier(0.2, 0, 0, 1); }
+.link-draw:hover, .link-draw:focus-visible { background-size: 100% 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .split-char, .float-bob, .moon-glow, .hero-blob-morph { animation: none !important; }
+  .flip-inner { transition: none; }
+}
+
+/* Page header: eyebrow slides in, intro text fades up after the title letters. */
+@keyframes slide-in-left { from { transform: translateX(-24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade-up { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+.page-eyebrow { animation: slide-in-left 0.6s cubic-bezier(0.2, 0, 0, 1) both; }
+.page-intro { animation: fade-up 0.7s cubic-bezier(0.2, 0, 0, 1) 0.55s both; }
+
+/* A word that wobbles when you hover the heading it sits in. */
+@keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-4deg) scale(1.06); } 75% { transform: rotate(3deg) scale(1.04); } }
+h2:hover .wiggle-word { animation: wiggle 0.6s ease-in-out; }
+.hero-blob-morph, .hero-blob { animation: blob-morph 14s ease-in-out infinite; }
+
+/* Dialogs pop in with a spring and the backdrop blurs in. */
+dialog.modal-pop {
+  transition: transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1), opacity 0.3s, overlay 0.3s allow-discrete, display 0.3s allow-discrete;
+  transform: scale(0.85) translateY(30px) rotate(-2deg);
+  opacity: 0;
+}
+dialog.modal-pop[open] { transform: none; opacity: 1; }
+@starting-style { dialog.modal-pop[open] { transform: scale(0.85) translateY(30px) rotate(-2deg); opacity: 0; } }
+dialog.modal-pop::backdrop { transition: backdrop-filter 0.4s, background-color 0.4s, overlay 0.4s allow-discrete, display 0.4s allow-discrete; backdrop-filter: blur(0); }
+dialog.modal-pop[open]::backdrop { backdrop-filter: blur(6px); }
+@starting-style { dialog.modal-pop[open]::backdrop { backdrop-filter: blur(0); background-color: transparent; } }
+
+/* Book page: the step cards rise one after another, the summary slides in from the right. */
+.stagger-in > * { animation: fade-up 0.7s cubic-bezier(0.2, 0, 0, 1) both; }
+.stagger-in > *:nth-child(1) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.5s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.65s; }
+@keyframes slide-in-right-kf { from { transform: translateX(60px); opacity: 0; } to { transform: none; opacity: 1; } }
+.slide-in-right { animation: slide-in-right-kf 0.8s cubic-bezier(0.2, 0, 0, 1) 0.6s both; }
+@keyframes slot-pop-kf { 0% { transform: scale(1); } 50% { transform: scale(1.14) rotate(-2deg); } 100% { transform: scale(1.05); } }
+.slot-pop { animation: slot-pop-kf 0.4s cubic-bezier(0.3, 1.5, 0.5, 1); }
+
+/* Quiz answers drop in one by one. */
+.quiz-choices > * { animation: fade-up 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+.quiz-choices > *:nth-child(2) { animation-delay: 0.06s; }
+.quiz-choices > *:nth-child(3) { animation-delay: 0.12s; }
+.quiz-choices > *:nth-child(4) { animation-delay: 0.18s; }
+
+/* Moon Club card: a slow holographic sheen. */
+@keyframes sheen { 0% { transform: translateX(-100%) skewX(-20deg); } 60%, 100% { transform: translateX(200%) skewX(-20deg); } }
+.card-sheen::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgb(233 185 73 / 0.12), rgb(169 187 160 / 0.18), transparent);
+  animation: sheen 6s ease-in-out infinite;
+}
+.scramble-overlay::after { content: attr(data-text); }

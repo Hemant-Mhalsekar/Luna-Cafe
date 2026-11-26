@@ -154,14 +154,14 @@ export function Games() {
           {results.length > 0 && (
             <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               <AnimatePresence mode="popLayout" initial={false}>
-              {results.map((g) => (
+              {results.map((g, i) => (
                 <m.li
                   key={g._id}
                   layout
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
-                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  initial={{ opacity: 0, scale: 0.6, rotate: i % 2 ? 8 : -8, y: 60 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.6, rotate: i % 2 ? -10 : 10 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 22, delay: Math.min(i, 12) * 0.04 }}
                 >
                   <button
                     type="button"
