@@ -26,7 +26,10 @@ export function Menu() {
 
   const items = useMemo(
     () =>
-      (menu.data ?? []).filter((i) => i.category === category && dietary.every((d) => i.dietaryTags.includes(d))),
+      (menu.data ?? [])
+        .filter((i) => i.category === category && dietary.every((d) => i.dietaryTags.includes(d)))
+        // Items with a photo first, then signatures, then A to Z.
+        .sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)) || Number(b.isSignature) - Number(a.isSignature) || a.name.localeCompare(b.name)),
     [menu.data, category, dietary],
   );
 
@@ -85,34 +88,40 @@ export function Menu() {
         </div>
 
         <div id="menu-panel" role="tabpanel" aria-labelledby={`tab-${category}`} className="mt-8">
-          {menu.isPending && <SkeletonGrid count={4} className="grid gap-5 sm:grid-cols-2" item={<div className="h-36 rounded-card bg-cream-deep" />} />}
+          {menu.isPending && <SkeletonGrid count={6} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" item={<div className="h-80 rounded-card bg-cream-deep" />} />}
           {menu.isError && <LoadError what="menu" onRetry={() => menu.refetch()} />}
           {menu.data && items.length === 0 && (
             <p className="rounded-card bg-card p-6 text-forest">Nothing here matches those filters yet. Try another category.</p>
           )}
           {items.length > 0 && (
-            <ul className="grid gap-5 sm:grid-cols-2">
+            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
                 <li key={item._id}>
                   <button
                     type="button"
                     onClick={() => setSelected(item)}
-                    className="group flex h-full w-full gap-5 rounded-card border border-outline/60 bg-card p-5 text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
+                    className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-outline/60 bg-card text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
                   >
                     {item.image ? (
-                      <Photo src={item.image} alt="" width={96} height={96} className="size-20 shrink-0 rounded-2xl sm:size-24" />
+                      <Photo
+                        src={item.image}
+                        alt=""
+                        width={512}
+                        height={384}
+                        className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
                     ) : (
-                      <span className="grid size-20 shrink-0 place-items-center rounded-2xl bg-sage-soft text-forest-dark sm:size-24">
-                        <MenuIcon category={item.category} className="size-10 sm:size-12" />
+                      <span className="grid aspect-[4/3] w-full place-items-center bg-sage-soft text-forest-dark">
+                        <MenuIcon category={item.category} className="size-16" />
                       </span>
                     )}
-                    <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="flex flex-1 flex-col p-5">
                       <span className="flex items-start justify-between gap-3">
                         <span className="font-display text-xl font-semibold leading-tight">{item.name}</span>
                         <span className="font-mono text-forest">₹{item.price}</span>
                       </span>
                       <span className="mt-1.5 line-clamp-2 text-forest">{item.description}</span>
-                      <span className="mt-auto flex flex-wrap gap-2 pt-3">
+                      <span className="mt-auto flex flex-wrap gap-2 pt-4">
                         {item.isSignature && <Tag tone="mustard">Signature</Tag>}
                         {item.dietaryTags.map((t) => (
                           <Tag key={t}>{DIETARY_LABEL[t]}</Tag>
