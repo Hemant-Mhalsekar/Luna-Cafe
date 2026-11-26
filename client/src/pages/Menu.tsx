@@ -28,10 +28,12 @@ export function Menu() {
     () =>
       (menu.data ?? [])
         .filter((i) => i.category === category && dietary.every((d) => i.dietaryTags.includes(d)))
-        // Items with a photo first, then signatures, then A to Z.
-        .sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)) || Number(b.isSignature) - Number(a.isSignature) || a.name.localeCompare(b.name)),
+        .sort((a, b) => Number(b.isSignature) - Number(a.isSignature) || a.name.localeCompare(b.name)),
     [menu.data, category, dietary],
   );
+  // Photographed items get big cards; the rest a compact list underneath.
+  const featured = items.filter((i) => i.image);
+  const others = items.filter((i) => !i.image);
 
   // Arrow keys move between tabs (WAI-ARIA tabs pattern).
   const onTabKey = (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -93,28 +95,22 @@ export function Menu() {
           {menu.data && items.length === 0 && (
             <p className="rounded-card bg-card p-6 text-forest">Nothing here matches those filters yet. Try another category.</p>
           )}
-          {items.length > 0 && (
+          {featured.length > 0 && (
             <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((item) => (
+              {featured.map((item) => (
                 <li key={item._id}>
                   <button
                     type="button"
                     onClick={() => setSelected(item)}
                     className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-outline/60 bg-card text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
                   >
-                    {item.image ? (
-                      <Photo
-                        src={item.image}
-                        alt=""
-                        width={512}
-                        height={384}
-                        className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <span className="grid aspect-[4/3] w-full place-items-center bg-sage-soft text-forest-dark">
-                        <MenuIcon category={item.category} className="size-16" />
-                      </span>
-                    )}
+                    <Photo
+                      src={item.image!}
+                      alt=""
+                      width={512}
+                      height={384}
+                      className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
                     <span className="flex flex-1 flex-col p-5">
                       <span className="flex items-start justify-between gap-3">
                         <span className="font-display text-xl font-semibold leading-tight">{item.name}</span>
@@ -132,6 +128,47 @@ export function Menu() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {/* Items without a photo yet: a compact list, so there are no big empty picture boxes. */}
+          {others.length > 0 && (
+            <section aria-labelledby="more-title" className={featured.length > 0 ? 'mt-12' : undefined}>
+              {featured.length > 0 && (
+                <h2 id="more-title" className="mb-4 text-2xl">
+                  More {CATEGORY_LABEL[category].toLowerCase()}
+                </h2>
+              )}
+              <ul className="grid gap-3 md:grid-cols-2">
+                {others.map((item) => (
+                  <li key={item._id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(item)}
+                      className="flex h-full w-full items-center gap-4 rounded-2xl border border-outline/60 bg-card px-4 py-3.5 text-left transition-colors hover:border-forest-dark"
+                    >
+                      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-sage-soft text-forest-dark">
+                        <MenuIcon category={item.category} className="size-7" />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-baseline justify-between gap-3">
+                          <span className="font-display text-lg font-semibold leading-tight">{item.name}</span>
+                          <span className="shrink-0 font-mono text-forest">₹{item.price}</span>
+                        </span>
+                        <span className="mt-0.5 block truncate text-sm text-forest">{item.description}</span>
+                        {(item.isSignature || item.dietaryTags.length > 0) && (
+                          <span className="mt-1.5 flex flex-wrap gap-1.5">
+                            {item.isSignature && <Tag tone="mustard">Signature</Tag>}
+                            {item.dietaryTags.map((t) => (
+                              <Tag key={t}>{DIETARY_LABEL[t]}</Tag>
+                            ))}
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
         </div>
       </div>
