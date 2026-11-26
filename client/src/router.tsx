@@ -1,10 +1,10 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, type RouteObject } from 'react-router';
 import { Layout } from './components/layout/Layout';
 import { Home } from './pages/Home';
 import { NotFound } from './pages/NotFound';
 
 // Home is part of the first download; every other page loads its code when first visited.
-export const router = createBrowserRouter([
+export const routes: RouteObject[] = [
   {
     element: <Layout />,
     children: [
@@ -33,4 +33,6 @@ export const router = createBrowserRouter([
       { path: 'account', lazy: () => import('./admin/Account').then((m) => ({ Component: m.Account })) },
     ],
   },
-]);
+];
+
+export const createRouter = () => createBrowserRouter(routes);

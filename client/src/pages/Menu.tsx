@@ -1,4 +1,4 @@
-import { useMemo, useState, type KeyboardEvent } from 'react';
+import { useMemo, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useSearchParams } from 'react-router';
 import { PageHeader } from '../components/PageHeader';
 import { LoadError, SkeletonGrid } from '../components/QueryState';
@@ -100,11 +100,10 @@ export function Menu() {
           {featured.length > 0 && (
             <ul key={`f-${category}-${dietary.join()}`} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => (
-                <m.li
+                <li
                   key={item._id}
-                  initial={{ opacity: 0, y: 60, rotate: i % 2 ? 4 : -4, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 20, delay: i * 0.08 }}
+                  className="enter enter-deal"
+                  style={{ animationDelay: `${0.25 + i * 0.08}s`, '--r': i % 2 ? '4deg' : '-4deg' } as CSSProperties}
                 >
                   <Tilt className="h-full rounded-card">
                   <button
@@ -114,6 +113,7 @@ export function Menu() {
                     className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-outline/60 bg-card text-left shadow-soft transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lift"
                   >
                     <Photo
+                      priority={i < 3}
                       src={item.image!}
                       alt=""
                       width={512}
@@ -135,7 +135,7 @@ export function Menu() {
                     </span>
                   </button>
                   </Tilt>
-                </m.li>
+                </li>
               ))}
             </ul>
           )}

@@ -7,6 +7,7 @@ import { Footer } from './Footer';
 import { ServerWakeBanner } from './ServerWakeBanner';
 import { PageLoader } from './PageLoader';
 import { Cursor } from '../fx/Cursor';
+import { RouteSeo } from '../RouteSeo';
 import { MoonMark } from '../illustrations/Logo';
 
 const loadMotionFeatures = () => import('../../lib/motionFeatures').then((mod) => mod.default);
@@ -59,6 +60,7 @@ export function Layout() {
             </m.span>
           </m.div>
         )}
+        <RouteSeo />
         <Cursor />
         <ScrollRestoration />
       </MotionConfig>

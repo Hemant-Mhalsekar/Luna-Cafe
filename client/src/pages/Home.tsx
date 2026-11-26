@@ -126,7 +126,7 @@ function Hero() {
 
       {/* Two ribbons crossing at the bottom of the hero. */}
       <m.div style={{ x: ribbonX }} className="relative -ml-[5%] mb-8 mt-4 w-[125%]">
-        <Marquee items={RIBBON} reverse className="rotate-[2deg] bg-sage text-forest-dark/75" />
+        <Marquee items={RIBBON} reverse className="rotate-[2deg] bg-sage text-forest-dark" />
         <Marquee items={RIBBON} className="-mt-16 -rotate-[1.5deg] bg-forest-dark text-cream shadow-lift" />
       </m.div>
     </section>

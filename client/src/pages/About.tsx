@@ -3,6 +3,7 @@ import { Card } from '../components/ui/Card';
 import { LinkButton } from '../components/ui/Button';
 import { Eyebrow, Section } from '../components/ui/Section';
 import { Reveal } from '../components/Reveal';
+import { Enter } from '../components/fx/Enter';
 import { cn } from '../lib/cn';
 import { MoonPhases } from '../components/illustrations/MoonPhases';
 import { Photo } from '../components/Photo';
@@ -32,7 +33,7 @@ export function About() {
       </PageHeader>
 
       <div className="container-page grid gap-10 pb-16 lg:grid-cols-2">
-        <Reveal variant="left" className="space-y-4 text-lg text-forest-dark">
+        <Enter variant="left" delay={0.3} className="space-y-4 text-lg text-forest-dark">
           <p>
             Mira opened Lunaa in a quiet lane in Panaji in 2021, wanting a place that felt like a friend's living room: sunny in the morning,
             cosy at night. Friends brought their board games along, and the games never went home.
@@ -41,8 +42,8 @@ export function About() {
             Today the shelf holds more than a hundred games, from five-minute card games to all-evening strategy. The coffee is still the
             first thing we care about. The games are what keep you here.
           </p>
-        </Reveal>
-        <Reveal delay={0.1} variant="flip">
+        </Enter>
+        <Enter delay={0.45} variant="flip">
           <Tilt className="h-full rounded-card">
           <Card className="flex h-full flex-col justify-center bg-forest-dark text-cream">
             <p className="font-display text-3xl leading-snug">“Coffee first. Then game on?”</p>
@@ -50,7 +51,7 @@ export function About() {
             <MoonPhases className="mt-6 text-cream" />
           </Card>
           </Tilt>
-        </Reveal>
+        </Enter>
       </div>
 
       <div className="container-page grid gap-5 pb-16 sm:grid-cols-[2fr_1fr]">

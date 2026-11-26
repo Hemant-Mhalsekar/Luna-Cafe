@@ -33,18 +33,18 @@ export function Tilt({ children, className, max = 10, glare = true }: { children
     glareOpacity.set(0);
   };
 
+  // The outer box never moves, so measuring it doesn't feed back into the tilt (no jitter).
   return (
+    <div ref={ref} onPointerMove={move} onPointerLeave={leave} className={cn('rounded-[inherit]', className)}>
     <m.div
-      ref={ref}
-      onPointerMove={move}
-      onPointerLeave={leave}
       style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: 'preserve-3d' }}
-      className={cn('relative', className)}
+      className="relative size-full rounded-[inherit]"
     >
       {children}
-      {glare && !reduce && (
+      {glare && (
         <m.span aria-hidden="true" style={{ background: glareBg, opacity: glareOpacity }} className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] mix-blend-soft-light" />
       )}
     </m.div>
+    </div>
   );
 }
