@@ -72,3 +72,28 @@ describe('proxy trust', () => {
     expect(res.body.ip).toBe('203.0.113.7');
   });
 });
+
+describe('email settings never stop the server', () => {
+  it('ignores bad optional email values instead of throwing', async () => {
+    const { getEnv, resetEnvCache } = await import('../src/config/env.js');
+    const saved = { ...process.env };
+    const warn = (await import('vitest')).vi.spyOn(console, 'warn').mockImplementation(() => {});
+    process.env.MONGODB_URI = 'mongodb://127.0.0.1:1/unused';
+    process.env.NODE_ENV = 'development';
+    process.env.ADMIN_NOTIFY_EMAIL = '"Hemant <me@example.com>"; staff@example.com  owner@example.com';
+    process.env.MAIL_FROM_ADDRESS = ' "hello@example.com" ';
+    process.env.MAIL_REPLY_TO = 'not-an-email';
+    process.env.SITE_URL = 'lunaacafe.vercel.app/';
+    process.env.MAIL_FROM_NAME = '';
+    resetEnvCache();
+    const env = getEnv();
+    process.env = saved;
+    resetEnvCache();
+    warn.mockRestore();
+    expect(env.ADMIN_NOTIFY_EMAIL).toEqual(['me@example.com', 'staff@example.com', 'owner@example.com']);
+    expect(env.MAIL_FROM_ADDRESS).toBe('hello@example.com');
+    expect(env.MAIL_REPLY_TO).toBeUndefined();
+    expect(env.SITE_URL).toBe('https://lunaacafe.vercel.app');
+    expect(env.MAIL_FROM_NAME).toBe('Lunaa Café');
+  });
+});

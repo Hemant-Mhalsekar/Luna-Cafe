@@ -1,5 +1,27 @@
 import { z } from 'zod';
 
+const EMAIL = z.email();
+
+/** Trims spaces and surrounding quotes, which often sneak in when values are pasted into a dashboard. */
+const clean = (v: string | undefined) => (v ?? '').trim().replace(/^["']|["']$/g, '').trim();
+
+/**
+ * Optional email settings must never stop the server: a bad value is ignored with a warning in the logs
+ * (emails to that address just aren't sent) instead of crashing the whole API on start.
+ */
+function optionalEmail(name: string) {
+  return z
+    .string()
+    .optional()
+    .transform((v) => {
+      const value = clean(v);
+      if (!value) return undefined;
+      if (EMAIL.safeParse(value).success) return value;
+      console.warn(`[env] ${name} is not a valid email address, so it is ignored: "${value}"`);
+      return undefined;
+    });
+}
+
 const schema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -18,16 +40,38 @@ const schema = z
     ADMIN_EMAIL: z.string().optional(),
     // Email (Brevo HTTP API; Render's free plan blocks SMTP). Without both, emails are only logged.
     BREVO_API_KEY: z.string().optional(),
-    MAIL_FROM_ADDRESS: z.email().optional(),
-    MAIL_FROM_NAME: z.string().default('Lunaa Café'),
-    MAIL_REPLY_TO: z.email().optional(),
+    MAIL_FROM_ADDRESS: optionalEmail('MAIL_FROM_ADDRESS'),
+    MAIL_FROM_NAME: z
+      .string()
+      .optional()
+      .transform((v) => clean(v) || 'Lunaa Café'),
+    MAIL_REPLY_TO: optionalEmail('MAIL_REPLY_TO'),
     // Staff alerts for new bookings and event sign-ups (comma-separated for several people).
     ADMIN_NOTIFY_EMAIL: z
       .string()
       .optional()
-      .transform((v) => (v ?? '').split(',').map((e) => e.trim()).filter(Boolean))
-      .pipe(z.array(z.email('ADMIN_NOTIFY_EMAIL must be email addresses, separated by commas.'))),
-    SITE_URL: z.url().default('https://lunaacafe.vercel.app'),
+      .transform((v) =>
+        clean(v)
+          .split(/[,;\s]+/) // commas, semicolons or spaces between addresses
+          .map((e) => clean(e).replace(/^<|>$/g, '')) // "Name <me@example.com>" works too
+          .filter(Boolean)
+          .filter((e) => {
+            const ok = EMAIL.safeParse(e).success;
+            if (!ok) console.warn(`[env] ADMIN_NOTIFY_EMAIL contains "${e}", which is not an email address, so it is skipped.`);
+            return ok;
+          }),
+      ),
+    SITE_URL: z
+      .string()
+      .optional()
+      .transform((v) => {
+        const value = clean(v).replace(/\/+$/, '');
+        if (!value) return 'https://lunaacafe.vercel.app';
+        const withScheme = /^https?:\/\//.test(value) ? value : `https://${value}`;
+        if (z.url().safeParse(withScheme).success) return withScheme;
+        console.warn(`[env] SITE_URL "${value}" is not a web address, so the default is used.`);
+        return 'https://lunaacafe.vercel.app';
+      }),
     ADMIN_PASSWORD: z.string().optional(),
   })
   .superRefine((env, ctx) => {
