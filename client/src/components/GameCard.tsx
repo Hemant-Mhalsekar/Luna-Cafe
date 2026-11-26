@@ -1,6 +1,7 @@
 import * as m from 'motion/react-m';
 import { cn } from '../lib/cn';
 import { ClockIcon, DieIcon, MeepleIcon } from './illustrations/GameIcons';
+import { Tilt } from './fx/Tilt';
 
 import type { Accent } from '../lib/types';
 
@@ -26,11 +27,15 @@ export function GameCard({ game, className }: { game: GameCardData; className?: 
   const a = accents[game.accent];
   const players = game.minPlayers === game.maxPlayers ? `${game.minPlayers}` : `${game.minPlayers}–${game.maxPlayers}`;
   return (
+    <Tilt className="h-full rounded-card" max={12}>
     <m.article
-      whileHover={{ y: -6, rotate: -1.2 }}
+      whileHover={{ y: -6, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className={cn('relative flex h-full flex-col overflow-hidden rounded-card border border-outline/40 p-5', a.bg, className)}
+      data-cursor="Play"
+      className={cn('group relative flex h-full flex-col overflow-hidden rounded-card border border-outline/40 p-5', a.bg, className)}
     >
+      {/* A big die rolls in from the corner on hover. */}
+      <DieIcon className={cn('pointer-events-none absolute -bottom-6 -right-6 size-28 opacity-10 transition-transform duration-700 ease-out group-hover:-translate-x-3 group-hover:-translate-y-3 group-hover:rotate-[200deg]', a.ink)} />
       <div className="flex items-center justify-between">
         <span className={cn('inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize', a.chip)}>
           <DieIcon className="size-4" />
@@ -52,5 +57,6 @@ export function GameCard({ game, className }: { game: GameCardData; className?: 
         </div>
       </dl>
     </m.article>
+    </Tilt>
   );
 }

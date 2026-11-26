@@ -10,8 +10,8 @@ const base =
 
 const variants: Record<Variant, string> = {
   // Orange is reserved for actions.
-  primary: 'bg-cta text-white shadow-soft hover:bg-cta-hover',
-  secondary: 'border-2 border-forest-dark text-forest-dark hover:bg-forest-dark hover:text-cream',
+  primary: 'btn-shine bg-cta text-white shadow-soft hover:-translate-y-0.5 hover:bg-cta-hover hover:shadow-lift',
+  secondary: 'border-2 border-forest-dark text-forest-dark hover:-translate-y-0.5 hover:bg-forest-dark hover:text-cream',
   // For dark (forest) backgrounds.
   'secondary-light': 'border-2 border-cream text-cream hover:bg-cream hover:text-forest-dark',
   ghost: 'text-forest-dark hover:bg-forest-dark/8',

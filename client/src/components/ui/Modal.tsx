@@ -32,7 +32,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
         if (e.target === e.currentTarget) onClose(); // click on the backdrop
       }}
       className={cn(
-        'm-auto w-[min(92vw,36rem)] rounded-card bg-card p-0 text-forest-dark shadow-lift backdrop:bg-forest-dark/40',
+        'modal-pop m-auto w-[min(92vw,36rem)] rounded-card bg-card p-0 text-forest-dark shadow-lift backdrop:bg-forest-dark/40',
         className,
       )}
     >
