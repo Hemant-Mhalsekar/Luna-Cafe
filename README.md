@@ -4,7 +4,7 @@
 
 A portfolio project: the website of a fictional board game café. It opens as a calm specialty coffee shop, and the board game side is revealed as you scroll.
 
-**Live:** https://lunaacafe.vercel.app · **Status:** all features built and deployed (public pages, booking, game quiz, events, Moon Club card, admin). See [`docs/SPEC.md`](docs/SPEC.md) for the original plan.
+**Live:** https://lunaacafe.vercel.app · **Status:** complete (November 2026). Everything in the original plan is built and deployed: public pages, table booking with game reservations, the game quiz, events, the Moon Club card, the admin area, booking emails, animations and SEO. See [`docs/SPEC.md`](docs/SPEC.md) for the original plan and [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md) for how it was built.
 
 <p align="center">
   <img src="docs/screenshots/demo.gif" alt="Short demo: the hero letters rise and the moon rises on scroll, the page-change transition, the game quiz rolling dice and dealing matches, and confetti when a table is booked" width="80%">
@@ -170,6 +170,15 @@ npm run smoke -- https://your-site.vercel.app
 ```
 
 The smoke test loads the site, a deep link and the `/admin` headers, then waits (up to two minutes) for the API to wake and checks health, games, menu, events and that the admin API is locked.
+
+## Ideas for later
+
+Not planned right now, but where the project could go next:
+
+- A link in the confirmation email so guests can cancel their own booking
+- Waitlists for full events, and a reminder email the day before a booking
+- Photos for the menu items that still show an icon, and a sharper hero photo
+- A custom domain
 
 ---
 
